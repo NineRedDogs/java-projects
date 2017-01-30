@@ -30,9 +30,11 @@ public class BothTeamsToScore extends ForecastType {
 			awayTeamToScoreRating = awayTeam.getToScoreAwayRating() + homeTeam.getToConcedeAwayRating();
 		}
 
-		if ((homeTeamToScoreRating > 0) && (awayTeamToScoreRating > 0)) {
-			FixtureBothScore fbs = new FixtureBothScore(fd.getDivision(), fd.getDate(), homeTeam, awayTeam);
-			fixtures.add(fbs);
+		if (addPrediction(fd.getDate())) {
+			if ((homeTeamToScoreRating > 0) && (awayTeamToScoreRating > 0)) {
+				FixtureBothScore fbs = new FixtureBothScore(fd.getDivision(), fd.getDate(), homeTeam, awayTeam);
+				fixtures.add(fbs);
+			}
 		}
 	}
 	

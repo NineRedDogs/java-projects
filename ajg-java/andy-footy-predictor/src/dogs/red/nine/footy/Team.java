@@ -31,8 +31,16 @@ public class Team {
 		statsForm = new TeamStats(name, NUM_GAMES_TO_BE_USED_FOR_CURRENT_FORM);
 	}
 
+	public String getName(boolean highlightName) {
+		if (highlightName) {
+			return "**(" + name.toUpperCase() + ")**";
+		} else {
+			return name;
+		}
+	}
+
 	public String getName() {
-		return name;
+		return getName(false);
 	}
 	
 	public TeamStats getSeasonStats() {
@@ -96,11 +104,43 @@ public class Team {
 		}
 	}
 
+	public int getToScoreHomeRatingX() {
+		if (USE_FORM_STATS) {
+			return statsForm.getToScoreHomeRatingX();
+		} else {
+			return statsSeason.getToScoreHomeRatingX();
+		}
+	}
+
+	public int getToScoreAwayRatingX() {
+		if (USE_FORM_STATS) {
+			return statsForm.getToScoreAwayRatingX();
+		} else {
+			return statsSeason.getToScoreAwayRatingX();
+		}
+	}
+
 	public int getToConcedeAwayRating() {
 		if (USE_FORM_STATS) {
 			return statsForm.getToConcedeAwayRating();
 		} else {
 			return statsSeason.getToConcedeAwayRating();
+		}
+	}
+
+	public int getToConcedeHomeRatingX() {
+		if (USE_FORM_STATS) {
+			return statsForm.getToConcedeHomeRatingX();
+		} else {
+			return statsSeason.getToConcedeHomeRatingX();
+		}
+	}
+
+	public int getToConcedeAwayRatingX() {
+		if (USE_FORM_STATS) {
+			return statsForm.getToConcedeAwayRatingX();
+		} else {
+			return statsSeason.getToConcedeAwayRatingX();
 		}
 	}
 

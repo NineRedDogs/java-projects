@@ -17,10 +17,12 @@ public class AwayHighScorers extends ForecastType {
 		int awayTeamToScoreRating=0;
      	awayTeamToScoreRating = awayTeam.getToScoreHomeRating() + homeTeam.getToConcedeAwayRating();
 
-		if (awayTeamToScoreRating > MAGIC_THRESHOLD) {
-			FixtureHighScorer fhs = new FixtureHighScorer(fd.getDivision(), fd.getDate(), homeTeam, awayTeam, HomeOrAway.Away);
-			fixtures.add(fhs);
-		}
+     	if (addPrediction(fd.getDate())) {
+     		if (awayTeamToScoreRating > MAGIC_THRESHOLD) {
+     			FixtureHighScorer fhs = new FixtureHighScorer(fd.getDivision(), fd.getDate(), homeTeam, awayTeam, HomeOrAway.Away);
+     			fixtures.add(fhs);
+     		}
+     	}
 	}
 	
 	
@@ -33,12 +35,11 @@ public class AwayHighScorers extends ForecastType {
 		for (FixtureData fixture : fixtures) {
 
 			FixtureHighScorer fhs = (FixtureHighScorer) fixture;
-			Team homeTeam = fixture.getHomeTeam();
-			Team awayTeam = fixture.getAwayTeam();
-
-			logger.info(fixture.fixturePrint() + "  [** " + (fhs.getHomeTeamToScoreRating()+fhs.getAwayTeamToScoreRating()) + " **] --- (H:"
-			        + fhs.getHomeTeamToScoreRating() + " A:" + fhs.getAwayTeamToScoreRating() + ")");
+			logger.info(fixture.fixturePrint() + "  [** " + fhs.getAwayTeamToScoreRating() + " **]");
+			
 			if (Forecaster.SHOW_DETAILED_STATS) {
+				Team homeTeam = fixture.getHomeTeam();
+				Team awayTeam = fixture.getAwayTeam();
 				logger.info("     " + homeTeam.getHomeStats());
 				logger.info("     " + awayTeam.getAwayStats() + "\n");
 			}

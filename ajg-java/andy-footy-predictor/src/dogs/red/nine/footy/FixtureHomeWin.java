@@ -11,7 +11,7 @@ public class FixtureHomeWin extends FixtureData implements Comparable<FixtureHom
 			Team awayTeam) {
 		super(division, date, homeTeam, awayTeam);
 		homeTeamToScoreRating = homeTeam.getToScoreHomeRating() + awayTeam.getToConcedeAwayRating();
-		awayTeamToScoreRating = awayTeam.getToScoreAwayRating() + homeTeam.getToConcedeAwayRating();
+		awayTeamToScoreRating = awayTeam.getToScoreAwayRating() + homeTeam.getToConcedeHomeRating();
 	}
 
 	@Override

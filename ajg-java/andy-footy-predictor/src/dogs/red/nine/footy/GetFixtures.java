@@ -6,11 +6,17 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class GetFixtures {
+	private static final Logger logger = LogManager.getLogger("GetFixtures");
+
 	// get fixtures from : http://www.football-data.co.uk/matches.php
 
 	// use this URL to get fixtures (after 17:00 Friday - see below) http://www.football-data.co.uk/fixtures.csv
@@ -36,15 +42,24 @@ public class GetFixtures {
 		List<FixtureData> allFixtures = new ArrayList<FixtureData>();
 
 		URL url = null;
-		String[] keyData=null;
 
+		if (Forecaster.DEV_MODE) {
+			// in dev mode the fixtures will not be available - unless developing after friday 17:00 :)
+			// so read in a sample fixtures file
+			url = Paths.get(Forecaster.SAMPLE_FIXTURE_DEV_MODE_FILE).toUri().toURL();
+
+		} else {
+			// Real fixtures to read in , lets get some forecasts !!!!!!
+			try {
+				url = new URL(FOOTBALL_FIXTURES_URL);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		String[] keyData=null;
 		String lineReadFromFixturesFile;
 
-		try {
-			url = new URL(FOOTBALL_FIXTURES_URL);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
 		BufferedReader in;
 		try {
 			URLConnection con = url.openConnection();

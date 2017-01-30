@@ -137,14 +137,20 @@ public class FixtureData {
 		return division + " (" + new SimpleDateFormat("EEE d MMM").format(date) + ") " + homeTeam + " v " + awayTeam;
 	}
 
-
-
 	public String fixturePrint() {
+		return fixturePrint(DisplayExtras.PlainText);
+	}
+
+	private String getDateAndDivFixed() {
 		StringBuilder sb = new StringBuilder();
-		
 		sb.append(new SimpleDateFormat("EEE MMM d yyyy").format(date) + " ");
 		sb.append(division + ": ");
-		sb.append(homeTeam.getName() + " v " + awayTeam.getName());
+		return String.format("%-42s", sb.toString());
+	}
+	
+	public String fixturePrint(DisplayExtras displayExtras) {
+		StringBuilder sb = new StringBuilder(getDateAndDivFixed());
+		sb.append(homeTeam.getName(displayExtras.isHlHome()) + " v " + awayTeam.getName(displayExtras.isHlAway()));
 		return sb.toString();
 	}
 	

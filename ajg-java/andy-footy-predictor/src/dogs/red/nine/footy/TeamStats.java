@@ -1,6 +1,10 @@
 package dogs.red.nine.footy;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class TeamStats {
+	private static final Logger logger = LogManager.getLogger("TeamStats");
 	
 	private final int numGamesToUse;
 	
@@ -19,6 +23,9 @@ public class TeamStats {
 	private int goalsScored=0;
 	private int goalsScoredHome=0;
 	private int goalsScoredAway=0;
+	private float goalsScoredX=0;
+	private float goalsScoredHomeX=0;
+	private float goalsScoredAwayX=0;
 	
 	private int goalsPerGameRating=0;
 	private int goalsPerHomeGameRating=0;
@@ -35,6 +42,9 @@ public class TeamStats {
 	private int goalsConceded=0;
 	private int goalsConcededHome=0;
 	private int goalsConcededAway=0;
+	private float goalsConcededX=0;
+	private float goalsConcededHomeX=0;
+	private float goalsConcededAwayX=0;
 	
 	private int goalsConcededPerGameRating=0;
 	private int goalsConcededPerHomeGameRating=0;
@@ -54,6 +64,12 @@ public class TeamStats {
 	private int toConcedeRating=0;
 	private int toConcedeHomeRating=0;
 	private int toConcedeAwayRating=0;
+	
+	private int toScoreHomeRatingX=0;
+	private int toScoreAwayRatingX=0;
+	private int toConcedeHomeRatingX=0;
+	private int toConcedeAwayRatingX=0;
+
 
 	private final String teamName;
 
@@ -83,16 +99,23 @@ public class TeamStats {
 		}
 
 		this.gamesPlayed = results.getResults().size();
+		int currGame = gamesPlayed;
 		
 		for (MatchData result : results.getResults()) {
-			
+
+			float gameMultiplier = ((float) currGame / (float) gamesPlayed);
+
 			boolean homeTeam = (this.teamName.equalsIgnoreCase(result.getHomeTeam().getName()));
 			
 			if (homeTeam) {
-				this.goalsScored += result.getHomeTeamScore(); 
+				this.goalsScored += result.getHomeTeamScore();
+				this.goalsScoredX += (result.getHomeTeamScore() * gameMultiplier);
 				this.goalsScoredHome += result.getHomeTeamScore(); 
+				this.goalsScoredHomeX += (result.getHomeTeamScore() * gameMultiplier);; 
 				this.goalsConceded += result.getAwayTeamScore();
+				this.goalsConcededX += (result.getAwayTeamScore() * gameMultiplier);
 				this.goalsConcededHome += result.getAwayTeamScore();
+				this.goalsConcededHomeX += (result.getAwayTeamScore() * gameMultiplier);
 				this.gamesPlayedHome++;
 				if (result.getHomeTeamScore() > 0) {
 					this.gamesScored++;
@@ -108,9 +131,13 @@ public class TeamStats {
 				this.homeGamesGoalsConcededHistory.append(result.getAwayTeamScore() + "  ");
 			} else {
 				this.goalsScored += result.getAwayTeamScore(); 
+				this.goalsScoredX += (result.getAwayTeamScore() * gameMultiplier); 
 				this.goalsScoredAway += result.getAwayTeamScore(); 
+				this.goalsScoredAwayX += (result.getAwayTeamScore() * gameMultiplier); 
 				this.goalsConceded += result.getHomeTeamScore();
+				this.goalsConcededX += (result.getHomeTeamScore() * gameMultiplier);
 				this.goalsConcededAway += result.getHomeTeamScore();
+				this.goalsConcededAwayX += (result.getHomeTeamScore() * gameMultiplier);
 				this.gamesPlayedAway++;
 				if (result.getAwayTeamScore() > 0) {
 					this.gamesScored++;
@@ -125,6 +152,7 @@ public class TeamStats {
 				this.awayGamesGoalsHistory.append(result.getAwayTeamScore() + "  ");
 				this.awayGamesGoalsConcededHistory.append(result.getHomeTeamScore() + "  ");
 			}
+			currGame--;
 		}
 
 		try {
@@ -155,6 +183,18 @@ public class TeamStats {
 		this.toConcedeRating = ((this.goalsConcededPerGameRating * this.pctgeGamesConcededIn) / 100 );
 		this.toConcedeHomeRating = ((this.goalsConcededPerHomeGameRating * this.pctgeHomeGamesConcededIn) / 100 );
 		this.toConcedeAwayRating = ((this.goalsConcededPerAwayGameRating * this.pctgeAwayGamesConcededIn) / 100 );
+
+		float shx = (((this.goalsScoredHomeX * ((float) this.pctgeHomeGamesScoredIn)) / 100 ) / this.gamesPlayedHome) * 100;
+		float sax = (((this.goalsScoredAwayX * ((float) this.pctgeAwayGamesScoredIn)) / 100 ) / this.gamesPlayedAway) * 100;
+
+		this.toScoreHomeRatingX = Math.round(shx);
+		this.toScoreAwayRatingX = Math.round(sax);
+
+		float chx = (((this.goalsConcededHomeX * ((float) this.pctgeHomeGamesConcededIn)) / 100 ) / this.gamesPlayedHome) * 100;
+		float cax = (((this.goalsConcededAwayX * ((float) this.pctgeAwayGamesConcededIn)) / 100 ) / this.gamesPlayedAway) * 100;
+	
+		this.toConcedeHomeRatingX = Math.round(chx);
+		this.toConcedeAwayRatingX = Math.round(cax);
 	}
 
 	
@@ -164,8 +204,10 @@ public class TeamStats {
 		StringBuilder sb = new StringBuilder(String.format("%-20s", this.teamName) + "All stats: ");
 		sb.append("P: " + String.format("%3d", this.gamesPlayed));
 		sb.append(" F: " + String.format("%3d", this.goalsScored));
+		sb.append(" Fx: " + String.format("%4.2f", this.goalsScoredX));
 		sb.append(" f/G: " + String.format("%3d", this.goalsPerGameRating));
 		sb.append(" A: " + String.format("%3d", this.goalsConceded));
+		sb.append(" Ax: " + String.format("%4.2f", this.goalsConcededX));
 		sb.append(" a/G: " + String.format("%3d", this.goalsConcededPerGameRating));
 		sb.append( "gS: " + String.format("%3d", this.gamesScored));
 		sb.append(" %S: " + String.format("%3d", this.pctgeGamesScoredIn));
@@ -182,8 +224,10 @@ public class TeamStats {
 		StringBuilder sb = new StringBuilder(String.format("%-20s", this.teamName) + "Home stats: ");
 		sb.append("P: " + String.format("%3d", this.gamesPlayedHome));
 		sb.append(" F: " + String.format("%3d", this.goalsScoredHome));
+		sb.append(" Fx: " + String.format("%4.2f", this.goalsScoredHomeX));
 		sb.append(" f/G: " + String.format("%3d", this.goalsPerHomeGameRating));
 		sb.append(" A: " + String.format("%3d", this.goalsConcededHome));
+		sb.append(" Ax: " + String.format("%4.2f", this.goalsConcededHomeX));
 		sb.append(" a/G: " + String.format("%3d", this.goalsConcededPerHomeGameRating));
 		sb.append(" gS: " + String.format("%3d", this.gamesScoredHome));
 		sb.append(" %S: " + String.format("%3d", this.pctgeHomeGamesScoredIn));
@@ -200,8 +244,10 @@ public class TeamStats {
 		StringBuilder sb = new StringBuilder(String.format("%-20s", this.teamName) + "Away stats: ");
 		sb.append("P: " + String.format("%3d", this.gamesPlayedAway));
 		sb.append(" F: " + String.format("%3d", this.goalsScoredAway));
+		sb.append(" Fx: " + String.format("%4.2f", this.goalsScoredAwayX));
 		sb.append(" f/G: " + String.format("%3d", this.goalsPerAwayGameRating));
 		sb.append(" A: " + String.format("%3d", this.goalsConcededAway));
+		sb.append(" Ax: " + String.format("%4.2f", this.goalsConcededAwayX));
 		sb.append(" a/G: " + String.format("%3d", this.goalsConcededPerAwayGameRating));
 		sb.append(" gS: " + String.format("%3d", this.gamesScoredAway));
 		sb.append(" %S: " + String.format("%3d", this.pctgeAwayGamesScoredIn));
@@ -263,6 +309,18 @@ public class TeamStats {
 		return this.goalsScoredAway;
 	}
 
+	public float getGoalsScoredX() {
+		return this.goalsScoredX;
+	}
+
+	public float getGoalsScoredHomeX() {
+		return this.goalsScoredHomeX;
+	}
+
+	public float getGoalsScoredAwayX() {
+		return this.goalsScoredAwayX;
+	}
+
 	public int getGoalsPerGameRating() {
 		return this.goalsPerGameRating;
 	}
@@ -311,6 +369,19 @@ public class TeamStats {
 		return this.goalsConcededAway;
 	}
 
+	public float getGoalsConcededX() {
+		return this.goalsConcededX;
+	}
+
+	public float getGoalsConcededHomeX() {
+		return this.goalsConcededHomeX;
+	}
+
+	public float getGoalsConcededAwayX() {
+		return this.goalsConcededAwayX;
+	}
+
+
 	public int getGoalsConcededPerGameRating() {
 		return this.goalsConcededPerGameRating;
 	}
@@ -357,6 +428,22 @@ public class TeamStats {
 
 	public int getToScoreAwayRating() {
 		return this.toScoreAwayRating;
+	}
+
+	public int getToScoreHomeRatingX() {
+		return this.toScoreHomeRatingX;
+	}
+
+	public int getToScoreAwayRatingX() {
+		return this.toScoreAwayRatingX;
+	}
+
+	public int getToConcedeHomeRatingX() {
+		return this.toConcedeHomeRatingX;
+	}
+
+	public int getToConcedeAwayRatingX() {
+		return this.toConcedeAwayRatingX;
 	}
 
 	public int getToConcedeRating() {

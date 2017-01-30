@@ -20,9 +20,11 @@ public class Draws extends ForecastType {
      	homeTeamToScoreRating = homeTeam.getToScoreHomeRating() + awayTeam.getToConcedeAwayRating();
 		awayTeamToScoreRating = awayTeam.getToScoreAwayRating() + homeTeam.getToConcedeAwayRating();
 
-		if ((diffRating(homeTeamToScoreRating, awayTeamToScoreRating) < MAGIC_THRESHOLD)) {
-			FixtureDraw fdr = new FixtureDraw(fd.getDivision(), fd.getDate(), homeTeam, awayTeam);
-			fixtures.add(fdr);
+		if (addPrediction(fd.getDate())) {
+			if ((diffRating(homeTeamToScoreRating, awayTeamToScoreRating) < MAGIC_THRESHOLD)) {
+				FixtureDraw fdr = new FixtureDraw(fd.getDivision(), fd.getDate(), homeTeam, awayTeam);
+				fixtures.add(fdr);
+			}
 		}
 	}
 	

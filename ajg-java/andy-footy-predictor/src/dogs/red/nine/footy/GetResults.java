@@ -13,8 +13,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 public class GetResults {
+	private static final Logger logger = LogManager.getLogger("GetResults");
+
 	private static final String FOOTBALL_DATA_URL_FILE="/home/agrahame/Dropbox/workspace/FootballRest/data/dataUrls.txt";
 	private static final String DATA_FILE_COLUMN_KEY_LINE = "Div,";
 	
@@ -47,6 +52,7 @@ public class GetResults {
 		List<String> dataUrls = setAllFootballDataUrls(FOOTBALL_DATA_URL_FILE);
 		
 		for (String dataUrl : dataUrls) {
+			//logger.debug("getting results from data url : " + dataUrl);
 			String[] keyData=null;
 			
 			URL url = null;
@@ -73,6 +79,7 @@ public class GetResults {
 							//System.out.println("Parsed match data : " + match);
 
 							if (supportedDivisions.contains(match.getDivision())) {
+								//logger.debug("Match: " + match);
 								teams.addMatchResult(match);
 							}
 						} catch (ParseException | NumberFormatException e) {
