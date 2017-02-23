@@ -13,7 +13,7 @@ public abstract class ForecastType {
 	public abstract void process(FixtureData fd);
 	
 	public boolean addPrediction(Date fixtureDate) {
-		if (Forecaster.DEV_MODE) {
+		if ((Forecaster.DEV_MODE) || ((Forecaster.DEV_MODE_USE_THIS_WEEKS_PLAYED_FIXTURES) )) {
 			return true;
 		} else if (Forecaster.ONLY_TODAYS_GAMES) {
 			

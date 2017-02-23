@@ -8,7 +8,7 @@ public class HomeWinsX extends ForecastType {
 
 	public void process(FixtureData fd) {
 		
-		final int MAGIC_THRESHOLD = 5;
+		final int MAGIC_THRESHOLD = 100;
 
 		Team homeTeam = fd.getHomeTeam();
 		Team awayTeam = fd.getAwayTeam();

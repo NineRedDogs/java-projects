@@ -3,5 +3,6 @@
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ajg-3pl"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/footy-3pl-jars"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

@@ -9,7 +9,7 @@ public class HighScorers extends HighScorersForecastType {
 
 	public void process(FixtureData fd) {
 
-		final int MAGIC_THRESHOLD = 50;
+		final int MAGIC_THRESHOLD = 150;
 
 		Team homeTeam = fd.getHomeTeam();
 		Team awayTeam = fd.getAwayTeam();

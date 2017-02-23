@@ -50,7 +50,9 @@ public class FootyRestClient {
 	private static String sendGET(final String getUri) throws IOException {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		HttpGet httpGet = new HttpGet(getUri);
+		/**
 		httpGet.addHeader("User-Agent", USER_AGENT);
+		 
 		httpGet.addHeader("X-Auth-Token", BETA_DEV_API_TOKEN);
 		
 		CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
@@ -60,6 +62,7 @@ public class FootyRestClient {
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 				httpResponse.getEntity().getContent()));
+				
 
 		String inputLine;
 		StringBuffer response = new StringBuffer();
@@ -73,7 +76,8 @@ public class FootyRestClient {
 		//System.out.println(response.toString());
 		httpClient.close();
 		
-		return response.toString();
+		return response.toString();**/
+		return "";
 	}
 
 	

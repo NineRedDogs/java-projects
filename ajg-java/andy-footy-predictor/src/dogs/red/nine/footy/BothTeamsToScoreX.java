@@ -11,8 +11,8 @@ public class BothTeamsToScoreX extends ForecastType {
 
 	public void process(FixtureData fd) {
 		
-		final int MAGIC_THRESHOLD_HOME_TO_SCORE = 70;
-		final int MAGIC_THRESHOLD_AWAY_TO_SCORE = 70;
+		final int MAGIC_THRESHOLD_HOME_TO_SCORE = 120;
+		final int MAGIC_THRESHOLD_AWAY_TO_SCORE = 100;
 
 		Team homeTeam = fd.getHomeTeam();
 		Team awayTeam = fd.getAwayTeam();

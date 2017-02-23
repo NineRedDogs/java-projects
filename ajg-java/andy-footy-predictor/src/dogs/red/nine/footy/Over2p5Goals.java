@@ -11,7 +11,7 @@ public class Over2p5Goals extends ForecastType {
 
 	public void process(FixtureData fd) {
 		
-		final int MAGIC_THRESHOLD_GOALS = 200;
+		final int MAGIC_THRESHOLD_GOALS = 250;
 
 		Team homeTeam = fd.getHomeTeam();
 		Team awayTeam = fd.getAwayTeam();

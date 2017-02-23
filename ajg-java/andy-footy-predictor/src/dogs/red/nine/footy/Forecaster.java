@@ -16,8 +16,14 @@ public class Forecaster {
     private static final Logger logger = LogManager.getLogger("Forecaster");
     
 	// set this to use a local sample fixture file, instead of trying to retrieve from remote site 
-	public static final boolean DEV_MODE = true;
+	public static final boolean DEV_MODE = false;
 	public static final String SAMPLE_FIXTURE_DEV_MODE_FILE="/home/agrahame/Dropbox/java-projects/java-projects/ajg-java/andy-footy-predictor/data/sample_fixtures_used_for_dev_mode.csv";
+
+	// use this flag to use this weeks fixtures that have already been played, useful if hanging around for Friday in order to get some useful runs....
+	// this flag means we'll go off and get the fixture data from remote website - instead of using the local hard-coded fixture file used when DEV_MODE flag is set
+	// note: if this is true, then set DEV_MODE to false, otherwise local fixtures sample file will be used ...
+	public static final boolean DEV_MODE_USE_THIS_WEEKS_PLAYED_FIXTURES = false;
+
 	
 	/** Set this to only list predictions for todays games */
 	public static final boolean ONLY_TODAYS_GAMES = true;
@@ -25,7 +31,6 @@ public class Forecaster {
 	/** Set to true if use UK divisions, false to use EURO leagues */
 	public static final boolean USE_UK_LEAGUES = true;
 	//public static final boolean USE_UK_LEAGUES = false;
-
 
     private static final List<Division> UK_DIVISIONS = Arrays.asList(
 			Division.England_Premier_League, 
@@ -49,6 +54,7 @@ public class Forecaster {
 
     
 	public static final boolean SHOW_DETAILED_STATS = false;
+
 
 	// private static final List<Division> SUPPORTED_DIVISIONS = Arrays.asList(Division.England_Premier_League); used when developing ....
 	//private static final List<Division> SUPPORTED_DIVISIONS = Arrays.asList(Division.England_Championship); 
@@ -219,8 +225,8 @@ public class Forecaster {
 			boolean processFixture = (!fixture.getDate().before(todayDate));
 			
 			// only check if fixture has not yet happened
-			if (DEV_MODE || processFixture) {
-
+			if (DEV_MODE || DEV_MODE_USE_THIS_WEEKS_PLAYED_FIXTURES || processFixture) {
+				
 				Team homeTeam = teams.getTeam(fixture.getHomeTeam().getName());
 				Team awayTeam = teams.getTeam(fixture.getAwayTeam().getName());
 
@@ -269,6 +275,8 @@ public class Forecaster {
 		String predictionsFor="All fixtures";
 		if (DEV_MODE) {
 			predictionsFor="sample fixtures (DEV MODE enabled)";
+		} else if (DEV_MODE_USE_THIS_WEEKS_PLAYED_FIXTURES) {
+				predictionsFor="this weeks fixtures (DEV MODE)";
 		} else if (ONLY_TODAYS_GAMES) {
 			
 			dateFormatter.applyPattern("EEEE d MMM yyyy");
