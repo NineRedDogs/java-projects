@@ -1,5 +1,14 @@
 package com.ninereddogs.item1;
 
+/**
+ * Use of factory methods can make sense instead of multiple constructors.
+ * 
+ * Can also use this approach to 'hide' subclasses - allowing the client to use interfaces 
+ * without worrying about the underlying implementation class
+ * 
+ * @author agrahame
+ *
+ */
 public class MyNumber implements NumberIF {
 
     protected int theNumber;

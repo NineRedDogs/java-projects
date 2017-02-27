@@ -1,5 +1,12 @@
 package com.ninereddogs.item2;
 
+/**
+ * How to use a builder pattern to help set up a complex multi-parameter constructor - 
+ * make it more readable and enable class to be immutable
+ * 
+ * @author agrahame
+ *
+ */
 public class FootballResult {
 	
 	
