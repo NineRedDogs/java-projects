@@ -16,16 +16,18 @@ public class MyFirstVerticle extends AbstractVerticle {
 	    vertx
 	        .createHttpServer()
 	        .requestHandler(r -> {
-	          r.response().end("<h1>Hello from my first " +
-	              "Vert.x 3 application</h1>");
+	          r.response().end("<h1>You've hit my VertX app - cheers !!! </h1>");
 	        })
-	        .listen(8080, result -> {
-	          if (result.succeeded()) {
-	            fut.complete();
-	          } else {
-	            fut.fail(result.cause());
-	          }
-	        });
+	        .listen(
+	        		// Retrieve the listen port from config (def: 8080)
+	        		config().getInteger("http.port", 8080),
+	        		result -> {
+	        			if (result.succeeded()) {
+	        				fut.complete();
+	        			} else {
+	        				fut.fail(result.cause());
+	        			}
+	        		});
 	  }
 
 }
