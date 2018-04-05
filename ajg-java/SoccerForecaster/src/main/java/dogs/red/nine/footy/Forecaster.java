@@ -30,8 +30,8 @@ public class Forecaster {
 	//public static final boolean ONLY_TODAYS_GAMES = false;
 	
 	/** Set to true if use UK divisions, false to use EURO leagues */
-	public static final boolean USE_UK_LEAGUES = true;
-	//public static final boolean USE_UK_LEAGUES = false;
+	//public static final boolean USE_UK_LEAGUES = true;
+	public static final boolean USE_UK_LEAGUES = false;
 
     private static final List<Division> UK_DIVISIONS = Arrays.asList(
 			Division.England_Premier_League, 
