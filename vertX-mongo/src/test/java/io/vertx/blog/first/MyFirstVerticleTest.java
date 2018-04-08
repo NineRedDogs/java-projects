@@ -71,7 +71,7 @@ public class MyFirstVerticleTest {
     DeploymentOptions options = new DeploymentOptions()
         .setConfig(new JsonObject()
             .put("http.port", port)
-            .put("db_name", "whiskies-test")
+            .put("db_name", "teams-test")
             .put("connection_string", "mongodb://localhost:" + MONGO_PORT)
         );
 
@@ -118,7 +118,7 @@ public class MyFirstVerticleTest {
       context.assertEquals(response.statusCode(), 200);
       context.assertEquals(response.headers().get("content-type"), "text/html");
       response.bodyHandler(body -> {
-        context.assertTrue(body.toString().contains("<title>My Whisky Collection</title>"));
+        context.assertTrue(body.toString().contains("<title>My Team Collection</title>"));
         async.complete();
       });
     });
@@ -127,18 +127,18 @@ public class MyFirstVerticleTest {
   @Test
   public void checkThatWeCanAdd(TestContext context) {
     Async async = context.async();
-    final String json = Json.encodePrettily(new Whisky("Jameson", "Ireland"));
-    vertx.createHttpClient().post(port, "localhost", "/api/whiskies")
+    final String json = Json.encodePrettily(new Team("Liverpool", "England"));
+    vertx.createHttpClient().post(port, "localhost", "/api/teams")
         .putHeader("content-type", "application/json")
         .putHeader("content-length", Integer.toString(json.length()))
         .handler(response -> {
           context.assertEquals(response.statusCode(), 201);
           context.assertTrue(response.headers().get("content-type").contains("application/json"));
           response.bodyHandler(body -> {
-            final Whisky whisky = Json.decodeValue(body.toString(), Whisky.class);
-            context.assertEquals(whisky.getName(), "Jameson");
-            context.assertEquals(whisky.getOrigin(), "Ireland");
-            context.assertNotNull(whisky.getId());
+            final Team team = Json.decodeValue(body.toString(), Team.class);
+            context.assertEquals(team.getName(), "Liverpool");
+            context.assertEquals(team.getCountry(), "England");
+            context.assertNotNull(team.getId());
             async.complete();
           });
         })

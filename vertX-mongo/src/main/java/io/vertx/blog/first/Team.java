@@ -2,40 +2,40 @@ package io.vertx.blog.first;
 
 import io.vertx.core.json.JsonObject;
 
-public class Whisky {
+public class Team {
 
   private String id;
 
   private String name;
 
-  private String origin;
+  private String country;
 
-  public Whisky(String name, String origin) {
+  public Team(String name, String country) {
     this.name = name;
-    this.origin = origin;
+    this.country = country;
     this.id = "";
   }
 
-  public Whisky(JsonObject json) {
+  public Team(JsonObject json) {
     this.name = json.getString("name");
-    this.origin = json.getString("origin");
+    this.country = json.getString("country");
     this.id = json.getString("_id");
   }
 
-  public Whisky() {
+  public Team() {
     this.id = "";
   }
 
-  public Whisky(String id, String name, String origin) {
+  public Team(String id, String name, String country) {
     this.id = id;
     this.name = name;
-    this.origin = origin;
+    this.country = country;
   }
 
   public JsonObject toJson() {
     JsonObject json = new JsonObject()
         .put("name", name)
-        .put("origin", origin);
+        .put("country", country);
     if (id != null && !id.isEmpty()) {
       json.put("_id", id);
     }
@@ -46,25 +46,25 @@ public class Whisky {
     return name;
   }
 
-  public String getOrigin() {
-    return origin;
+  public String getCountry() {
+    return country;
   }
 
   public String getId() {
     return id;
   }
 
-  public Whisky setName(String name) {
+  public Team setName(String name) {
     this.name = name;
     return this;
   }
 
-  public Whisky setOrigin(String origin) {
-    this.origin = origin;
+  public Team setCountry(String country) {
+    this.country = country;
     return this;
   }
 
-  public Whisky setId(String id) {
+  public Team setId(String id) {
     this.id = id;
     return this;
   }
