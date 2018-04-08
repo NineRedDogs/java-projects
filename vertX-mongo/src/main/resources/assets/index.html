@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Whisky Collection</title>
+    <title>My Team Collection</title>
 
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -11,15 +11,21 @@
 <body>
 <div class="container" role="main">
     <div class="jumbotron">
-        <h1>My Whisky Collection</h1>
+        <h1>My Team Collection</h1>
 
         <p>Just an example of simple CRUD application developed using Vert.x and Vertx Web.</p>
+        
+        <button class="pull-left btn btn-primary product-login" data-action="login" data-toggle="modal"
+                data-target="#productModal">
+            <span class="glyphicon glyphicon-plus"></span>Login
+        </button>
+        
     </div>
     <div class="page-header">
-        <h1>My Whiskies</h1>
+        <h1>My Teams</h1>
         <button class="pull-right btn btn-primary product-add" data-action="add" data-toggle="modal"
                 data-target="#productModal">
-            <span class="glyphicon glyphicon-plus"></span> Add a new bottle
+            <span class="glyphicon glyphicon-plus"></span> Add a new team
         </button>
         <div class="row">
             <div class="col-md-12">
@@ -28,7 +34,7 @@
                     <tr>
                         <th>#</th>
                         <th>Name</th>
-                        <th>Origin</th>
+                        <th>Country</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -46,8 +52,8 @@
         initModal();
     });
 
-    function create(name, origin) {
-        $.post("/api/whiskies", JSON.stringify({name: name, origin: origin}), function () {
+    function create(name, country) {
+        $.post("/api/teams", JSON.stringify({name: name, country: country}), function () {
             load();
         }, "json");
     }
@@ -55,17 +61,17 @@
     function remove(id) {
         $.ajax({
             method: "DELETE",
-            url: "/api/whiskies/" + id
+            url: "/api/teams/" + id
         }).done(function () {
             load();
         });
     }
 
-    function update(id, name, origin) {
+    function update(id, name, country) {
         $.ajax({
             method: "PUT",
-            url: "/api/whiskies/" + id,
-            data: JSON.stringify({name: name, origin: origin})
+            url: "/api/teams/" + id,
+            data: JSON.stringify({name: name, country: country})
         }).done(function () {
             load();
         });
@@ -73,15 +79,15 @@
 
     function load() {
         $("#content").children().remove();
-        $.getJSON("/api/whiskies", function (data) {
+        $.getJSON("/api/teams", function (data) {
             $.each(data, function (key, val) {
-                $("<tr><td>" + val.id + "</td><td>" + val.name + "</td><td>" + val.origin + "</td>" +
+                $("<tr><td>" + val.id + "</td><td>" + val.name + "</td><td>" + val.country + "</td>" +
                         "<td>" +
                         "<button data-action='edit' class='btn btn-primary btn-sm product-edit' " +
                         "data-toggle='modal' " +
                         "data-target='#productModal' " +
                         "data-name='" + val.name + "' " +
-                        "data-origin='" + val.origin + "' " +
+                        "data-country='" + val.country + "' " +
                         "data-id='" + val.id + "'>" +
                         "<span class='glyphicon glyphicon-pencil'></span>" +
                         "</button>" +
@@ -111,20 +117,28 @@
             var productAction = $("#productAction");
             productAction.unbind();
             var modal = $(this);
-            if (action === "add") {
-                modal.find('.modal-title').text("Add a bottle");
-                modal.find('#product-name').val("");
-                modal.find('#product-origin').val("");
+            if (action === "login") {
+                modal.find('.modal-title').text("Login");
+                modal.find('#user-name').val("");
+                modal.find('#user-password').val("");
                 productAction.click(function () {
-                    create($("#product-name").val(), $("#product-origin").val());
+                    doLogin($("#user-name").val(), $("#user-password").val());
+                    $('#productModal').modal('toggle');
+                });
+            } else if (action === "add") {
+                modal.find('.modal-title').text("Add a team");
+                modal.find('#product-name').val("");
+                modal.find('#product-country').val("");
+                productAction.click(function () {
+                    create($("#product-name").val(), $("#product-country").val());
                     $('#productModal').modal('toggle');
                 });
             } else {
-                modal.find('.modal-title').text("Edit a bottle");
+                modal.find('.modal-title').text("Edit a team");
                 modal.find('#product-name').val(button.data("name"));
-                modal.find('#product-origin').val(button.data("origin"));
+                modal.find('#product-country').val(button.data("country"));
                 productAction.click(function () {
-                    update(id, $("#product-name").val(), $("#product-origin").val());
+                    update(id, $("#product-name").val(), $("#product-country").val());
                     $('#productModal').modal('toggle');
                 });
             }
@@ -136,7 +150,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                <h4 class="modal-title" id="productModalTitle">Add a bottle</h4>
+                <h4 class="modal-title" id="productModalTitle">Add a team</h4>
             </div>
             <div class="modal-body">
                 <form>
@@ -145,8 +159,8 @@
                         <input type="text" class="form-control" id="product-name">
                     </div>
                     <div class="form-group">
-                        <label for="product-origin" class="control-label">Origin:</label>
-                        <input type="text" class="form-control" id="product-origin">
+                        <label for="product-country" class="control-label">country:</label>
+                        <input type="text" class="form-control" id="product-country">
                     </div>
                 </form>
             </div>

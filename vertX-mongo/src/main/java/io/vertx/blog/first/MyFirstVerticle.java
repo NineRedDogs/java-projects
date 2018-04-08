@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  */
 public class MyFirstVerticle extends AbstractVerticle {
 
-  public static final String COLLECTION = "whiskies";
+  public static final String COLLECTION = "teams";
   private MongoClient mongo;
 
   /**
@@ -63,12 +63,12 @@ public class MyFirstVerticle extends AbstractVerticle {
 
     router.route("/assets/*").handler(StaticHandler.create("assets"));
 
-    router.get("/api/whiskies").handler(this::getAll);
-    router.route("/api/whiskies*").handler(BodyHandler.create());
-    router.post("/api/whiskies").handler(this::addOne);
-    router.get("/api/whiskies/:id").handler(this::getOne);
-    router.put("/api/whiskies/:id").handler(this::updateOne);
-    router.delete("/api/whiskies/:id").handler(this::deleteOne);
+    router.get("/api/teams").handler(this::getAll);
+    router.route("/api/teams*").handler(BodyHandler.create());
+    router.post("/api/teams").handler(this::addOne);
+    router.get("/api/teams/:id").handler(this::getOne);
+    router.put("/api/teams/:id").handler(this::updateOne);
+    router.delete("/api/teams/:id").handler(this::deleteOne);
 
 
     // Create the HTTP server and pass the "accept" method to the request handler.
@@ -98,14 +98,14 @@ public class MyFirstVerticle extends AbstractVerticle {
   }
 
   private void addOne(RoutingContext routingContext) {
-    final Whisky whisky = Json.decodeValue(routingContext.getBodyAsString(),
-        Whisky.class);
+    final Team team = Json.decodeValue(routingContext.getBodyAsString(),
+        Team.class);
 
-    mongo.insert(COLLECTION, whisky.toJson(), r ->
+    mongo.insert(COLLECTION, team.toJson(), r ->
         routingContext.response()
             .setStatusCode(201)
             .putHeader("content-type", "application/json; charset=utf-8")
-            .end(Json.encodePrettily(whisky.setId(r.result()))));
+            .end(Json.encodePrettily(team.setId(r.result()))));
   }
 
   private void getOne(RoutingContext routingContext) {
@@ -119,11 +119,11 @@ public class MyFirstVerticle extends AbstractVerticle {
             routingContext.response().setStatusCode(404).end();
             return;
           }
-          Whisky whisky = new Whisky(ar.result());
+          Team team = new Team(ar.result());
           routingContext.response()
               .setStatusCode(200)
               .putHeader("content-type", "application/json; charset=utf-8")
-              .end(Json.encodePrettily(whisky));
+              .end(Json.encodePrettily(team));
         } else {
           routingContext.response().setStatusCode(404).end();
         }
@@ -148,7 +148,7 @@ public class MyFirstVerticle extends AbstractVerticle {
             } else {
               routingContext.response()
                   .putHeader("content-type", "application/json; charset=utf-8")
-                  .end(Json.encodePrettily(new Whisky(id, json.getString("name"), json.getString("origin"))));
+                  .end(Json.encodePrettily(new Team(id, json.getString("name"), json.getString("origin"))));
             }
           });
     }
@@ -167,28 +167,28 @@ public class MyFirstVerticle extends AbstractVerticle {
   private void getAll(RoutingContext routingContext) {
     mongo.find(COLLECTION, new JsonObject(), results -> {
       List<JsonObject> objects = results.result();
-      List<Whisky> whiskies = objects.stream().map(Whisky::new).collect(Collectors.toList());
+      List<Team> teams = objects.stream().map(Team::new).collect(Collectors.toList());
       routingContext.response()
           .putHeader("content-type", "application/json; charset=utf-8")
-          .end(Json.encodePrettily(whiskies));
+          .end(Json.encodePrettily(teams));
     });
   }
 
   private void createSomeData(Handler<AsyncResult<Void>> next, Future<Void> fut) {
-    Whisky bowmore = new Whisky("Bowmore 15 Years Laimrig", "Scotland, Islay");
-    Whisky talisker = new Whisky("Talisker 57° North", "Scotland, Island");
-    System.out.println(bowmore.toJson());
+    Team cardiff = new Team("Cardiff City", "Wales");
+    Team liverpool = new Team("Liverpool", "England");
+    System.out.println(cardiff.toJson());
 
     // Do we have data in the collection ?
     mongo.count(COLLECTION, new JsonObject(), count -> {
       if (count.succeeded()) {
         if (count.result() == 0) {
-          // no whiskies, insert data
-          mongo.insert(COLLECTION, bowmore.toJson(), ar -> {
+          // no teams, insert data
+          mongo.insert(COLLECTION, cardiff.toJson(), ar -> {
             if (ar.failed()) {
               fut.fail(ar.cause());
             } else {
-              mongo.insert(COLLECTION, talisker.toJson(), ar2 -> {
+              mongo.insert(COLLECTION, liverpool.toJson(), ar2 -> {
                 if (ar2.failed()) {
                   fut.failed();
                 } else {
