@@ -1,11 +1,14 @@
 package com.example.agx;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.okta.jwt.Jwt;
-import com.okta.jwt.JwtHelper;
-import com.okta.jwt.JwtVerifier;
+import com.google.auth.oauth2.AccessToken;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.auth.oauth2.OAuth2Credentials;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
@@ -13,8 +16,7 @@ import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.oauth2.OAuth2Auth;
-import io.vertx.ext.auth.oauth2.OAuth2ClientOptions;
-import io.vertx.ext.auth.oauth2.OAuth2FlowType;
+import io.vertx.ext.auth.oauth2.providers.GoogleAuth;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.AuthHandler;
@@ -52,39 +54,20 @@ public class MainVerticle extends AbstractVerticle {
 		router.route("/private/secret")
 		.handler(ctx -> {
 			Map claims = getIdClaims(ctx);
-			ctx.response().end("Hi " +
+			ctx.response().end("Hi "); /** +
                     claims.get("name") +
                     ", the email address we have on file for you is: "+
-                    claims.get("email"));
+                    claims.get("email")); */
 		});
 
 		vertx.createHttpServer()
 		.requestHandler(router::accept)
 		.listen(config().getInteger("port"));
 
-		/**  Router router = Router.router(vertx);
-
-    router.route("/private/secret")
-	    .handler(ctx -> {
-        ctx.response().end("Hi");
-    });
-
-    vertx.createHttpServer()
-		.requestHandler(router::accept)
-		.listen(config().getInteger("port")); */
 	}
 
 	AuthHandler getOAuthHandler(Router router) {
-		OAuth2Auth oauth2 = OAuth2Auth.create(vertx, OAuth2FlowType.AUTH_CODE, new OAuth2ClientOptions()
-				.setClientID(config().getString("clientId"))
-				.setClientSecret(config().getString("clientSecret"))
-				.setSite(config().getString("issuer"))
-				.setTokenPath("/v1/token")
-				.setAuthorizationPath("/v1/authorize")
-				.setUserInfoPath("/v1/userinfo")
-				.setUseBasicAuthorizationHeader(false)
-				);
-
+		OAuth2Auth oauth2 = GoogleAuth.create(vertx, config().getString("clientId"), config().getString("clientSecret"));
 		OAuth2AuthHandler authHandler = OAuth2AuthHandler.create(oauth2, config().getString("callbackUrl"));
 		authHandler.extraParams(new JsonObject("{\"scope\":\"openid profile email\"}"));
 		authHandler.setupCallback(router.route());
@@ -94,14 +77,30 @@ public class MainVerticle extends AbstractVerticle {
 	
 	Map<String, Object> getIdClaims(RoutingContext ctx) {
 	    try {
-	        JwtVerifier jwtVerifier = new JwtHelper()
+	    	System.out.println("####### user details : " + ctx.user().principal());
+	    	
+	    	final String accessToken = ctx.user().principal().getString("access_token");
+	    	final String idToken = ctx.user().principal().getString("id_token");
+	    	final String expiresAt = ctx.user().principal().getString("expires_at");
+	    	
+	    	Date expDate = new GregorianCalendar(2020, Calendar.DECEMBER, 31).getTime();
+	    	AccessToken aToken = new AccessToken(accessToken, expDate);
+	    	GoogleCredentials credential = GoogleCredentials.create(aToken);
+	    	GoogleCredentials oauth2 = new Oauth2.Builder(new NetHttpTransport(), new JacksonFactory(), credential).setApplicationName(
+	    	          "Oauth2").build();
+	    	 Userinfoplu userinfo = oauth2.userinfo().get().execute();
+	    	 userinfo.toPrettyString();
+	    	
+	    	
+	        /*JwtVerifier jwtVerifier = new JwtHelper()
 	            .setIssuerUrl(config().getString("issuer"))
 	            .setAudience("api://default")
 	            .setClientId(config().getString("clientId"))
 	            .build();
 
 	        Jwt idTokenJwt = jwtVerifier.decodeIdToken(ctx.user().principal().getString("id_token"), null);
-	        return idTokenJwt.getClaims();
+	        return idTokenJwt.getClaims();*/
+	    	return null;
 	    } catch (Exception e) {
 	        //do something with the exception...
 	        return new HashMap<>();

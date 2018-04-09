@@ -1,7 +1,6 @@
 {
-   "clientId": "0oaemcygmz0XcbIgH0h7",
-   "clientSecret": "RNFLje_jjDsMRNtJMLDrro9vBiasJXcV2vPIJYgQ",
-   "issuer": "https://dev-698012.oktapreview.com/oauth2/default",
+   "clientId": "540818334841-74paen58dgnrsrlbbj4o2a0l3f050a1g.apps.googleusercontent.com",
+   "clientSecret": "eI8CV6R8osLVI4pMQQRUIdXz",
    "callbackUrl": "http://localhost:8080/authorization-code/callback",
    "port": 8080
 }
