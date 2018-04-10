@@ -48,6 +48,6 @@ public class Server extends AbstractVerticle {
     });
 
     // start a HTTP web server on port 8080
-    vertx.createHttpServer().requestHandler(router::accept).listen(8080);
+    vertx.createHttpServer().requestHandler(router::accept).listen(8086);
   }
 }

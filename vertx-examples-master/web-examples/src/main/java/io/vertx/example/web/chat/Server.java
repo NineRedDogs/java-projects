@@ -46,7 +46,7 @@ public class Server extends AbstractVerticle {
     router.route().handler(StaticHandler.create());
 
     // Start the web server and tell it to use the router to handle requests.
-    vertx.createHttpServer().requestHandler(router::accept).listen(8080);
+    vertx.createHttpServer().requestHandler(router::accept).listen(8089);
 
     EventBus eb = vertx.eventBus();
 
@@ -56,6 +56,9 @@ public class Server extends AbstractVerticle {
       String timestamp = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(Date.from(Instant.now()));
       // Send the message back out to all clients with the timestamp prepended.
       eb.publish("chat.to.client", timestamp + ": " + message.body());
+      //eb.publish("chat.to.server", "bla bla bla ...");
+      eb.publish("chat.to.client", message.address());
+      eb.publish("chat.to.client", message.headers());
     });
 
   }
