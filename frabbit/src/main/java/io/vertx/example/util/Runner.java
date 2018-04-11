@@ -13,11 +13,11 @@ import java.util.function.Consumer;
  */
 public class Runner {
 
-  private static final String WEB_EXAMPLES_DIR = "web-examples";
-  private static final String WEB_EXAMPLES_JAVA_DIR = WEB_EXAMPLES_DIR + "/src/main/java/";
-  private static final String WEB_EXAMPLES_JS_DIR = WEB_EXAMPLES_DIR + "/src/main/js/";
-  private static final String WEB_EXAMPLES_GROOVY_DIR = WEB_EXAMPLES_DIR + "/src/main/groovy/";
-  private static final String WEB_EXAMPLES_RUBY_DIR = WEB_EXAMPLES_DIR + "/src/main/ruby/";
+  private static final String HOME_DIR = ".";
+  private static final String WEB_EXAMPLES_JAVA_DIR = HOME_DIR + "/src/main/java/";
+  private static final String WEB_EXAMPLES_JS_DIR = HOME_DIR + "/src/main/js/";
+  private static final String WEB_EXAMPLES_GROOVY_DIR = HOME_DIR + "/src/main/groovy/";
+  private static final String WEB_EXAMPLES_RUBY_DIR = HOME_DIR + "/src/main/ruby/";
 
   public static void runClusteredExample(Class clazz) {
     runExample(WEB_EXAMPLES_JAVA_DIR, clazz, new VertxOptions().setClustered(true), null);
@@ -206,6 +206,8 @@ public class Runner {
       options = new VertxOptions();
     }
     // Smart cwd detection
+    
+    System.out.println("runExample in [" + exampleDir + "]");
 
     // Based on the current directory (.) and the desired directory (exampleDir), we try to compute the vertx.cwd
     // directory:
