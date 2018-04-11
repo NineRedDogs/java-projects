@@ -8,6 +8,7 @@
 	<artifactId>agx</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
+
 	<properties>
 		<java.version>1.8</java.version>
 		<vertx.version>3.5.0</vertx.version>
@@ -119,11 +120,23 @@
 
 		<dependency>
 			<groupId>io.vertx</groupId>
-			<artifactId>vertx-web-templ-mvel</artifactId>
-			<version>${project.version}</version>
+			<artifactId>vertx-web-templ-handlebars</artifactId>
+			<version>3.5.1</version>
 			<classifier>shaded</classifier>
 		</dependency>
 
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-web-templ-mvel</artifactId>
+			<version>3.5.1</version>
+			<classifier>shaded</classifier>
+		</dependency>
+
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-auth-jwt</artifactId>
+      <version>3.5.1</version>
+    </dependency>
 
 	</dependencies>
 
