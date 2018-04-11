@@ -111,6 +111,20 @@
 			<version>0.9.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>1.23.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-web-templ-mvel</artifactId>
+			<version>${project.version}</version>
+			<classifier>shaded</classifier>
+		</dependency>
+
+
 	</dependencies>
 
 </project>

@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.auth.oauth2.AccessToken;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.auth.oauth2.OAuth2Credentials;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
@@ -21,6 +19,7 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.AuthHandler;
 import io.vertx.ext.web.handler.OAuth2AuthHandler;
+import io.vertx.ext.web.handler.StaticHandler;
 
 public class MainVerticle extends AbstractVerticle {
 
@@ -28,7 +27,7 @@ public class MainVerticle extends AbstractVerticle {
 	public void start() throws Exception {
 		ConfigStoreOptions fileStore = new ConfigStoreOptions()
 				.setType("file")
-				.setConfig(new JsonObject().put("path", "src/main/application.json"));
+				.setConfig(new JsonObject().put("path", "src/main/conf/application.json"));
 		ConfigRetrieverOptions options = new ConfigRetrieverOptions()
 				.addStore(fileStore);
 		ConfigRetriever retriever = ConfigRetriever.create(vertx, options);
@@ -45,6 +44,8 @@ public class MainVerticle extends AbstractVerticle {
 
 	void startServer() {
 		Router router = Router.router(vertx);
+
+		router.route("/assets/*").handler(StaticHandler.create("assets"));
 
 		//create and register the auth handler to intercept all
 		//requests below the /private/ URI:
@@ -74,6 +75,44 @@ public class MainVerticle extends AbstractVerticle {
 		return authHandler;
 	}
 
+	/**String getEMailAddress() {
+		InputStream in = Application.class.getResourceAsStream("/client_secret.json");
+		GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JacksonFactory.getDefaultInstance(), new InputStreamReader(in));
+
+		// Build flow and trigger user authorization request.
+		GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+			    GoogleNetHttpTransport.newTrustedTransport(),
+			    JacksonFactory.getDefaultInstance(),
+			    clientSecrets,
+			    Arrays.asList(
+			        PeopleScopes.USERINFO_PROFILE,
+			        PeopleScopes.USERINFO_EMAIL
+			    )
+			)
+		    .setAccessType("offline")
+		    .build();
+
+
+		GoogleTokenResponse response = flow
+		    .newTokenRequest(code)
+		    .setRedirectUri("http://example.com/oauth2callback")
+		    .execute();
+
+		Credential credential = flow.createAndStoreCredential(response, null);
+		Gmail service = new Gmail.Builder(GoogleNetHttpTransport.newTrustedTransport(),
+		    JacksonFactory.getDefaultInstance(),
+		    credential
+		)
+		    .setApplicationName("My App")
+		    .build();
+
+		Oauth2 oauth2 = new Oauth2.Builder(new NetHttpTransport(), new JacksonFactory(), credential)
+		    .setApplicationName("My App")
+		    .build();
+		Userinfoplus userinfo = oauth2.userinfo().get().execute();
+		System.out.print(userinfo.toPrettyString());
+		
+	}*/
 	
 	Map<String, Object> getIdClaims(RoutingContext ctx) {
 	    try {
@@ -85,11 +124,12 @@ public class MainVerticle extends AbstractVerticle {
 	    	
 	    	Date expDate = new GregorianCalendar(2020, Calendar.DECEMBER, 31).getTime();
 	    	AccessToken aToken = new AccessToken(accessToken, expDate);
-	    	GoogleCredentials credential = GoogleCredentials.create(aToken);
+	    	/**GoogleCredentials credential = GoogleCredentials.create(aToken);
+	    	credential.
 	    	GoogleCredentials oauth2 = new Oauth2.Builder(new NetHttpTransport(), new JacksonFactory(), credential).setApplicationName(
 	    	          "Oauth2").build();
 	    	 Userinfoplu userinfo = oauth2.userinfo().get().execute();
-	    	 userinfo.toPrettyString();
+	    	 userinfo.toPrettyString(); */
 	    	
 	    	
 	        /*JwtVerifier jwtVerifier = new JwtHelper()
