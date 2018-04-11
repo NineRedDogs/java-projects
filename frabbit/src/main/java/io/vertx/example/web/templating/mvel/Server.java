@@ -24,9 +24,6 @@ import io.vertx.ext.web.handler.TemplateHandler;
 import io.vertx.ext.web.templ.MVELTemplateEngine;
 
 
-/**
- * @author <a href="http://tfox.org">Tim Fox</a>
- */
 public class Server extends AbstractVerticle {
 
   // Convenience method so you can run it in your IDE
