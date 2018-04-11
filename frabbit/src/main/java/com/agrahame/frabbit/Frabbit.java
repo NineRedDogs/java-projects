@@ -8,10 +8,14 @@ import java.util.Map;
 
 import com.google.auth.oauth2.AccessToken;
 
+import io.netty.handler.codec.http.HttpHeaders;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
 import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpClient;
+import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.example.util.Runner;
@@ -20,6 +24,9 @@ import io.vertx.ext.auth.oauth2.OAuth2Auth;
 import io.vertx.ext.auth.oauth2.providers.GoogleAuth;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.client.HttpResponse;
+import io.vertx.ext.web.client.WebClient;
+import io.vertx.ext.web.codec.BodyCodec;
 import io.vertx.ext.web.handler.AuthHandler;
 import io.vertx.ext.web.handler.OAuth2AuthHandler;
 import io.vertx.ext.web.handler.StaticHandler;
@@ -141,7 +148,9 @@ public class Frabbit extends AbstractVerticle {
 	    	System.out.println("####### user details : " + ctx.user().principal());
 	    	
 	    	final String accessToken = ctx.user().principal().getString("access_token");
+	    	getEmail(accessToken);
 	    	final String idToken = ctx.user().principal().getString("id_token");
+	    	getEmail(idToken);
 	    	final String expiresAt = ctx.user().principal().getString("expires_at");
 	    	
 	    	Date expDate = new GregorianCalendar(2020, Calendar.DECEMBER, 31).getTime();
@@ -169,6 +178,32 @@ public class Frabbit extends AbstractVerticle {
 	    }
 	}
 	
+	private void getEmail(final String accessToken) {
+
+		String header = "Bearer " + accessToken;
+		
+    	System.out.println("####### ooooooooooooooooooo #######################################");
+    	System.out.println("####### ooooooooooooooooooo #######################################");
+		WebClient client = WebClient.create(vertx);
+
+	          client.getAbs("https://www.googleapis.com/plus/v1/people/me")
+	            .putHeader("Authorization", header)
+	            .send(ar -> {
+	              if (ar.succeeded()) {
+	            	// Obtain response
+	                  HttpResponse<Buffer> response = ar.result();
+
+	                  System.out.println("Received response with status code" + response.statusCode());
+	                  System.out.println("Received response " + response.bodyAsString());
+	                } else {
+	                  System.out.println("Something went wrong " + ar.cause().getMessage());
+	                }
+	            });
+
+		      	System.out.println("####### ooooooooooooooooooo #######################################");
+		      	System.out.println("####### ooooooooooooooooooo #######################################");
+	}
+	
 	private void returnUserDetails(RoutingContext routingContext) {
 		System.out.println("About to fetch user data based on google log in .... ");
 		//final String id = routingContext.request().getParam("id");
@@ -178,6 +213,11 @@ public class Frabbit extends AbstractVerticle {
 		} else {
 
 			JsonObject principal = routingContext.user().principal();
+			
+	    	final String accessToken = principal.getString("access_token");
+	    	getEmail(accessToken);
+
+			
 			System.out.println("principal : " + principal.encodePrettily());
 			
 			// create a dummy user to test the outbound response
