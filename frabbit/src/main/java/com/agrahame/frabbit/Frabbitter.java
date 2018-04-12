@@ -4,69 +4,87 @@ import io.vertx.core.json.JsonObject;
 
 public class Frabbitter {
 
-	  private String id;
+	private String id;
+	private String emailAddress;
+	private String givenName;
+	private String familyName;
 
-	  private String name;
+	public Frabbitter(String emailAddress, String givenName, String familyName) {
+		this.id = "";
+		this.emailAddress = emailAddress;
+		this.givenName = givenName;
+		this.familyName = familyName;
+	}
 
-	  private String emailAddress;
-
-	  public Frabbitter(String name, String country) {
-	    this.name = name;
-	    this.emailAddress = country;
-	    this.id = "";
-	  }
-
-	  public Frabbitter(JsonObject json) {
-	    this.name = json.getString("name");
-	    this.emailAddress = json.getString("email");
-	    this.id = json.getString("_id");
-	  }
-
-	  public Frabbitter() {
-	    this.id = "";
-	  }
-
-	  public Frabbitter(String id, String name, String country) {
-	    this.id = id;
-	    this.name = name;
-	    this.emailAddress = country;
-	  }
-
-	  public JsonObject toJson() {
-	    JsonObject json = new JsonObject()
-	        .put("name", name)
-	        .put("email", emailAddress);
-	    if (id != null && !id.isEmpty()) {
-	      json.put("_id", id);
-	    }
-	    return json;
-	  }
-
-	  public String getName() {
-	    return name;
-	  }
-
-	  public String getEmailAddress() {
-	    return emailAddress;
-	  }
-
-	  public String getId() {
-	    return id;
-	  }
-
-	  public Frabbitter setName(String name) {
-	    this.name = name;
-	    return this;
-	  }
-
-	  public Frabbitter setCountry(String country) {
-	    this.emailAddress = country;
-	    return this;
-	  }
-
-	  public Frabbitter setId(String id) {
-	    this.id = id;
-	    return this;
-	  }	
+	public Frabbitter(JsonObject json) {
+		this.id = json.getString("_id");
+		this.emailAddress = json.getString("email");
+		this.givenName = json.getString("givenName");
+		this.familyName = json.getString("familyName");
+	}
 	
+	public Frabbitter() {
+		this.id = "";
+	}
+
+
+	public JsonObject toJson() {
+		JsonObject json = new JsonObject()
+				.put("email", emailAddress)
+				.put("givenName", givenName)
+				.put("familyName", familyName);
+	    if (id != null && !id.isEmpty()) {
+	        json.put("_id", id);
+	      }
+		return json;
+	}
+
+	public String getFullName() {
+		return getGivenName() + " " + getFamilyName();
+	}
+
+	public String getFamilyName() {
+		return familyName;
+	}
+
+	public String getGivenName() {
+		return givenName;
+	}
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public Frabbitter setGivenName(String name) {
+		this.givenName = name;
+		return this;
+	}
+
+	public Frabbitter setFamilyName(String name) {
+		this.familyName = name;
+		return this;
+	}
+
+	public Frabbitter setEmailAddress(String email) {
+		this.emailAddress = email;
+		return this;
+	}
+
+	public Frabbitter setId(String id) {
+		this.id = id;
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "Frabbitter [id=" + id + ", emailAddress=" + emailAddress + ", givenName=" + givenName + ", familyName="
+				+ familyName + "]";
+	}
+	
+	
+
 }

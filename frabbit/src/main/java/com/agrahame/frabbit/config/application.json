@@ -1,6 +1,8 @@
 {
-   "clientId": "540818334841-74paen58dgnrsrlbbj4o2a0l3f050a1g.apps.googleusercontent.com",
-   "clientSecret": "eI8CV6R8osLVI4pMQQRUIdXz",
-   "callbackUrl": "http://localhost:8080/authorization-code/callback",
-   "port": 8080
+	"clientId": "540818334841-74paen58dgnrsrlbbj4o2a0l3f050a1g.apps.googleusercontent.com",
+	"clientSecret": "eI8CV6R8osLVI4pMQQRUIdXz",
+	"callbackUrl": "http://localhost:8080/authorization-code/callback",
+	"port": 8080,
+	"db_name": "frabbit",
+	"connection_string": "mongodb://localhost:27017"
 }
