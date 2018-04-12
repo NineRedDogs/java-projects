@@ -8,12 +8,14 @@ public class Frabbitter {
 	private String emailAddress;
 	private String givenName;
 	private String familyName;
+	private String team;
 
 	public Frabbitter(String emailAddress, String givenName, String familyName) {
 		this.id = "";
 		this.emailAddress = emailAddress;
 		this.givenName = givenName;
 		this.familyName = familyName;
+		this.team = "init";
 	}
 
 	public Frabbitter(JsonObject json) {
@@ -21,6 +23,7 @@ public class Frabbitter {
 		this.emailAddress = json.getString("email");
 		this.givenName = json.getString("givenName");
 		this.familyName = json.getString("familyName");
+		this.team = json.getString("team");
 	}
 	
 	public Frabbitter() {
@@ -36,6 +39,9 @@ public class Frabbitter {
 	    if (id != null && !id.isEmpty()) {
 	        json.put("_id", id);
 	      }
+	    if (team != null && !team.isEmpty()) {
+	        json.put("team", team);
+	      }
 		return json;
 	}
 
@@ -49,6 +55,10 @@ public class Frabbitter {
 
 	public String getGivenName() {
 		return givenName;
+	}
+
+	public String getTeam() {
+		return team;
 	}
 
 	public String getEmailAddress() {
@@ -79,12 +89,15 @@ public class Frabbitter {
 		return this;
 	}
 
+	public Frabbitter setTeam(String team) {
+		this.team = team;
+		return this;
+	}
+
 	@Override
 	public String toString() {
 		return "Frabbitter [id=" + id + ", emailAddress=" + emailAddress + ", givenName=" + givenName + ", familyName="
-				+ familyName + "]";
+				+ familyName + ", team=" + team + "]";
 	}
-	
-	
 
 }
