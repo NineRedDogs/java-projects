@@ -1,14 +1,10 @@
 package com.agrahame.frabbit;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.google.api.services.people.v1.model.Person;
-import com.google.auth.oauth2.AccessToken;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -17,6 +13,7 @@ import io.vertx.config.ConfigRetrieverOptions;
 import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.MultiMap;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.example.util.Runner;
@@ -30,11 +27,15 @@ import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.handler.AuthHandler;
 import io.vertx.ext.web.handler.OAuth2AuthHandler;
 import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.ext.web.handler.TemplateHandler;
+import io.vertx.ext.web.templ.HandlebarsTemplateEngine;
+import io.vertx.ext.web.templ.MVELTemplateEngine;
 
 public class Frabbit extends AbstractVerticle {
 
 	public static final String COLLECTION = "frabbitters";
 	private MongoClient mongo;
+	private Frabbitter topFrab = new Frabbitter();
 
 
 	// Convenience method so you can run it in your IDE
@@ -63,7 +64,7 @@ public class Frabbit extends AbstractVerticle {
 
 		// set up DB client
 		mongo = MongoClient.createShared(vertx, config());
-
+		
 
 	}
 
@@ -75,6 +76,9 @@ public class Frabbit extends AbstractVerticle {
 
 
 	void startServer() {
+		// In order to use a template we first need to create an engine
+	    final HandlebarsTemplateEngine engine = HandlebarsTemplateEngine.create();
+
 		Router router = Router.router(vertx);
 
 		//router.route("/assets/*").handler(StaticHandler.create("assets"));
@@ -85,19 +89,37 @@ public class Frabbit extends AbstractVerticle {
 		AuthHandler authHandler = getOAuthHandler(router);
 		router.route("/private/*").handler(authHandler);
 
+		MultiMap context = MultiMap.caseInsensitiveMultiMap();
+		context.add("ajg1", "cardiff");
+		context.add("ajg2", "fulham");
 
-		router.route("/private/landing").handler(this::returnUserDetails);
+		router.route("/private/landing")
+		   .handler(this::returnUserDetails);
+		
+		
+		/**   .handler(ctx -> {
+			   MultiMap hdrs = ctx.request().headers();
+			   System.out.println("hdrs : ");
+			   ctx.request().headers().set("ajg11", "CardiffCity");
+		   })
+		   .handler(TemplateHandler.create(MVELTemplateEngine.create())); */
+		
+		/**   .handler( ctx -> {
+			   MultiMap hdrs = ctx.request().headers();
+			   System.out.println("hdrs : ");
+			   ctx.request().headers().set("ajg11", "CardiffCity");
+		   }); */
 
-		router.route("/private/2landing")
+		/**router.route("/private/2landing")
 		.handler(ctx -> {
 
 			System.out.println("CTX: " + ctx.getBodyAsString());
 			Map claims = getIdClaims(ctx);
-			ctx.response().end("Hi "); /** +
+			ctx.response().end("Hi "); +
                     claims.get("name") +
                     ", the email address we have on file for you is: "+
-                    claims.get("email")); */
-		});
+                    claims.get("email")); 
+		});*/
 
 		vertx.createHttpServer()
 		.requestHandler(router::accept)
@@ -160,7 +182,7 @@ public class Frabbit extends AbstractVerticle {
 		return authHandler;
 	}
 
-	Map<String, Object> getIdClaims(RoutingContext ctx) {
+	/**Map<String, Object> getIdClaims(RoutingContext ctx) {
 		try {
 			System.out.println("####### user details : " + ctx.user().principal());
 
@@ -172,12 +194,12 @@ public class Frabbit extends AbstractVerticle {
 
 			Date expDate = new GregorianCalendar(2020, Calendar.DECEMBER, 31).getTime();
 			AccessToken aToken = new AccessToken(accessToken, expDate);
-			/**GoogleCredentials credential = GoogleCredentials.create(aToken);
+			GoogleCredentials credential = GoogleCredentials.create(aToken);
 	    	credential.
 	    	GoogleCredentials oauth2 = new Oauth2.Builder(new NetHttpTransport(), new JacksonFactory(), credential).setApplicationName(
 	    	          "Oauth2").build();
 	    	 Userinfoplu userinfo = oauth2.userinfo().get().execute();
-	    	 userinfo.toPrettyString(); */
+	    	 userinfo.toPrettyString();
 
 
 			/*JwtVerifier jwtVerifier = new JwtHelper()
@@ -187,19 +209,21 @@ public class Frabbit extends AbstractVerticle {
 	            .build();
 
 	        Jwt idTokenJwt = jwtVerifier.decodeIdToken(ctx.user().principal().getString("id_token"), null);
-	        return idTokenJwt.getClaims();*/
+	        return idTokenJwt.getClaims();
 			return null;
 		} catch (Exception e) {
 			//do something with the exception...
 			return new HashMap<>();
 		}
-	}
+	}*/
 
-	private void getFrabitterFromGoogle(final String accessToken) {
+	private Future<Void> getFrabitterFromGoogle(final RoutingContext routingContext, final String accessToken) {
+		Future<Void> getUserInfoFuture = Future.future();
+
 		WebClient client = WebClient.create(vertx);
 		final String header = "Bearer " + accessToken;
-
-		// use accesstoken to enquire about authenticated user via Google API rest
+		
+		// use access token to enquire about authenticated user via Google API rest
 		client.getAbs("https://www.googleapis.com/plus/v1/people/me")
 		.putHeader("Authorization", header)
 		.send(ar -> {
@@ -207,41 +231,61 @@ public class Frabbit extends AbstractVerticle {
 				// Obtain REST response
 				HttpResponse<Buffer> response = ar.result();
 
-				Frabbitter frabbitter = getUserFromGapiJson(response.bodyAsString());
+				topFrab = getUserFromGapiJson(response.bodyAsString());
 				
 				
 				// is this user already known to the application ?
-				JsonObject query = new JsonObject().put("email", frabbitter.getEmailAddress());
+				JsonObject query = new JsonObject().put("email", topFrab.getEmailAddress());
 				
+				final Frabbitter tmp = new Frabbitter();
 				// AJG: Follow guide on this page for find & save ...
 				
 				mongo.find(COLLECTION, query, res -> {
 					if (res.succeeded()) {
+						boolean foundFrab = false;
 						for (JsonObject json : res.result()) {
 							System.out.println("Found email : " + json.encodePrettily());
 							Frabbitter found = new Frabbitter(json);
+							tmp.setId(found.getId());
 							System.out.println("id of found : " + found.getId());
-							frabbitter.setId(found.getId());
+							topFrab.setId(found.getId());
+							topFrab.setTeam(found.getTeam());
+							foundFrab = true;
+							break;
 						}
+						if (!foundFrab) {
+							// Not found, so save user 
+							mongo.save(COLLECTION, topFrab.toJson(), res2 -> {
+								if (res2.succeeded()) {
+									if (res2.result() != null) {
+										tmp.setId(res2.result());
+									}
+									System.out.println("Setting ID [" + tmp.getId() + "]");
+									topFrab.setId(tmp.getId());
+									System.out.println("Saved frabbitter : " + topFrab);
+								} else {
+									System.out.println("Failed to save frabbitter : " + topFrab);
+								}
+							});
+						}
+						
+						 System.out.println("About to return 200 OK with name [" + topFrab.getFullName() + "]");
+						routingContext.response()
+						.setStatusCode(200)
+						.putHeader("content-type", "application/json; charset=utf-8")
+						.end(topFrab.toJson().encodePrettily());
+
+						getUserInfoFuture.complete();
 					} else {
 						System.out.println("Error running query");
 					}
 				});
 				
-				// Save user 
-				mongo.save(COLLECTION, frabbitter.toJson(), res -> {
-					if (res.succeeded()) {
-						String id = res.result();
-						frabbitter.setId(id);
-						System.out.println("Saved frabbitter : " + frabbitter);
-					} else {
-						System.out.println("Failed to save frabbitter : " + frabbitter);
-					}
-				});
 			} else {
 				System.out.println("Something went wrong " + ar.cause().getMessage());
 			}
 		});
+		return getUserInfoFuture;
 	}
 
 
@@ -304,30 +348,25 @@ public class Frabbit extends AbstractVerticle {
 
 	private void returnUserDetails(RoutingContext routingContext) {
 		System.out.println("About to fetch user data based on google log in .... ");
-		//final String id = routingContext.request().getParam("id");
-		Map<String, Object> data = routingContext.data();
-		if (data == null) {
-			routingContext.response().setStatusCode(400).end();
-		} else {
-
-			JsonObject principal = routingContext.user().principal();
-			getFrabitterFromGoogle(principal.getString("access_token"));
+		JsonObject principal = routingContext.user().principal();
+		Future<Void> getUserFuture = getFrabitterFromGoogle(routingContext, principal.getString("access_token"));
 
 
-			// send back a response of current user here ....
-			// create a dynamic page with the user info and use templates (e.g. handlebars)
+		System.out.println("GetUserFuture complete : " + getUserFuture.isComplete());
+		// send back a response of current user here ....
+		// create a dynamic page with the user info and use templates (e.g. handlebars)
 
-			routingContext.response()
-			.setStatusCode(200)
-			.putHeader("content-type", "application/json; charset=utf-8")
-			.end(principal.encodePrettily());
-			//.end(Json.encodePrettily(user));
+		//System.out.println("About to return 200 OK with name [" + topFrab.getFullName() + "]");
+		//routingContext.response()
+		//.setStatusCode(200)
+		//.putHeader("content-type", "application/json; charset=utf-8")
+		//.end(topFrab.toJson().encodePrettily());
+		//.end(Json.encodePrettily(user));
 
 
-			// when get email address from google - can then use a db to maintain list of known users - if email not
-			// present in mongo db - pop up a page where user provides details (team, nickname, etc)
-			//
-		}
+		// when get email address from google - can then use a db to maintain list of known users - if email not
+		// present in mongo db - pop up a page where user provides details (team, nickname, etc)
+		//
 	}
 
 	private Future<Void> frabbitterExistsInDb(Frabbitter frab) {
