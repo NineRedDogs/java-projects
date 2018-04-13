@@ -1,8 +1,6 @@
 package com.agrahame.frabbit;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.google.api.services.people.v1.model.Person;
 import com.google.gson.Gson;
@@ -94,7 +92,8 @@ public class Frabbit extends AbstractVerticle {
 		context.add("ajg2", "fulham");
 
 		router.route("/private/landing")
-		   .handler(this::returnUserDetails);
+		   .handler(this::returnUserDetails)
+		   .handler(TemplateHandler.create(MVELTemplateEngine.create()));
 		
 		
 		/**   .handler(ctx -> {
@@ -269,11 +268,11 @@ public class Frabbit extends AbstractVerticle {
 							});
 						}
 						
-						 System.out.println("About to return 200 OK with name [" + topFrab.getFullName() + "]");
+						 /**System.out.println("About to return 200 OK with name [" + topFrab.getFullName() + "]");
 						routingContext.response()
 						.setStatusCode(200)
 						.putHeader("content-type", "application/json; charset=utf-8")
-						.end(topFrab.toJson().encodePrettily());
+						.end(topFrab.toJson().encodePrettily()); */
 
 						getUserInfoFuture.complete();
 					} else {
