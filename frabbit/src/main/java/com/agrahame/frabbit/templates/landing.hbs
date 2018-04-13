@@ -8,8 +8,12 @@
   <ol>
   {{#each users}}
     <li>{{this.givenName}} {{this.familyName}} -- {{this.email}} supports {{this.team}} </li>
+  <a href="chat.html">chat (general)</a>   
+  <a href="chat{{this.team}}.html">chat about {{this.team}} </a>   
+
   {{/each}}
   </ol>
-  <p>Total : {{users.length}}</p>
+
+  
 </body>
 </html>
