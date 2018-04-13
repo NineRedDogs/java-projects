@@ -1,5 +1,8 @@
 package io.vertx.blog.first;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
@@ -8,14 +11,12 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
+import io.vertx.example.util.Runner;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * This is a verticle. A verticle is a _Vert.x component_. This verticle is implemented in Java, but you can
@@ -25,6 +26,11 @@ public class MyFirstVerticle extends AbstractVerticle {
 
   public static final String COLLECTION = "teams";
   private MongoClient mongo;
+  
+	// Convenience method so you can run it in your IDE
+	public static void main(String[] args) {
+		Runner.runExample(MyFirstVerticle.class);
+	}
 
   /**
    * This method is called when the verticle is deployed. It creates a HTTP server and registers a simple request
@@ -78,7 +84,7 @@ public class MyFirstVerticle extends AbstractVerticle {
         .listen(
             // Retrieve the port from the configuration,
             // default to 8080.
-            config().getInteger("http.port", 8080),
+            config().getInteger("http.port", 8082),
             next::handle
         );
   }

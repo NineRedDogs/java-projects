@@ -1,0 +1,45 @@
+{{#partial "content"}}
+
+<div>
+    <h1>{{ data.node.fields.name }}</h1>
+    <p>{{ data.node.fields.description }}</p>
+    <div class="row products">
+        {{#each data.node.products.elements}}
+        <div class="col-xs-12 col-sm-6 col-md-4">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>
+                        <a href="{{ this.path }}">{{ this.fields.name }}</a>
+                        <small>{{ this.fields.SKU }}</small>
+                    </h3>
+
+                    <a href="{{ this.path }}">
+                        <img style="height: 200px; width: 100%;" src="{{ this.fields.image.path }}" class="img-thumbnail">
+                    </a>
+
+                    <p>{{ this.fields.description }}</p>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-xs-6">
+                        <!--| number: 2 -->
+                            <h3 style="margin: 5px 0;"><span class="label label-primary">€{{ this.fields.price  }}</span></h3>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <span class="label label-default">Weight: {{ this.fields.weight }}</span><br>
+                            <span class="label label-default">Stock: {{ this.fields.stocklevel }}</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+{{/partial}}
+
+{{> base}}
