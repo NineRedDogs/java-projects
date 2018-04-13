@@ -1,0 +1,6 @@
+.classpath
+target
+.vertx
+.project
+.settings
+dependency-reduced-pom.xml
