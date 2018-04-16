@@ -1,11 +1,9 @@
-package com.core.net;
+package com.agrahame.terminal.chat.server;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
- * The channel handler that handles all upstream {@link String} messages from registered channels.
- * 
- * @author Chad Adams <https://github.com/Adams94>
+ * Handles upstream messages.
  */
 public class NetworkChannelHandler extends SimpleChannelInboundHandler<String> {
 

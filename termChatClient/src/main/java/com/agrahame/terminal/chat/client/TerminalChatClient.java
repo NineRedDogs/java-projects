@@ -3,8 +3,6 @@ package com.agrahame.terminal.chat.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -14,27 +12,32 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 /**
- * The main class for the client.
- * 
- * @author Chad Adams <https://github.com/Adams94>
+ * Terminal Chat Client.
  */
-public class Client {
+public class TerminalChatClient {
 
 	/**
-	 * The single logger for this class.
+	 * The address that the client will connect to.
 	 */
-	public static final Logger logger = Logger.getLogger(Client.class.getName());
-
+	public static final String SERVER_ADDRESS = "localhost";
+	
 	/**
-	 * The main-entry way into the application.
-	 * 
-	 * @param args
-	 * 		The command-line arguments.
+	 * The address that the client will connect to.
 	 */
+	public static final int SERVER_PORT = 7777;
+
+
 	public static void main(String[] args) throws InterruptedException {
-		connect(Configuration.ADDRESS, Configuration.PORT);
+		connect(SERVER_ADDRESS, SERVER_PORT);
 	}
 
+	/**
+	 * Connects the client to the server.
+	 * 
+	 * @param address address of server
+	 * @param port port of server
+	 * @throws InterruptedException
+	 */
 	public static void connect(String address, int port) throws InterruptedException {
 		EventLoopGroup group = new NioEventLoopGroup();
 		try {
@@ -44,7 +47,7 @@ public class Client {
 			.handler(new NetworkChannelInitializer());
 
 			Channel ch = b.connect(address, port).sync().channel();
-			logger.log(Level.INFO, "Connected to: {0} on port: " + port, address);
+			System.out.println("The client is now connected to server: " + address + ":" + port);
 
 			ChannelFuture lastWriteFuture = null;
 
@@ -63,13 +66,13 @@ public class Client {
 
 					lastWriteFuture = ch.writeAndFlush(message);
 
-					if (message.equalsIgnoreCase("exit")) {
-						logger.log(Level.INFO, "Client is now shutting down..");
+					if (message.equalsIgnoreCase("bye")) {
+						System.out.println("\n\n...and its goodnight from him ...\n\n");
 					}
 
 				}
 			} catch (IOException ex) {
-				logger.log(Level.SEVERE, "An error occured while trying to write a message.", ex);
+				System.out.println("An error occured while trying to write a message." + ex);
 			}
 
 			if (lastWriteFuture != null) {

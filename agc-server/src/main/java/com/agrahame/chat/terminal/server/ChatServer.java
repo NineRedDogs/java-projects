@@ -1,4 +1,4 @@
-package org.dean.example.nettychat;
+package com.agrahame.chat.terminal.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -6,13 +6,10 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-/**
- * Created by Dean on 2014/6/28.
- */
 public class ChatServer {
 
     public static void main(String[] args) throws InterruptedException {
-        new ChatServer(8000).run();
+        new ChatServer(6666).run();
     }
 
     private final  int port;
