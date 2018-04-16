@@ -4,8 +4,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.agrahame.simplechat</groupId>
-	<artifactId>andy-simple-chat</artifactId>
+	<groupId>com.agrahame.terminal.chat</groupId>
+	<artifactId>andy-terminal-chat</artifactId>
 	<version>1.0.1</version>
 
 
@@ -45,23 +45,26 @@
 										<Main-Verticle>com.agrahame.simplechat.AndySimpleChat</Main-Verticle>
 									</manifestEntries>
 								</transformer>
-								
-								<transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                    <resource>config/application.json</resource>
-                                    <file>src/main/java/com/agrahame/simplechat/config/application.json</file>
-                                </transformer>
-								
-								<transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                    <resource>webroot/index.html</resource>
-                                    <file>src/main/java/com/agrahame/simplechat/webroot/index.html</file>
-                                </transformer>
-								
-								<transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                    <resource>webroot/vertx-eventbus.js</resource>
-                                    <file>src/main/java/com/agrahame/simplechat/webroot/vertx-eventbus.js</file>
-                                </transformer>
-								
-								
+
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+									<resource>config/application.json</resource>
+									<file>src/main/java/com/agrahame/simplechat/config/application.json</file>
+								</transformer>
+
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+									<resource>webroot/index.html</resource>
+									<file>src/main/java/com/agrahame/simplechat/webroot/index.html</file>
+								</transformer>
+
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+									<resource>webroot/vertx-eventbus.js</resource>
+									<file>src/main/java/com/agrahame/simplechat/webroot/vertx-eventbus.js</file>
+								</transformer>
+
+
 							</transformers>
 							<artifactSet>
 							</artifactSet>
@@ -185,6 +188,13 @@
 			<groupId>com.google.apis</groupId>
 			<artifactId>google-api-services-people</artifactId>
 			<version>v1-rev260-1.23.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.23.Final</version>
 		</dependency>
 
 		<!-- Gson: Java to Json conversion -->
