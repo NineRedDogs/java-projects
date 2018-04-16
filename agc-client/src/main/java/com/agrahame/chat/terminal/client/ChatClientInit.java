@@ -1,4 +1,4 @@
-package org.dean.example.nettychat;
+package com.agrahame.chat.terminal.client;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -9,10 +9,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
 
-/**
- * Created by Dean on 2014/6/25.
- */
-public class ChatClientInitializer extends ChannelInitializer<SocketChannel> {
+public class ChatClientInit extends ChannelInitializer<SocketChannel> {
 
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
