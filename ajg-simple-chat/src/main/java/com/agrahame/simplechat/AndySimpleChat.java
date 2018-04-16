@@ -57,8 +57,8 @@ public class AndySimpleChat extends AbstractVerticle {
       // Send the message back out to all clients with the timestamp prepended.
       eb.publish("chat.to.client", timestamp + ": " + message.body());
       //eb.publish("chat.to.server", "bla bla bla ...");
-      eb.publish("chat.to.client", message.address());
-      eb.publish("chat.to.client", message.headers());
+      //eb.publish("chat.to.client", message.address());
+      //eb.publish("chat.to.client", message.headers());
     });
 
   }

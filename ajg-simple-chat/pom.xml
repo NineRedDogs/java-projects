@@ -45,23 +45,26 @@
 										<Main-Verticle>com.agrahame.simplechat.AndySimpleChat</Main-Verticle>
 									</manifestEntries>
 								</transformer>
-								
-								<transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                    <resource>config/application.json</resource>
-                                    <file>src/main/java/com/agrahame/simplechat/config/application.json</file>
-                                </transformer>
-								
-								<transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                    <resource>webroot/index.html</resource>
-                                    <file>src/main/java/com/agrahame/simplechat/webroot/index.html</file>
-                                </transformer>
-								
-								<transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                    <resource>webroot/vertx-eventbus.js</resource>
-                                    <file>src/main/java/com/agrahame/simplechat/webroot/vertx-eventbus.js</file>
-                                </transformer>
-								
-								
+
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+									<resource>config/application.json</resource>
+									<file>src/main/java/com/agrahame/simplechat/config/application.json</file>
+								</transformer>
+
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+									<resource>webroot/index.html</resource>
+									<file>src/main/java/com/agrahame/simplechat/webroot/index.html</file>
+								</transformer>
+
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+									<resource>webroot/vertx-eventbus.js</resource>
+									<file>src/main/java/com/agrahame/simplechat/webroot/vertx-eventbus.js</file>
+								</transformer>
+
+
 							</transformers>
 							<artifactSet>
 							</artifactSet>
@@ -106,6 +109,54 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>scp-to-remote</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<!-- keyfile+passphrase or password, choose one -->
+								<scp
+									localFile="${project.build.directory}/${project.artifactId}-${project.version}-fat.jar"
+									remoteToFile="ec2-user@ec2-35-176-228-220.eu-west-2.compute.amazonaws.com:"
+									verbose="true" trust="true"
+									keyfile="${project.basedir}/creds/ag-vertx-keys.pem"
+									passphrase="">
+								</scp>
+								<!-- <scp localFile="${project.basedir}/target/qos-spark-1.0.jar" 
+									remoteToFile="root@192.168.203.156:/usr/sanss" verbose="true" password="mypassword" 
+									trust="true"> </scp> -->
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+				<!-- libraries for scp impl -->
+				<!-- antrun doesn't use os's scp -->
+				<dependencies>
+					<dependency>
+						<groupId>com.jcraft</groupId>
+						<artifactId>jsch</artifactId>
+						<version>0.1.53</version>
+					</dependency>
+					<dependency>
+						<groupId>ant</groupId>
+						<artifactId>ant-jsch</artifactId>
+						<version>1.6.5</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<!-- =========================================== -->
+			<!-- antrun plugin end -->
+			<!-- =========================================== -->
+
 
 
 		</plugins>
