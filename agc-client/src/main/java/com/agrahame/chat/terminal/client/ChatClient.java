@@ -43,7 +43,7 @@ public class ChatClient {
     	    username = scanner.next();
     	}
     	
-    	System.out.println("Hi " + username + ", we are about to connect to the chat server, please wait for other people to start yapping ....");
+    	System.out.println("\nHi " + username + ", we are about to connect to the chat server, please wait for other people to start yapping ....\n\n");
     	final String msgPrefix = "[" + username + "] ";
     	
         EventLoopGroup group = new NioEventLoopGroup();
