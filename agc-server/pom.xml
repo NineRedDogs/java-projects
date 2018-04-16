@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.agrahame.chat</groupId>
-    <artifactId>terminal-chat-server</artifactId>
-    <version>2.0-2</version>
+	<groupId>com.agrahame.chat</groupId>
+	<artifactId>terminal-chat-server</artifactId>
+	<version>2.0-2</version>
 
-    <dependencies>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.0.0.CR3</version>
-        </dependency>
-        <dependency>
-            <groupId>javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>3.12.0.GA</version>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.0.0.CR3</version>
+		</dependency>
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.12.0.GA</version>
+		</dependency>
+	</dependencies>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
+	<properties>
+		<java.version>1.8</java.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
 
 
 	<build>
@@ -61,6 +61,54 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>scp-to-remote</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<!-- keyfile+passphrase or password, choose one -->
+								<scp localFile="${project.build.directory}/${project.artifactId}-${project.version}-fat.jar" 
+									remoteToFile="ec2-user@ec2-35-176-228-220.eu-west-2.compute.amazonaws.com:" 
+									verbose="true" 
+									trust="true"
+									keyfile="${project.basedir}/creds/ag-vertx-keys.pem"
+									passphrase=""> </scp>
+								<!--  <scp localFile="${project.basedir}/target/qos-spark-1.0.jar"
+									remoteToFile="root@192.168.203.156:/usr/sanss" verbose="true"
+									password="mypassword" trust="true">
+								</scp>-->
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+				<!-- libraries for scp impl -->
+				<!-- antrun doesn't use os's scp -->
+				<dependencies>
+					<dependency>
+						<groupId>com.jcraft</groupId>
+						<artifactId>jsch</artifactId>
+						<version>0.1.53</version>
+					</dependency>
+					<dependency>
+						<groupId>ant</groupId>
+						<artifactId>ant-jsch</artifactId>
+						<version>1.6.5</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<!-- =========================================== -->
+			<!-- antrun plugin end -->
+			<!-- =========================================== -->
+
 		</plugins>
 	</build>
 
