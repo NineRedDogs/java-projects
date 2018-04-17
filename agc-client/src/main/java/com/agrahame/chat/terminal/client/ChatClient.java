@@ -28,6 +28,7 @@ public class ChatClient {
     }
 
     public void run() throws Exception{
+	    // get user name from properties
         String username = System.getProperty("chat.user");
     	System.out.println("username [" + username + "]");
     	while ((username == null || username.isEmpty())) {
