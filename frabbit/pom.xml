@@ -58,9 +58,10 @@
                                     <resource>webroot/index.html</resource>
                                     <file>src/main/java/com/agrahame/frabbit/webroot/index.html</file>
                                 </transformer>
-                                
-								
-								
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                                    <resource>webroot/frabbit.jpg</resource>
+                                    <file>src/main/java/com/agrahame/frabbit/frabbit.jpg</file>
+                                </transformer>
 							</transformers>
 							<artifactSet>
 							</artifactSet>
