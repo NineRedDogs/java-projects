@@ -1,30 +1,51 @@
 package com.example.agrahame.flexitimer.timing;
 
 import com.example.agrahame.flexitimer.timing.exceptions.TimeException;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-public abstract class Day {
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = StandardDay.class, name = StandardDay.CLASS_NAME),
+        @JsonSubTypes.Type(value = HalfDay.class, name = HalfDay.CLASS_NAME),
+        @JsonSubTypes.Type(value = UnknownDayType.class, name = UnknownDayType.CLASS_NAME),
+        @JsonSubTypes.Type(value = AnnualLeave.class, name = AnnualLeave.CLASS_NAME) })
+public abstract class Day implements Serializable {
 
-    private TimePair inOut;
+    /* discriminator/determinator */
+    private final String name;
 
-    public void clockIn(Time clockInTime) {
-        inOut.setT1(clockInTime);
+    public final static String DATE_FORMAT = "dd/MM/yyyy";
+    private final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
+
+    protected final String date;
+
+    public Day(String name, String date) {
+        this.name = name;
+        this.date = date;
     }
 
-    public void clockOut(Time clockOutTime) {
-        inOut.setT2(clockOutTime);
+    public String getName() {
+        return name;
     }
 
-    public LocalDate getDate() throws TimeException {
-        if (inOut.getT1() == null) {
-            throw new TimeException("No times entered yet, so cannot determine date");
-        }
-        return inOut.getT1().getTime().toLocalDate();
-
+    public String getDate() {
+        return date;
     }
 
-    public abstract void
+    public LocalDate toLocalDate() {
+        return parseDate(date);
+    }
 
+
+    /**
+     * Utility methods .....
+     */
+
+    public static LocalDate parseDate(final String d) {
+        return LocalDate.parse(d, DATE_FORMATTER);
+    }
 
 }

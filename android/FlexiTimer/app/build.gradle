@@ -16,6 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {
@@ -25,7 +29,10 @@ dependencies {
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
     // https://mvnrepository.com/artifact/com.fasterxml/jackson-module-json-org
-    implementation 'com.fasterxml:jackson-module-json-org:0.9.1'
+    //implementation 'com.fasterxml:jackson-module-json-org:0.9.1'
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
