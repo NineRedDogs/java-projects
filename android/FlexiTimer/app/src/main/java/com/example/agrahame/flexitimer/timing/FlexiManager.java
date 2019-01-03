@@ -1,5 +1,6 @@
 package com.example.agrahame.flexitimer.timing;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -9,6 +10,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -88,6 +91,29 @@ public class FlexiManager implements Serializable {
         }
     }
 
+    public void readInJson() throws IOException {
+
+        if (DATA_DIR.exists()) {
+
+            final File jsonFile = new File(DATA_DIR, TIMES_JSON_FILE);
+
+            if (jsonFile.exists()) {
+                byte[] jsonData = Files.readAllBytes(jsonFile.toPath());
+
+                ObjectMapper om = new ObjectMapper();
+
+                List<Day> times = om.readValue(jsonData, new TypeReference<List<Day>>() {
+                });
+
+                for (Day d : times) {
+                    System.out.println("Day Type : " + d.getClass().getName());
+                }
+
+
+            }
+        }
+    }
+
     private LocalTime getTime(String t) {
         LocalTime lt = null;
         try {
@@ -112,15 +138,23 @@ public class FlexiManager implements Serializable {
     }
 
     public static void main(String[] args) throws IOException {
+        final boolean csvIsSource = false;
         FlexiManager fm = new FlexiManager();
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
-        fm.readInCsv();
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        File jsonTimesFile = new File(DATA_DIR, TIMES_JSON_FILE);
-        mapper.writeValue(jsonTimesFile, fm);
-        mapper.writeValue(System.out, fm);
+        if (csvIsSource) {
+            fm.readInCsv();
+
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            File jsonTimesFile = new File(DATA_DIR, TIMES_JSON_FILE);
+            mapper.writeValue(jsonTimesFile, fm);
+            mapper.writeValue(System.out, fm);
+        } else {
+            System.out.println("reading in json file ...@);");
+
+            fm.readInJson();
+        }
 
 
     }
