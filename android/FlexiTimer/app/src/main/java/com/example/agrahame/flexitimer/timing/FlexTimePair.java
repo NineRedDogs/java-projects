@@ -1,6 +1,8 @@
 package com.example.agrahame.flexitimer.timing;
 
 import com.example.agrahame.flexitimer.timing.exceptions.TimeException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +13,9 @@ public class FlexTimePair {
     public FlexTimePair() {
     }
 
-    public FlexTimePair(FlexTime t1, FlexTime t2) {
+    @JsonCreator
+    public FlexTimePair(@JsonProperty("t1") FlexTime t1,
+                        @JsonProperty("t2") FlexTime t2) {
         this.t1 = t1;
         this.t2 = t2;
     }
