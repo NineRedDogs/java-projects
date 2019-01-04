@@ -1,6 +1,5 @@
 package com.example.agrahame.flexitimer.timing;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -11,26 +10,27 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class FlexiManager implements Serializable {
 
-    private List<Day> flexiTimes;
+    private List<Day> days;
 
-    public List<Day> getFlexiTimes() {
-        return flexiTimes;
+    public List<Day> getDays() {
+        return days;
     }
 
     private static final File DATA_DIR =
             new File (System.getProperty("user.dir") + File.separator+ "app" + File.separator + "data" + File.separator);
     private static final String TIMES_CSV_FILE = "times.csv";
     private static final String TIMES_JSON_FILE = "times.json";
+    public static final double WORKING_WEEK_NUM_HOURS = 39.5;
+    public static final double WORKING_WEEK_NUM_DAYS = 5;
 
     /**
      * Using a source CSV file in the following format ;
@@ -53,7 +53,7 @@ public class FlexiManager implements Serializable {
                 Pattern pattern = Pattern.compile(",");
 
                 try (BufferedReader in = new BufferedReader(new FileReader(csvFile));) {
-                    flexiTimes = in.lines().skip(1).map(line -> {
+                    days = in.lines().skip(1).map(line -> {
 
                         final int dateColumn = 0;
                         final int inDayColumn = 2;
@@ -102,14 +102,9 @@ public class FlexiManager implements Serializable {
 
                 ObjectMapper om = new ObjectMapper();
 
-                List<Day> times = om.readValue(jsonData, new TypeReference<List<Day>>() {
-                });
+                Days days = om.readValue(jsonData, Days.class);
 
-                for (Day d : times) {
-                    System.out.println("Day Type : " + d.getClass().getName());
-                }
-
-
+                days.sortByDate();
             }
         }
     }
@@ -139,6 +134,7 @@ public class FlexiManager implements Serializable {
 
     public static void main(String[] args) throws IOException {
         final boolean csvIsSource = false;
+        //final boolean csvIsSource = true;
         FlexiManager fm = new FlexiManager();
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
