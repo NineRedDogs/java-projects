@@ -1,5 +1,5 @@
 {
-  "flexiTimes" : [ {
+  "days" : [ {
     "name" : "StandardDay",
     "date" : "23/08/2018",
     "inOut" : {
@@ -17,7 +17,8 @@
       "t2" : {
         "time" : "12:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "24/08/2018",
@@ -36,10 +37,12 @@
       "t2" : {
         "time" : "12:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "AnnualLeave",
-    "date" : "27/08/2018"
+    "date" : "27/08/2018",
+    "name" : "AnnualLeave"
   }, {
     "name" : "StandardDay",
     "date" : "28/08/2018",
@@ -58,7 +61,8 @@
       "t2" : {
         "time" : "12:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "29/08/2018",
@@ -77,7 +81,8 @@
       "t2" : {
         "time" : "12:40"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "30/08/2018",
@@ -96,7 +101,8 @@
       "t2" : {
         "time" : "12:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "31/08/2018",
@@ -115,7 +121,8 @@
       "t2" : {
         "time" : "12:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "03/09/2018",
@@ -134,7 +141,8 @@
       "t2" : {
         "time" : "12:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "04/09/2018",
@@ -153,7 +161,8 @@
       "t2" : {
         "time" : "12:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "05/09/2018",
@@ -172,7 +181,8 @@
       "t2" : {
         "time" : "12:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "06/09/2018",
@@ -191,10 +201,12 @@
       "t2" : {
         "time" : "12:40"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "AnnualLeave",
-    "date" : "07/09/2018"
+    "date" : "07/09/2018",
+    "name" : "AnnualLeave"
   }, {
     "name" : "StandardDay",
     "date" : "10/09/2018",
@@ -213,7 +225,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "11/09/2018",
@@ -232,7 +245,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "12/09/2018",
@@ -251,7 +265,8 @@
       "t2" : {
         "time" : "14:35"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "13/09/2018",
@@ -270,7 +285,8 @@
       "t2" : {
         "time" : "13:50"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "14/09/2018",
@@ -289,7 +305,8 @@
       "t2" : {
         "time" : "13:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "17/09/2018",
@@ -308,7 +325,8 @@
       "t2" : {
         "time" : "13:10"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "18/09/2018",
@@ -327,7 +345,8 @@
       "t2" : {
         "time" : "12:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "19/09/2018",
@@ -346,7 +365,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "20/09/2018",
@@ -365,7 +385,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "21/09/2018",
@@ -384,7 +405,8 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "24/09/2018",
@@ -403,7 +425,8 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "25/09/2018",
@@ -422,7 +445,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "26/09/2018",
@@ -441,7 +465,8 @@
       "t2" : {
         "time" : "13:50"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "27/09/2018",
@@ -460,7 +485,8 @@
       "t2" : {
         "time" : "13:20"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "28/09/2018",
@@ -479,7 +505,8 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "01/10/2018",
@@ -498,7 +525,8 @@
       "t2" : {
         "time" : "12:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "02/10/2018",
@@ -517,7 +545,8 @@
       "t2" : {
         "time" : "12:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "03/10/2018",
@@ -536,7 +565,8 @@
       "t2" : {
         "time" : "12:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "04/10/2018",
@@ -555,10 +585,12 @@
       "t2" : {
         "time" : "12:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "AnnualLeave",
-    "date" : "05/10/2018"
+    "date" : "05/10/2018",
+    "name" : "AnnualLeave"
   }, {
     "name" : "StandardDay",
     "date" : "08/10/2018",
@@ -577,7 +609,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "09/10/2018",
@@ -596,7 +629,8 @@
       "t2" : {
         "time" : "13:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "10/10/2018",
@@ -615,7 +649,8 @@
       "t2" : {
         "time" : "14:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "11/10/2018",
@@ -634,7 +669,8 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "12/10/2018",
@@ -653,7 +689,8 @@
       "t2" : {
         "time" : "13:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "15/10/2018",
@@ -672,7 +709,8 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "16/10/2018",
@@ -691,7 +729,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "17/10/2018",
@@ -710,7 +749,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "18/10/2018",
@@ -729,7 +769,8 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "19/10/2018",
@@ -748,7 +789,8 @@
       "t2" : {
         "time" : "14:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "22/10/2018",
@@ -767,7 +809,8 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "23/10/2018",
@@ -786,7 +829,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "24/10/2018",
@@ -805,7 +849,8 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "25/10/2018",
@@ -824,7 +869,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "26/10/2018",
@@ -843,7 +889,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "29/10/2018",
@@ -862,7 +909,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "30/10/2018",
@@ -881,7 +929,8 @@
       "t2" : {
         "time" : "13:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "31/10/2018",
@@ -900,7 +949,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "01/11/2018",
@@ -919,7 +969,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "02/11/2018",
@@ -938,7 +989,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "05/11/2018",
@@ -957,7 +1009,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "06/11/2018",
@@ -976,7 +1029,8 @@
       "t2" : {
         "time" : "13:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "07/11/2018",
@@ -995,7 +1049,8 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "08/11/2018",
@@ -1014,7 +1069,8 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "09/11/2018",
@@ -1033,7 +1089,8 @@
       "t2" : {
         "time" : "13:40"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "12/11/2018",
@@ -1052,7 +1109,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "13/11/2018",
@@ -1071,7 +1129,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "14/11/2018",
@@ -1090,7 +1149,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "15/11/2018",
@@ -1109,7 +1169,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "16/11/2018",
@@ -1128,7 +1189,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "19/11/2018",
@@ -1147,7 +1209,8 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "20/11/2018",
@@ -1166,7 +1229,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "21/11/2018",
@@ -1185,7 +1249,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "22/11/2018",
@@ -1204,7 +1269,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "23/11/2018",
@@ -1223,7 +1289,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "26/11/2018",
@@ -1242,7 +1309,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "27/11/2018",
@@ -1261,7 +1329,8 @@
       "t2" : {
         "time" : "13:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "28/11/2018",
@@ -1280,7 +1349,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "29/11/2018",
@@ -1299,7 +1369,8 @@
       "t2" : {
         "time" : "13:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "30/11/2018",
@@ -1318,7 +1389,8 @@
       "t2" : {
         "time" : "13:30"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "03/12/2018",
@@ -1337,7 +1409,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "04/12/2018",
@@ -1356,7 +1429,8 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "05/12/2018",
@@ -1375,7 +1449,8 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "06/12/2018",
@@ -1394,7 +1469,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "07/12/2018",
@@ -1413,10 +1489,12 @@
       "t2" : {
         "time" : "14:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "AnnualLeave",
-    "date" : "10/12/2018"
+    "date" : "10/12/2018",
+    "name" : "AnnualLeave"
   }, {
     "name" : "StandardDay",
     "date" : "11/12/2018",
@@ -1435,7 +1513,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "12/12/2018",
@@ -1454,7 +1533,8 @@
       "t2" : {
         "time" : "13:15"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "13/12/2018",
@@ -1473,7 +1553,8 @@
       "t2" : {
         "time" : "12:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "14/12/2018",
@@ -1492,7 +1573,8 @@
       "t2" : {
         "time" : "13:45"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "17/12/2018",
@@ -1511,7 +1593,8 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "StandardDay",
     "date" : "18/12/2018",
@@ -1530,10 +1613,12 @@
       "t2" : {
         "time" : "13:00"
       }
-    }
+    },
+    "name" : "StandardDay"
   }, {
     "name" : "HalfDay",
     "date" : "19/12/2018",
+    "name" : "HalfDay",
     "inOut" : {
       "t1" : {
         "time" : "07:35"
@@ -1544,6 +1629,7 @@
     }
   }, {
     "name" : "UnknownDayType",
-    "date" : "20/12/2018"
+    "date" : "20/12/2018",
+    "name" : "UnknownDayType"
   } ]
 }

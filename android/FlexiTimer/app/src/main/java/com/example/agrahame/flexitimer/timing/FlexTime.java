@@ -1,7 +1,10 @@
 package com.example.agrahame.flexitimer.timing;
 
 import com.example.agrahame.flexitimer.timing.exceptions.TimeException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -19,7 +22,8 @@ public class FlexTime {
         t1 = LocalDateTime.now().toString();
     }
 
-    public FlexTime(String time) {
+    @JsonCreator
+    public FlexTime(@JsonProperty("time") String time) {
         this.t1 = time;
     }
 
@@ -35,8 +39,9 @@ public class FlexTime {
         if (t1 == null || t == null) {
             throw new TimeException("need 2 times to calculate difference");
         }
-        long diffMins = ChronoUnit.MINUTES.between(asLocalTime(), t.asLocalTime());
-        return diffMins;
+        //long diffMins = ChronoUnit.MINUTES.between(asLocalTime(), t.asLocalTime());
+        Duration d = Duration.between(t.asLocalTime(), asLocalTime());
+        return d.toMinutes();
     }
 
     public static LocalTime parseTime(final String t) {
