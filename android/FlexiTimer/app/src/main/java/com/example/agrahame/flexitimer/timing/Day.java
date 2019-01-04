@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
@@ -47,6 +48,18 @@ public abstract class Day implements Serializable {
         return parseDate(date);
     }
 
+    public long getMinutesWorked() throws TimeException {
+        return 0;
+    }
+
+    public long getExpectedMinutesWorked() throws TimeException {
+        return 0;
+    }
+
+    public long getFlex() throws TimeException {
+        System.out.println("Date : " + date + "[" + (getMinutesWorked() - getExpectedMinutesWorked()) + "] >> mins (worked) : " + getMinutesWorked() + " mins (exp) : " + getExpectedMinutesWorked() );
+        return getMinutesWorked() - getExpectedMinutesWorked();
+    }
 
     /**
      * Utility methods .....
