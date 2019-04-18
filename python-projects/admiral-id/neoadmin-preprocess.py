@@ -7,18 +7,45 @@ startTime = time.time()
 matchMaps = {}
 openFiles = []
 
+# columns
+col_rowID=0
+col_productName=1
+col_productReference=2
+col_forename=3
+col_surname=4
+col_address1=5
+col_address2=6
+col_address3=7
+col_postcode=8
+col_dateOfBirth=9
+col_mobile=10
+col_email=11
+col_regNum=12
+col_dln=13
+col_deviceId=14
+col_abiCode=15
+col_alfKey=16
+col_dateInception=17
+col_dateExpiry=18
+col_dateOrigin=19
+col_dateCancellation=20
+
+#--- composite columns
+col_fullnameDob=21
+col_surnamePostcode=22
+
 
 # name, fieldIndex tuple
 superFieldTuples = [
-	('dln',13),
-	('mobile',10),
-	('email',11),
-	('alfKey',16),
-	('deviceID',14),
-	('productReference',2),
-	('fullnameDOB',21),
-	('surnamePostcode',22),
-	('regNum',12),
+	('dln',col_dln),
+	('mobile',col_mobile),
+	('email',col_email),
+	('alfKey',col_alfKey),
+	('deviceID',col_deviceId),
+	('productReference',col_productReference),
+	('fullnameDOB',col_fullnameDob),
+	('surnamePostcode',col_surnamePostcode),
+	('regNum',col_regNum),
 	]
 
 def convertDate(sourceDate):
@@ -87,10 +114,21 @@ def matchSuperFields(row):
     for superFieldTuple in superFieldTuples:
     	matchSuperField(superFieldTuple[0],superFieldTuple[1],row)
 
+def score(matchRow):
+	startRowNum=matchRow[0]
+	endRowNum=matchRow[1]
+	startRow=row[startRowNum]
+	endRow=row[endRowNum]
+	superfieldindex = lookupSuperFieldIndex['regNum']
+	currentMatchRow[superfieldindex + 2] = Bluebird
+
+	
+	
+	
 
 def matchSuperField(fieldName, fieldIndex, row):
     superValue = row[fieldIndex]
-    rowId = row[0]
+    rowId = row[col_rowID]
     if superValue == None or superValue == "":
         return
     matchMap = matchMaps[fieldName]
@@ -161,6 +199,7 @@ def writeMatches(matchWriter):
            # this row looks new, write last and update new
            if not currentMatchRow[0] == None:
                ### score here ????
+               score(currentMatchRow)
                matchWriter.writerow(currentMatchRow)
                currentMatchRow = [None]*(2+len(superFieldTuples))
            currentMatchRow[0] = match[0]
@@ -207,7 +246,7 @@ matchWriter = openWriter(outFolder, 'matches')
 
 print ("Opened the following files: " + str(map(lambda file: file.name,openFiles)))
 
-personWriter.writerow([":ID","rowID:string","forename:string","surname:string","dateOfBirth:date","mobile:string","email:string","dln"])
+personWriter.writerow([":ID","rowID:string","forename:string","surname:string","dateOfBirth:date","mobile:string","email:string","dln:string"])
 addressWriter.writerow([":ID","address1:string","address2:string","address3:string","postcode:string","alfKey:string"])
 personAddressWriter.writerow([":START_ID",":END_ID"])
 productWriter.writerow([":ID","productReference:string","productName:string","dateInception:date","dateExpiry:date","dateOrigin:date","dateCancellation:date"])
@@ -229,33 +268,36 @@ for row in reader:
         sys.stdout.write("\r{}".format(index))
         sys.stdout.flush()
     # the first field is mapped to :ID which is used for relationships but is not actually imported - hence row[0] is typically listed twice
-    if row[0] == "RowID":
+    if row[col_rowID] == "RowID":
         continue
 
     # CLEAN UP PROBLEMS WITH DATA 
 
-    if row[2] == "Loans":
+    if row[col_productReference] == "Loans":
         # The raw data is missing a decent product id for loans :(
-        row[2] = "Loans_" + personRow[0]
-    if row[2] == '':
-       row[2] = 'MISSING_DATA_' + row[0]
-    row[11] = row[11].lower()
-    row[13] = row[13].lower()
-    row[8] = row[8].replace(' ','').lower()
+        row[col_productReference] = "Loans_" + personRow[0]
+    if row[col_productReference] == '':
+       row[col_productReference] = 'MISSING_DATA_' + row[col_rowID]
+    row[col_email] = row[col_email].lower()
+    row[col_dln] = row[col_dln].lower()
+    row[col_postcode] = row[col_postcode].replace(' ','').lower()
     # there is a leading space in at least one regNum
-    row[12] = row[12].strip()
+    row[col_regNum] = row[col_regNum].strip()
 
-    personRow = [row[0],row[0],row[3],row[4],convertDate(row[9]),row[10],row[11],row[13]]
-    addressRow = ['MD5_PLACEHOLDER',row[5],row[6],row[7],row[8],row[16]]
+    personRow = [row[col_rowID],row[col_rowID],row[col_forename],row[col_surname],convertDate(row[col_dateOfBirth]),
+				 row[col_mobile],row[col_email],row[col_dln]]
+    addressRow = ['MD5_PLACEHOLDER',row[col_address1],row[col_address2],row[col_address3],row[col_postcode],row[col_alfKey]]
     addressRow[0] = hashlib.md5(','.join(addressRow)).hexdigest()
-    productRow = [row[2],row[2],row[1],convertDate(row[17]),convertDate(row[18]),convertDate(row[19]),convertDate(row[20])]
+    productRow = [row[col_productReference],row[col_productReference],row[col_productName],
+				  convertDate(row[col_dateInception]),convertDate(row[col_dateExpiry]),
+				  convertDate(row[col_dateOrigin]),convertDate(row[col_dateCancellation])]
     # annoyingly regnum can't be considered unique as there are examples with same reg and different abiCode
-    vehicleRow = [row[12] + "_" + row[15], row[12],row[15]]
-    deviceRow = [row[14],row[14]]
-    # row[21] = fullname_dateOfBirth
-    row.append(row[3].lower() + "_" + row[4].lower() + "_" + row[9])
-    # row[22] = surname_postcode
-    row.append(row[4].lower() + "_" + row[8])
+    vehicleRow = [row[col_regNum] + "_" + row[col_abiCode], row[col_regNum],row[col_abiCode]]
+    deviceRow = [row[col_deviceId],row[col_deviceId]]
+    # row[col_fullnameDob] = fullname_dateOfBirth
+    row.append(row[col_forename].lower() + "_" + row[col_surname].lower() + "_" + row[col_dateOfBirth])
+    # row[col_surnamePostcode] = surname_postcode
+    row.append(row[col_surname].lower() + "_" + row[col_postcode])
     
     if personRow[0]!=lastPersonRow[0]:
     	personWriter.writerow(personRow)
