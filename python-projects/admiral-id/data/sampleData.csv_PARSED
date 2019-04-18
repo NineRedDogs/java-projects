@@ -1,0 +1,62 @@
+RowID,PolType,PolicyNo,ForeName,Surname,Addr1,Addr2,Addr3,Postcode,DOB,mobile,eMail,RegNo,DrvLicNo,DeviceID,ABICode,ALFKey,Date_Inc,Date_Exp,OrinDate,CanDate
+1,Motor,P1111,John,Smith,101 Sesame Street,Penarth,Cardiff,CF123ZZ,01/01/99,07912345678,john@smith.com,CF55SSS,SMITH010203,d123456,abi123456,,01/01/18,01/01/18,01/01/18,01/01/18
+2,HH,H2222,John,Smith,101 Sesame Street,Penarth,Cardiff,CF123ZZ,01/01/99,07912345678,john@smith.com,,,d123456,,alf196605,01/01/18,01/01/18,01/01/18,01/01/18
+3,MP,MP3333,John,Smith,101 Sesame Street,Penarth,Cardiff,CF123ZZ,01/01/99,07912345678,john@smith.com,CF55SSS,SMITH010203,d123456,abi123456,alf196605,01/01/18,01/01/18,01/01/18,01/01/18
+4,Travel,T4444,John,Smith,101 Sesame Street,Penarth,Cardiff,CF123ZZ,01/01/99,07912345678,john@smith.com,,,d123456,,,01/01/18,01/01/18,01/01/18,01/01/18
+5,Loans,L5555,John,Smith,101 Sesame Street,Penarth,Cardiff,CF123ZZ,01/01/99,07912345678,john@smith.com,,,d123456,,,01/01/18,01/01/18,01/01/18,01/01/18
+6,Van,V6666,John,Smith,101 Sesame Street,Penarth,Cardiff,CF123ZZ,01/01/99,07912345678,john@smith.com,CF19ABC,SMITH010203,d123456,abi998877,,01/01/18,01/01/18,01/01/18,01/01/18
+7,Motor,P1117,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,20/10/74,07980343536,Craig@Lewis.com,NJ11LOL,Lewis010203,d112233,abi111222,,01/01/18,01/01/18,01/01/18,01/01/18
+7,Motor,,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,20/10/74,07980343536,Craig@Lewis.com,NJ11LOL,Lewis010203,d112233,abi111222,,01/01/18,01/01/18,01/01/18,01/01/18
+7,Motor,P1117,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,20/10/74,07980343536,Craig@Lewis.com,NJ11LOL,Lewis010203,d112233,abi111222,,01/01/18,01/01/18,01/01/18,01/01/18
+8,Motor,P1117,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,20/10/74,,,NJ11LOL,Lewis010203,d112233,abi111222,,01/01/18,01/01/18,01/01/18,01/01/18
+13,HH,H2227,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,,07980343536,Craig@Lewis.com,,,d112233,,alf123456,01/01/18,01/01/18,01/01/18,01/01/18
+15,MP,MP3337,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,20/10/74,07980343536,Craig@Lewis.com,NJ11LOL,Lewis010203,d112233,abi111222,alf123456,01/01/18,01/01/18,01/01/18,01/01/18
+16,MP,MP3337,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,,20/10/74,07980343536,Craig@Lewis.com,NJ11LOL,Lewis010203,d112233,abi111222,alf123456,01/01/18,01/01/18,01/01/18,01/01/18
+20,Travel,T4447,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,,20/10/74,07980343536,Craig@Lewis.com,,,d112233,,,01/01/18,01/01/18,01/01/18,01/01/18
+20,Travel,T4447,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,20/10/74,07980343536,Craig@Lewis.com,,,d112233,,,01/01/18,01/01/18,01/01/18,01/01/18
+25,Loans,L5557,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,20/10/74,07980343536,Craig@Lewis.com,,,d112233,,,01/01/18,01/01/18,01/01/18,01/01/18
+25,Loans,,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,20/10/74,07980343536,Craig@Lewis.com,,,d112233,,,01/01/18,01/01/18,01/01/18,01/01/18
+25,Loans,L5557,Craig,Lewis,,,,CF840KK,20/10/74,07980343536,Craig@Lewis.com,,,d112233,,,01/01/18,01/01/18,01/01/18,01/01/18
+28,Loans,L5557,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,,07980343536,Craig@Lewis.com,,,d112233,,,01/01/18,01/01/18,01/01/18,01/01/18
+29,Van,V6667,C,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,20/10/74,07980343536,Craig@Lewis.com,BO33ABC,,d112233,abi909808,,01/01/18,01/01/18,01/01/18,01/01/18
+29,Van,V6667,C,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,20/10/74,07980343536,Craig@Lewis.com,BO33ABC,Lewis010203,d112233,abi909808,,01/01/18,01/01/18,01/01/18,01/01/18
+29,Van,V6667,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,20/10/74,07980343536,Craig@Lewis.com,BO33ABC,Lewis010203,d112233,abi909808,,01/01/18,01/01/18,01/01/18,01/01/18
+32,Van,V6667,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,,07980343536,Craig@Lewis.com,BO33ABC,Lewis010203,d112233,abi909808,,01/01/18,01/01/18,01/01/18,01/01/18
+32,Van,V6667,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,20/10/74,,Craig@Lewis.com,BO33ABC,Lewis010203,d112233,abi909808,,01/01/18,01/01/18,01/01/18,01/01/18
+32,Van,V6667,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,20/10/74,,,BO33ABC,Lewis010203,d112233,abi909808,,01/01/18,01/01/18,01/01/18,01/01/18
+32,Van,V6667,Craig,Lewis,345 Fir Tree Street,Pontypridd,Cardiff,CF840KK,20/10/74,07980343536,Craig@Lewis.com,BO33ABC,,d112233,abi909808,,01/01/18,01/01/18,01/01/18,01/01/18
+36,Motor,P31345,Kevin,Jones,11 Green Road,Whitchurch,Cardiff,CF578XX,10/10/87,07912445566,,CF11PPP,JONES010203,d15289,abi567194,,01/01/18,01/01/18,01/01/18,01/01/18
+36,Motor,P31345,Kevin,Jones,11 Green Road,Whitchurch,Cardiff,CF578XX,10/10/87,07912445566,kevin@jones.com,CF11PPP,JONES010203,d15289,abi567194,,01/01/18,01/01/18,01/01/18,01/01/18
+38,Motor,P31345,Ann,Jones,11 Green Road,Whitchurch,Cardiff,CF578XX,10/10/86,07912450850,ann@jones.com,CF11PPP,JONES213243,d15289,abi567194,,01/01/18,01/01/18,01/01/18,01/01/18
+39,HH,H2207,Kevin,Jones,11 Green Road,Whitchurch,Cardiff,CF578XX,,07912445566,kevin@jones.com,,,d15289,,alf909272,01/01/18,01/01/18,01/01/18,01/01/18
+40,Motor,P765567,Paul,Evans,17 Cricket Avenue,Ely,Cardiff,CF123HJ,23/02/67,07912101202,paul@evans.com,LO12POP,EVANS010203,d171717,abi171717,,01/01/18,01/01/18,01/01/18,01/01/18
+40,Motor,P765567,Paul,Evans,17 Cricket Avenue,Ely,Cardiff,CF123HJ,23/02/92,07986868686,paul-jr@evans.com,LO12POP,EVANS212223,d171717,abi171717,,01/01/18,01/01/18,01/01/18,01/01/18
+42,Motor,P765567,Paul,Evans,101 student-halls,Cardiff,Cardiff,CF124FF,23/02/92,07986868686,paul-jr@evans.com,LO12POP,EVANS212223,d181818,abi171717,,01/01/18,01/01/18,01/01/18,01/01/18
+42,Motor,P765001,Paul,Evans,101 student-halls,Cardiff,Cardiff,CF124FF,23/02/92,07986868686,paul-jr@evans.com,NO15UIY,EVANS212223,d181818,abi758209,,01/01/18,01/01/18,01/01/18,01/01/18
+44,Motor,P95312,Barry,Rogers,77 New Street,Fairwater,Cardiff,CF122IQ,10/12/00,0791713165,Barry@Rogers.com,TT11KLO,Rogers010203,d90023,abi317313,,01/01/18,01/01/18,01/01/18,01/01/18
+45,HH,H7720,Barry,Rogers,77 New Street,Fairwater,Cardiff,CF122IQ,10/12/00,0791713165,Barry@Rogers.com,,,d90023,,alf765856,01/01/18,01/01/18,01/01/18,01/01/18
+46,MP,MP98981,Barry,Rogers,77 New Street,Fairwater,Cardiff,CF122IQ,10/12/00,0791713165,Barry@Rogers.com,TT11KLO,Rogers010203,d90023,abi317313,alf765856,01/01/18,01/01/18,01/01/18,01/01/18
+47,Travel,T45001,Barry,Rogers,77 New Street,Fairwater,Cardiff,CF122IQ,10/12/00,0791713165,Barry@Rogers.com,,,d90023,,,01/01/18,01/01/18,01/01/18,01/01/18
+48,Motor,P95313,Harry,Rogers,77 New Street,Fairwater,Cardiff,CF122IQ,10/12/00,07700888989,Harry@Rogers.com,RR12CDS,Rogers010204,d90023,abi317314,,01/01/18,01/01/18,01/01/18,01/01/18
+49,Motor,P9707,Steve,Edwards,65 Park Avenue,Bedwas,Caerphilly,CF837WQ,01/01/89,07948574554,steve-edwards@gmail.com,ZX55SSS,EDWARD010203,d723546,abi923011,,01/01/18,01/01/18,01/01/18,01/01/18
+50,Motor,P9802,Steve,Edwards,179 Church Close,Rudry,Caerphilly,CF832NB,01/01/70,07919767567,stevie@edwards.com,DE55SSS,EDWARD78787,d34433,abi76508,,01/01/18,01/01/18,01/01/18,01/01/18
+51,Motor,P6500,Steven,Edwards,1 Hollybush Road,Ty Isaf,Caerphilly,CF832IU,18/08/54,0791972347,the_steven@edwards.com,SE56YUY,EDWARD78300,d3100034,abi989586,,01/01/18,01/01/18,01/01/18,01/01/18
+52,Motor,P9707,Steve,Edwards,100 Park Avenue,Bedwas,Caerphilly,CF837WQ,01/01/89,0794898304,,RH194FFT,EDWARD300300,d30045,abi30067,,01/01/18,01/01/18,01/01/18,01/01/18
+53,Travel,T40056,Penny,Roberts,12 Pottery Street,Splott,Cardiff,,01/01/99,07912345001,Penny@Roberts.com,,,d156001,,,01/01/18,01/01/18,01/01/18,01/01/18
+53,Loans,L90998,Penny,Roberts,12 Pottery Street,Splott,Cardiff,CF992FF,01/01/99,07912345001,,,,d156001,,,01/01/18,01/01/18,01/01/18,01/01/18
+53,Motor,P67667,Penny,Roberts,12 Pottery Street,Splott,Cardiff,CF992FF,01/01/99,07912345001,Penny@Roberts.com,CC13FCC,ROBERTS876230,d156001,,,01/01/18,01/01/18,01/01/18,01/01/18
+54,Travel,T40903,June,Pickard,102 West Road,Radyr,Cardiff,CF881HG,01/01/99,0791333333,June@Pickard.com,,,d15346001,,,01/01/18,01/01/18,01/01/18,01/01/18
+54,Loans,L8940903,June,Pickard,102 West Road,Radyr,Cardiff,,01/01/99,0791333333,,,,d15346001,,,01/01/18,01/01/18,01/01/18,01/01/18
+55,Motor,P19705,Wendy,Griffiths,3 Yellow Brick Road,Gabalfa,Cardiff,CF651SA,23/05/99,0797980818283,wendy@griffiths.com,WE12GRF,GRIFFITH167297,d602737,abi1233333,,01/01/18,01/01/18,01/01/18,01/01/18
+56,Motor,P19705,Wendy,Griffiths,Flat 4 Student Block 3,Studentsville,Cardiff,CF885ST,23/05/99,0797980818283,wendy@griffiths.com,WE12GRF,GRIFFITH167297,d400200,abi1233333,,01/01/18,01/01/18,01/01/18,01/01/18
+57,HH,H70010,Hillary,Olazabal,200 First Avenue,Trecenydd,Caerphilly,CF839OL,14/01/94,0797954400,holly234@gmail.com,,,d7006115,,alf70010,01/01/18,01/01/18,01/01/18,01/01/18
+58,HH,H70011,Colin,Ballesteros,11 Brynsiriol,Llanbradach,Caerphilly,CF834GF,15/02/90,0797954401,colball@gmail.com,,,d7006115,,alf70011,01/01/18,01/01/18,01/01/18,01/01/18
+59,HH,H70012,James,Woosnam,47 Queen Street,Ystrad Mynach,Caerphilly,CF832JH,16/03/84,0797954402,woosy67@gmail.com,,,d7006115,,alf70012,01/01/18,01/01/18,01/01/18,01/01/18
+60,HH,H70013,Iris,Woods,33 London Road,Senghenydd,Caerphilly,CF836VV,17/04/01,0797954403,IWoods70@gmail.com,,,d7006115,,alf70013,01/01/18,01/01/18,01/01/18,01/01/18
+61,HH,H70014,Maude,McIlroy,2 Swansea Way,Abertridwr,Caerphilly,CF831IO,18/05/65,0797954404,mmac@gmail.com,,,d7006115,,alf70014,01/01/18,01/01/18,01/01/18,01/01/18
+62,HH,H70015,Tina,Couples,150 West View,Penyrheol,Caerphilly,CF833BI,19/06/77,0797954405,tinacouples2@gmail.com,,,d7006115,,alf70015,01/01/18,01/01/18,01/01/18,01/01/18
+63,HH,H70016,Sheena,Faldo,79 North Avenue,Churchill Park,Caerphilly,CF839AA,20/07/92,0797954406,faldo_sheena@gmail.com,,,d7006115,,alf70016,01/01/18,01/01/18,01/01/18,01/01/18
+64,Motor,P888234,Dan,Sterling,35 Student Street,Gabalfa,Cardiff,CF404ST,23/02/00,,,PP22JJJ,STERLI52077,,,,01/01/18,01/01/18,01/01/18,01/01/18
+65,Motor,,Danny,Sterling,46 Student Street,Gabalfa,Cardiff,CF404ST,03/02/97,0797985558283,dsterl@aol.com,WE12GRF,STERLI52067,d400200,abi1233333,,01/01/18,01/01/18,01/01/18,01/01/18
+66,Motor,P910003,Mary,Christie,345 Fir Tree Street,Splott,Cardiff,CF840KK,20/10/74,07980343536,MJC1234@hotmail.com,CW72AJG,CHRISTI100200,d926666,abi777717,,01/01/18,01/01/18,01/01/18,01/01/18
+67,Van,V87442,Mary,Christie,345 Fir Tree Street,Splott,Cardiff,CF840KK,,,Mary@Christie.com,IP13GDO,CHRISTI100200,d44556677,abi159038,,01/01/18,01/01/18,01/01/18,01/01/18
