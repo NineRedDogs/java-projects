@@ -1,0 +1,81 @@
+
+A. Set up input files :
+
+   1. Pre-requisites:
+        csv file with dates in 18/05/65 format <see: ~/dev/git-repos/ARD-ADID/scripts/andy-data/sampleData.csv_PARSED)
+
+   2. run the preprocess script (linux shell)
+     $ cd ~/dev/git-repos/ARD-ADID/scripts
+     $ python neoadmin-preprocess.py -i ~/dev/git-repos/ARD-ADID/scripts/andy-data/sampleData.csv_PARSED
+
+     look for generated files : 
+
+     $ ll ~/dev/git-repos/ARD-ADID/scripts/andy-data/sampleData
+		 address.csv
+		 device.csv
+		 matches.csv
+		 person.csv
+		 person_address.csv
+		 person_product.csv
+		 product.csv
+		 product_device.csv
+		 product_vehicle.csv
+		 vehicle.csv
+
+
+B. Remove previous database files
+
+    1. stop DB
+       - in neo4j-desktop - stop the database
+    2. delete DB directory
+       - $ rm -rf /mnt/c/Users/agrahame/.Neo4jDesktop/neo4jDatabases/database-44234134-0bb8-472d-a497-4df821413257/installation-3.5.4/data/databases/graph.db
+
+
+C. Import new data (windows shell)
+    1. > neoadmin-import.bat c:\Users\agrahame\dev\git-repos\ARD-ADID\scripts\andy-data\sampleData
+
+       where the arg passed in points at the directory where all the pre-processed files (from A2 above were created)
+    
+
+
+
+======================================
+
+louvain identitiy
+
+    private void identifyCommunities() {
+        db.execute("CALL algo.louvain('Person', 'MATCH',\n" +
+                "    {write:true, writeProperty:'community',weightProperty:'weight'})\n" +
+                "    YIELD nodes, communityCount, iterations, loadMillis, computeMillis, writeMillis;");
+    }
+
+    private void commitIdentities() {
+        final String query = "MATCH (p:Person) where NOT p.community IS null return p";
+        final String action = "MERGE (i:Identity {id:p.community}) \n" + 
+                              "   MERGE (p)-[:SHARES]->(i)";
+        doBatch(query, action, AdidPlayground.BATCH_SIZE);
+    }
+
+
+---------
+
+for match in matches (~line 176)
+
+each match looks like : 
+
+start end
+'1' '2' 'deviceId'
+
+then updates current match row :
+
+'1'  '2'   none, none, none, none, none, none, none, none, none, none, 
+
+to 
+
+'1'  '2'   none, none, none, true, none, none, none, none, none, none, 
+
+column set to true based on the match (i.e. deviceId in this example)
+
+       superfieldindex = lookupSuperFieldIndex[superfieldname]
+       currentMatchRow[superfieldindex + 2] = True
+
