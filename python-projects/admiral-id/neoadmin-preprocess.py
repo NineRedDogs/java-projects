@@ -117,10 +117,10 @@ def matchSuperFields(row):
 def score(matchRow):
 	startRowNum=matchRow[0]
 	endRowNum=matchRow[1]
-	startRow=row[startRowNum]
-	endRow=row[endRowNum]
-	superfieldindex = lookupSuperFieldIndex['regNum']
-	currentMatchRow[superfieldindex + 2] = Bluebird
+	#startRow=row[startRowNum]
+	#endRow=row[endRowNum]
+	#superfieldindex = lookupSuperFieldIndex['regNum']
+	#currentMatchRow[superfieldindex + 2] = Bluebird
 
 	
 	
