@@ -1,5 +1,8 @@
 package ajg.adid.data;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -209,14 +212,19 @@ public class SampleDataGenerator {
 		return rows;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		final SampleDataGenerator sdg = new SampleDataGenerator();
 		
+		final String CSV_FILE = System.getProperty("user.home") + File.separator + "generated.csv";
+		
+		FileWriter writer = new FileWriter(CSV_FILE);		  
 		List<CsvRow> rows = sdg.generateRows();
 		
-		System.out.println(CsvRow.headers());
+		writer.write(CsvRow.headers() + "\n");
+
 		for (CsvRow csvRow : rows) {
-			System.out.println(csvRow);
+			writer.write(csvRow.toString() + "\n");
 		}
+		writer.close();
 	}
 }
