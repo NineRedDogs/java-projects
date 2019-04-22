@@ -10,7 +10,7 @@ import java.util.Random;
 
 public abstract class BaseGenerator {
 	
-	protected final static String DATA_DIR = System.getProperty("user.dir") + File.separator + "bin/data/";
+	protected final static String DATA_DIR = System.getProperty("user.dir") + File.separator + "/src/main/resources/data/";
 	
 	protected final Random rnd = new Random();
 	

@@ -214,6 +214,7 @@ public class SampleDataGenerator {
 	
 	public static void main(String[] args) throws IOException {
 		final SampleDataGenerator sdg = new SampleDataGenerator();
+		System.out.println("running main class .....");
 		
 		final String CSV_FILE = System.getProperty("user.home") + File.separator + "generated.csv";
 		
@@ -226,5 +227,8 @@ public class SampleDataGenerator {
 			writer.write(csvRow.toString() + "\n");
 		}
 		writer.close();
+		
+		System.out.println("finished  main class .....");
+
 	}
 }
