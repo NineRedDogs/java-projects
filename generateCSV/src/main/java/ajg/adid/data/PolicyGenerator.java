@@ -2,6 +2,8 @@ package ajg.adid.data;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class PolicyGenerator extends BaseGenerator {
@@ -12,6 +14,7 @@ public class PolicyGenerator extends BaseGenerator {
 	private static final int NUM_DIGITS = 12;
 	private static final String digits = "0123456789";
 	private static final int POLICY_PREFIX_CHARS = 3;
+	private final Map<String,Boolean> policyNums = new HashMap<String, Boolean>();
 	
 	private final int NUM_PRODUCTS;
 	
@@ -22,8 +25,15 @@ public class PolicyGenerator extends BaseGenerator {
 	
 	public AdmiralPolicy generatePolicy() {
 		final String product = admiralProducts[rnd.nextInt(NUM_PRODUCTS)];
-		final String policyNumber = generatePolicyNumber(product);
-		
+		String policyNumber=""; 
+		boolean uniquePolicyNumber = false;
+		while (!uniquePolicyNumber) {
+		    policyNumber = generatePolicyNumber(product);
+		    if (!policyNums.containsKey(policyNumber)) {
+		        uniquePolicyNumber = true;
+		        policyNums.put(policyNumber, true);
+		    }
+		}
 		return new AdmiralPolicy(product, policyNumber, generatePolicyDate(), generatePolicyDate(), generatePolicyDate(), generatePolicyDate());
 	}
 

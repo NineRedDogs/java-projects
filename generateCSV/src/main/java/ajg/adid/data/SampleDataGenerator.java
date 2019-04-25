@@ -31,204 +31,216 @@ public class SampleDataGenerator {
 	private final Random rnd = new Random();
 	private final Chance chance = new Chance();
 
-
-	public List<CsvRow> generateRows() {
+	public void generateRows(final int totalRows, String outputCsvFileName) {
 
 		int rowId=0;
-		List<CsvRow> rows = new ArrayList<CsvRow>();
-
-		while (rowId < MAX_NUM_ROWS) {
-
-			final String forename = nameGen.getForename();
-			final String surname = nameGen.getSurname();
-			final AdmiralPolicy pol = policyGen.generatePolicy();
-			final Address addr = addrGen.getAddress();
-			final String dob = dobGen.generateDob();
-			final String mobile = mobileGen.generateMobile();
-			final String email = emailGen.generateEmailAddress(forename, surname);
-			final VehicleInfo vehicle = regNumGen.generateVehicleData();
-			final String dln = dlnGen.generateDLN(surname);
-			final String deviceId = devIdGen.generateDeviceId();
-
-			// create row
-			CsvRow row = new CsvRow(Integer.toString(rowId),
-					pol.getProduct(),
-					pol.getPolicyNumber(),
-					forename,
-					surname,
-					addr.getAddress1(),
-					addr.getAddress2(),
-					addr.getAddress3(),
-					addr.getPostcode(),
-					dob,
-					mobile,
-					email,
-					pol.isMotor() ? vehicle.getRegNum() : "",
-							pol.isMotor() ? dln : "",
-									deviceId,
-									pol.isMotor() ? vehicle.getAbiCode() : "",
-											addr.getAlfKey(),
-											pol.getDateInception(),
-											pol.getDateExpired(),
-											pol.getDateOriginated(),
-											pol.getDateCancelled());
-			rows.add(row);
-			rowId++;
-
-			// now for some optional extras .....
-			// add family member to a motor policy ???
-			if (pol.isMotor()) {
-				
-				if (chance.feelingLuckyPunk(ADD_MORE_VEHICLES_TO_POLICY)) {
-					for (int i = 0; i < rnd.nextInt(MAX_NUM_VEHICLES_PER_POLICY); i++) {
-						final VehicleInfo newVehicle = regNumGen.generateVehicleData();
-
-						// create row
-						CsvRow newRow = new CsvRow(Integer.toString(rowId),
-								pol.getProduct(),
-								pol.getPolicyNumber(),
-								forename,
-								surname,
-								addr.getAddress1(),
-								addr.getAddress2(),
-								addr.getAddress3(),
-								addr.getPostcode(),
-								dob,
-								mobile,
-								email,
-								newVehicle.getRegNum(),
-								dln,
-								deviceId,
-								newVehicle.getAbiCode(),
-								addr.getAlfKey(),
-								pol.getDateInception(),
-								pol.getDateExpired(),
-								pol.getDateOriginated(),
-								pol.getDateCancelled());
-						rows.add(newRow);
-						rowId++;
-					}
-				}	
+        FileWriter writer = null;         
 		
-				if (chance.feelingLuckyPunk(ADD_FAMILY_MEMBER_TO_MOTOR_POLICY)) {
-					final String familyForename = nameGen.getForename();
-					final String familyDob = dobGen.generateDob();
-					final String familyEmail = emailGen.generateEmailAddress(familyForename, surname);
-					final String familyMobile = mobileGen.generateMobile();
-					final String familyDln = dlnGen.generateDLN(surname);
+		try {
+	        writer = new FileWriter(outputCsvFileName);         
+		    writer.write(CsvRow.headers() + "\n");
 
-					CsvRow familyRow = new CsvRow(Integer.toString(rowId),
-							pol.getProduct(),
-							pol.getPolicyNumber(),
-							familyForename,
-							surname,
-							addr.getAddress1(),
-							addr.getAddress2(),
-							addr.getAddress3(),
-							addr.getPostcode(),
-							familyDob,
-							familyMobile,
-							familyEmail,
-							vehicle.getRegNum(),
-							familyDln,
-							deviceId,
-							vehicle.getAbiCode(),
-							addr.getAlfKey(),
-							pol.getDateInception(),
-							pol.getDateExpired(),
-							pol.getDateOriginated(),
-							pol.getDateCancelled());
-					rows.add(familyRow);
-					rowId++;
-				}
+		    while (rowId < totalRows) {
+
+		        final String forename = nameGen.getForename();
+		        final String surname = nameGen.getSurname();
+		        final AdmiralPolicy pol = policyGen.generatePolicy();
+		        final Address addr = addrGen.getAddress();
+		        final String dob = dobGen.generateDob();
+		        final String mobile = mobileGen.generateMobile();
+		        final String email = emailGen.generateEmailAddress(forename, surname);
+		        final VehicleInfo vehicle = regNumGen.generateVehicleData();
+		        final String dln = dlnGen.generateDLN(surname);
+		        final String deviceId = devIdGen.generateDeviceId();
+
+		        // create row
+		        CsvRow row = new CsvRow(Integer.toString(rowId),
+		                pol.getProduct(),
+		                pol.getPolicyNumber(),
+		                forename,
+		                surname,
+		                addr.getAddress1(),
+		                addr.getAddress2(),
+		                addr.getAddress3(),
+		                addr.getPostcode(),
+		                dob,
+		                mobile,
+		                email,
+		                pol.isMotor() ? vehicle.getRegNum() : "",
+		                        pol.isMotor() ? dln : "",
+		                                deviceId,
+		                                pol.isMotor() ? vehicle.getAbiCode() : "",
+		                                        addr.getAlfKey(),
+		                                        pol.getDateInception(),
+		                                        pol.getDateExpired(),
+		                                        pol.getDateOriginated(),
+		                                        pol.getDateCancelled());
+		        writer.write(row + "\n");
+		        rowId++;
+
+		        // now for some optional extras .....
+		        // add family member to a motor policy ???
+		        if (pol.isMotor()) {
+
+		            if (chance.feelingLuckyPunk(ADD_MORE_VEHICLES_TO_POLICY)) {
+		                for (int i = 0; i < rnd.nextInt(MAX_NUM_VEHICLES_PER_POLICY); i++) {
+		                    final VehicleInfo newVehicle = regNumGen.generateVehicleData();
+
+		                    // create row
+		                    CsvRow newRow = new CsvRow(Integer.toString(rowId),
+		                            pol.getProduct(),
+		                            pol.getPolicyNumber(),
+		                            forename,
+		                            surname,
+		                            addr.getAddress1(),
+		                            addr.getAddress2(),
+		                            addr.getAddress3(),
+		                            addr.getPostcode(),
+		                            dob,
+		                            mobile,
+		                            email,
+		                            newVehicle.getRegNum(),
+		                            dln,
+		                            deviceId,
+		                            newVehicle.getAbiCode(),
+		                            addr.getAlfKey(),
+		                            pol.getDateInception(),
+		                            pol.getDateExpired(),
+		                            pol.getDateOriginated(),
+		                            pol.getDateCancelled());
+		                    writer.write(newRow + "\n");
+		                    rowId++;
+		                }
+		            }	
+
+		            if (chance.feelingLuckyPunk(ADD_FAMILY_MEMBER_TO_MOTOR_POLICY)) {
+		                final String familyForename = nameGen.getForename();
+		                final String familyDob = dobGen.generateDob();
+		                final String familyEmail = emailGen.generateEmailAddress(familyForename, surname);
+		                final String familyMobile = mobileGen.generateMobile();
+		                final String familyDln = dlnGen.generateDLN(surname);
+
+		                CsvRow familyRow = new CsvRow(Integer.toString(rowId),
+		                        pol.getProduct(),
+		                        pol.getPolicyNumber(),
+		                        familyForename,
+		                        surname,
+		                        addr.getAddress1(),
+		                        addr.getAddress2(),
+		                        addr.getAddress3(),
+		                        addr.getPostcode(),
+		                        familyDob,
+		                        familyMobile,
+		                        familyEmail,
+		                        vehicle.getRegNum(),
+		                        familyDln,
+		                        deviceId,
+		                        vehicle.getAbiCode(),
+		                        addr.getAlfKey(),
+		                        pol.getDateInception(),
+		                        pol.getDateExpired(),
+		                        pol.getDateOriginated(),
+		                        pol.getDateCancelled());
+		                writer.write(familyRow + "\n");
+		                rowId++;
+		            }
 
 
-				// add twin to a motor policy ???
-				if (chance.feelingLuckyPunk(ADD_TWIN_TO_MOTOR_POLICY)) {
-					final String twinForename = nameGen.getForename();
-					final String twinEmail = emailGen.generateEmailAddress(twinForename, surname);
-					final String twinMobile = mobileGen.generateMobile();
-					final String twinDln = dlnGen.generateDLN(surname);
+		            // add twin to a motor policy ???
+		            if (chance.feelingLuckyPunk(ADD_TWIN_TO_MOTOR_POLICY)) {
+		                final String twinForename = nameGen.getForename();
+		                final String twinEmail = emailGen.generateEmailAddress(twinForename, surname);
+		                final String twinMobile = mobileGen.generateMobile();
+		                final String twinDln = dlnGen.generateDLN(surname);
 
-					CsvRow twinRow = new CsvRow(Integer.toString(rowId),
-							pol.getProduct(),
-							pol.getPolicyNumber(),
-							twinForename,
-							surname,
-							addr.getAddress1(),
-							addr.getAddress2(),
-							addr.getAddress3(),
-							addr.getPostcode(),
-							dob,
-							twinMobile,
-							twinEmail,
-							vehicle.getRegNum(),
-							twinDln,
-							deviceId,
-							vehicle.getAbiCode(),
-							addr.getAlfKey(),
-							pol.getDateInception(),
-							pol.getDateExpired(),
-							pol.getDateOriginated(),
-							pol.getDateCancelled());
-					rows.add(twinRow);
-					rowId++;
-				}
+		                CsvRow twinRow = new CsvRow(Integer.toString(rowId),
+		                        pol.getProduct(),
+		                        pol.getPolicyNumber(),
+		                        twinForename,
+		                        surname,
+		                        addr.getAddress1(),
+		                        addr.getAddress2(),
+		                        addr.getAddress3(),
+		                        addr.getPostcode(),
+		                        dob,
+		                        twinMobile,
+		                        twinEmail,
+		                        vehicle.getRegNum(),
+		                        twinDln,
+		                        deviceId,
+		                        vehicle.getAbiCode(),
+		                        addr.getAlfKey(),
+		                        pol.getDateInception(),
+		                        pol.getDateExpired(),
+		                        pol.getDateOriginated(),
+		                        pol.getDateCancelled());
+		                writer.write(twinRow + "\n");
+		                rowId++;
+		            }
 
-				// add other policies for this customer ??
-				if (chance.feelingLuckyPunk(ADD_MORE_POLICIES_FOR_CUSTOMER)) {
-					for (int i = 0; i < rnd.nextInt(policyGen.getNumProducts()-1); i++) {
-						final AdmiralPolicy newPol = policyGen.generatePolicy();
-						final VehicleInfo newVehicle = regNumGen.generateVehicleData();
+		            // add other policies for this customer ??
+		            if (chance.feelingLuckyPunk(ADD_MORE_POLICIES_FOR_CUSTOMER)) {
+		                for (int i = 0; i < rnd.nextInt(policyGen.getNumProducts()-1); i++) {
+		                    final AdmiralPolicy newPol = policyGen.generatePolicy();
+		                    final VehicleInfo newVehicle = regNumGen.generateVehicleData();
 
-						// create row
-						CsvRow newRow = new CsvRow(Integer.toString(rowId),
-								newPol.getProduct(),
-								newPol.getPolicyNumber(),
-								forename,
-								surname,
-								addr.getAddress1(),
-								addr.getAddress2(),
-								addr.getAddress3(),
-								addr.getPostcode(),
-								dob,
-								mobile,
-								email,
-								newPol.isMotor() ? newVehicle.getRegNum() : "",
-										newPol.isMotor() ? dln : "",
-												deviceId,
-												newPol.isMotor() ? newVehicle.getAbiCode() : "",
-														addr.getAlfKey(),
-														newPol.getDateInception(),
-														newPol.getDateExpired(),
-														newPol.getDateOriginated(),
-														newPol.getDateCancelled());
-						rows.add(newRow);
-						rowId++;
-					}
-				}			
-			}
+		                    // create row
+		                    CsvRow newRow = new CsvRow(Integer.toString(rowId),
+		                            newPol.getProduct(),
+		                            newPol.getPolicyNumber(),
+		                            forename,
+		                            surname,
+		                            addr.getAddress1(),
+		                            addr.getAddress2(),
+		                            addr.getAddress3(),
+		                            addr.getPostcode(),
+		                            dob,
+		                            mobile,
+		                            email,
+		                            newPol.isMotor() ? newVehicle.getRegNum() : "",
+		                                    newPol.isMotor() ? dln : "",
+		                                            deviceId,
+		                                            newPol.isMotor() ? newVehicle.getAbiCode() : "",
+		                                                    addr.getAlfKey(),
+		                                                    newPol.getDateInception(),
+		                                                    newPol.getDateExpired(),
+		                                                    newPol.getDateOriginated(),
+		                                                    newPol.getDateCancelled());
+		                    writer.write(newRow + "\n");
+		                    rowId++;
+		                }
+		            }			
+		        }
+		    }
+		} catch (IOException ioe) {
+		    System.out.println("Caught IOException when generating CSV file, e:" + ioe.getMessage());
+		} finally {
+		    if (writer != null) {
+		        try {
+		            writer.close();
+		        } catch (IOException ioe) {
+		            System.out.println("Caught IOException when closing CSV file, e:" + ioe.getMessage());
+		        }
+		    }
 		}
-		return rows;
+        System.out.println("\n\nCompleted. Created " + rowId + " rows in file : " + outputCsvFileName + "\n\n");
+
 	}
 	
 	public static void main(String[] args) throws IOException {
-		final SampleDataGenerator sdg = new SampleDataGenerator();
-		System.out.println("running main class .....");
-		
-		final String CSV_FILE = System.getProperty("user.home") + File.separator + "generated.csv";
-		
-		FileWriter writer = new FileWriter(CSV_FILE);		  
-		List<CsvRow> rows = sdg.generateRows();
-		
-		writer.write(CsvRow.headers() + "\n");
+	    
+        final String numRowsSysProp = System.getProperty("adid.csv.rows");
+        final String dataDirSysProp = System.getProperty("adid.csv.dir");
+	    
+        final int totalRows = ((numRowsSysProp == null) || (numRowsSysProp.isEmpty())) ? MAX_NUM_ROWS : Integer.parseInt(numRowsSysProp);
+        final String generatedDataDir = ((dataDirSysProp == null) || (dataDirSysProp.isEmpty())) ? System.getProperty("user.home") : dataDirSysProp;
+        final String CSV_FILE = generatedDataDir + File.separator + "generated_" + totalRows + ".csv";
 
-		for (CsvRow csvRow : rows) {
-			writer.write(csvRow.toString() + "\n");
-		}
-		writer.close();
+		final SampleDataGenerator sdg = new SampleDataGenerator();
+		System.out.println("\n\nGenerating CSV data [" + totalRows + " rows] .....");
 		
-		System.out.println("finished  main class .....");
+		sdg.generateRows(totalRows, CSV_FILE);
+		
 
 	}
 }
