@@ -1,5 +1,8 @@
 package ajg.adid.data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class EmailGenerator extends BaseGenerator {
 	
 	
@@ -7,15 +10,28 @@ public class EmailGenerator extends BaseGenerator {
 	private static final int FIRST_LETTER = 0;
 	private final String[] emailProviders;
 	private final Chance c = new Chance();
-	
+    private final Map<String,Boolean> emailAddrs = new HashMap<String, Boolean>();
 	private final int NUM_PROVIDERS;
 	
 	public EmailGenerator() {
 		emailProviders = readFile(PROVIDERS_FILE);
 		NUM_PROVIDERS=emailProviders.length;
 	}
-	
-	public String generateEmailAddress(final String forename, final String surname) {
+
+    public String generateEmailAddress(final String forename, final String surname) {
+        String emailAddress=""; 
+        boolean uniqueEmailAddress = false;
+        while (!uniqueEmailAddress) {
+            emailAddress = generateEmailAddressCore(forename, surname);
+            if (!emailAddrs.containsKey(emailAddress)) {
+                uniqueEmailAddress = true;
+                emailAddrs.put(emailAddress, true);
+            }
+        }
+        return emailAddress;
+    }
+
+	private String generateEmailAddressCore(final String forename, final String surname) {
 		final String forenameBit = genForenamePortion(forename);
 		String emailAddress;
 		
