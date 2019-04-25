@@ -1,9 +1,15 @@
-import csv, sys, argparse, os, hashlib, time
+import csv, sys, argparse, os, hashlib, time, Levenshtein
 
 from datetime import datetime
+from Levenshtein._levenshtein import distance, jaro, jaro_winkler
 
 startTime = time.time()
 
+goodMatchScore = 0.8
+levenshteinThreshold = 0.66
+#goodMatchScore = 0.00
+
+origRowData = {}
 matchMaps = {}
 openFiles = []
 
@@ -11,17 +17,17 @@ openFiles = []
 col_rowID=0
 col_productName=1
 col_productReference=2
-col_forename=3
-col_surname=4
+col_forename=3 #score - 2 : 
+col_surname=4 #score - 2  : 
 col_address1=5
 col_address2=6
 col_address3=7
 col_postcode=8
-col_dateOfBirth=9
-col_mobile=10
-col_email=11
+col_dateOfBirth=9 #score - 2 
+col_mobile=10 #score - 2
+col_email=11 #score - 1
 col_regNum=12
-col_dln=13
+col_dln=13 #score - 3
 col_deviceId=14
 col_abiCode=15
 col_alfKey=16
@@ -29,6 +35,9 @@ col_dateInception=17
 col_dateExpiry=18
 col_dateOrigin=19
 col_dateCancellation=20
+
+# score = (lev_total * field_weighting) summed for ALL matched fields / total weighting for matched fields    
+# confidence = similarityWeighting of matchedFields / similarityWeighting of ALL fields 
 
 #--- composite columns
 col_fullnameDob=21
@@ -47,6 +56,7 @@ superFieldTuples = [
 	('surnamePostcode',col_surnamePostcode),
 	('regNum',col_regNum),
 	]
+
 
 def convertDate(sourceDate):
     convertedDate = ""
@@ -114,16 +124,37 @@ def matchSuperFields(row):
     for superFieldTuple in superFieldTuples:
     	matchSuperField(superFieldTuple[0],superFieldTuple[1],row)
 
-def score(matchRow):
-	startRowNum=matchRow[0]
-	endRowNum=matchRow[1]
-	#startRow=row[startRowNum]
-	#endRow=row[endRowNum]
-	#superfieldindex = lookupSuperFieldIndex['regNum']
-	#currentMatchRow[superfieldindex + 2] = Bluebird
-
+def score(matchRow, lookupSuperFieldIndex):
+	startRow=origRowData[int(matchRow[0])]
+	endRow=origRowData[int(matchRow[1])]
+	numCommonFields=0
+	totalCommonFields=0
 	
-	
+	for superFieldTuple in superFieldTuples:
+		aIdx = lookupSuperFieldIndex[superFieldTuple[0]]
+		if (matchRow[aIdx+2] == True):
+			matchRow[aIdx+2] = 1.0
+		else:
+			if (matchRow[aIdx+2] == None):
+				#print('No match for superfield : ', superFieldTuple[0])
+				# compare this field between the rows
+				if startRow[superFieldTuple[1]] and endRow[superFieldTuple[1]]:
+					#print('both fields exist in original row, so comparing [', startRow[superFieldTuple[1]], '] with [', endRow[superFieldTuple[1]], ']')
+					#matchRow[aIdx+2] = round(jaro_winkler(startRow[superFieldTuple[1]], endRow[superFieldTuple[1]]), 2)
+					compScore = round(jaro(startRow[superFieldTuple[1]], endRow[superFieldTuple[1]]), 2)
+					if (compScore > levenshteinThreshold): # only record a comparison score if its relatively close
+						matchRow[aIdx+2] = compScore
+					else:
+						matchRow[aIdx+2] = 0.0 # not enough of a match, but as both fields present, record a low score to dilute the total
+    
+	for idx in range(2, len(matchRow)):
+		if (matchRow[idx]) or (matchRow[idx] == 0.0):
+			numCommonFields += 1
+			totalCommonFields += matchRow[idx]
+			
+	scoreVal = round((totalCommonFields / numCommonFields), 2)
+	matchRow.append(scoreVal)
+	return scoreVal
 	
 
 def matchSuperField(fieldName, fieldIndex, row):
@@ -147,7 +178,6 @@ def writeMatches(matchWriter):
     headerRow = [None]*(2+len(superFieldTuples))
     headerRow[0] = ":START_ID"
     headerRow[1] = ":END_ID"
-    
 
     matches = []
     #1 iterate outer map(superfieldname), 2) iterate inner map (superfield
@@ -178,11 +208,15 @@ def writeMatches(matchWriter):
         lookupSuperFieldIndex[superFieldTuple[0]] = tuplePosition
         headerRow[tuplePosition +2] = superFieldTuple[0]
         tuplePosition += 1
+    headerRow.append("score:float")
+    print("Headers [", headerRow, "]")
+    
+        
 
     matchWriter.writerow(headerRow)
     print("flattening " + str(len(matches)) + " matches")
-    
-    currentMatchRow = [None]*(2+len(superFieldTuples))
+    print("1")
+    currentMatchRow = [None]*(2+len(superFieldTuples)) 
     index = 0
     for match in matches:
        if index % 10000 == 0:
@@ -199,8 +233,12 @@ def writeMatches(matchWriter):
            # this row looks new, write last and update new
            if not currentMatchRow[0] == None:
                ### score here ????
-               score(currentMatchRow)
-               matchWriter.writerow(currentMatchRow)
+               mScore = score(currentMatchRow, lookupSuperFieldIndex)
+               if (mScore > goodMatchScore):
+               	    matchWriter.writerow(currentMatchRow)
+               #else:
+               #	    print("Bad match score, not writing (", mScore, ") nodes:", currentMatchRow[0], ":", currentMatchRow[1])
+               	    	
                currentMatchRow = [None]*(2+len(superFieldTuples))
            currentMatchRow[0] = match[0]
            currentMatchRow[1] = match[1]
@@ -208,7 +246,12 @@ def writeMatches(matchWriter):
     
     if not currentMatchRow[0] == None:
         ### also score
-        matchWriter.writerow(currentMatchRow)
+        mScore = score(currentMatchRow, lookupSuperFieldIndex)
+        if (mScore > goodMatchScore):
+        	matchWriter.writerow(currentMatchRow)
+        else:
+        	print("Bad match score, not writing (", mScore, ") nodes:", currentMatchRow[0], ":", currentMatchRow[1])
+        	
 
 ## main script
 ##
@@ -270,6 +313,8 @@ for row in reader:
     # the first field is mapped to :ID which is used for relationships but is not actually imported - hence row[0] is typically listed twice
     if row[col_rowID] == "RowID":
         continue
+       
+    origRowData[int(row[col_rowID])] = row;
 
     # CLEAN UP PROBLEMS WITH DATA 
 
@@ -331,12 +376,12 @@ print ""
 print("files closed")
 
 
-
 removeDuplicateRows(outFolder + "/vehicle.csv")
 removeDuplicateRows(outFolder + "/device.csv")
 removeDuplicateRows(outFolder + "/product.csv")
 removeDuplicateRows(outFolder + "/address.csv")
 removeDuplicateRows(outFolder + "/product_vehicle.csv")
+removeDuplicateRows(outFolder + "/product_device.csv")
 
 endTime = time.time()
 
