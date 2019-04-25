@@ -44,6 +44,39 @@ col_fullnameDob=21
 col_surnamePostcode=22
 
 
+csvFieldDefinitions = [
+	[ col_rowID, 'RowID', True, 2 ], 
+[ col_productName, 'PolType', True, 2 ], 
+[ col_productReference, 'PolicyNo', True, 2 ], 
+[ col_forename, 'ForeName', True, 2 ], 
+[ col_surname, 'Surname', True, 2 ], 
+[ col_address1, 'Addr1', True, 2 ], 
+[ col_address2, 'Addr2', True, 2 ], 
+[ col_address3, 'Addr3', True, 2 ], 
+[ col_postcode, 'Postcode', True, 2 ], 
+[ col_dateOfBirth, 'DOB', True, 2 ], 
+[ col_mobile, 'mobile', True, 2 ], 
+[ col_email, 'eMail', True, 2 ], 
+[ col_regNum, 'RegNo', True, 2 ], 
+[ col_dln, 'DrvLicNo', True, 2 ], 
+[ col_deviceId, 'DeviceID', True, 2 ], 
+[ col_abiCode, 'ABICode', True, 2 ], 
+[ col_alfKey, 'ALFKey', True, 2 ], 
+[ col_dateInception, 'Date_Inc', True, 2 ], 
+[ col_dateExpiry, 'Date_Exp', True, 2 ], 
+[ col_dateOrigin, 'OrinDate', True, 2 ], 
+[ col_dateCancellation, 'CanDate', True, 2 ], 
+
+# score = (lev_total * field_weighting) summed for ALL matched fields / total weighting for matched fields    
+# confidence = similarityWeighting of matchedFields / similarityWeighting of ALL fields 
+
+#--- composite columns
+col_fullnameDob
+col_surnamePostcode
+
+	]
+
+
 # name, fieldIndex tuple
 superFieldTuples = [
 	('dln',col_dln),
