@@ -2,8 +2,8 @@ package ajg.adid.data;
 
 public class CsvRow {
 	
-	private static final int MAKE_RANDOM_DELETE_FIELD = 9999;
-	private static final int MAKE_RANDOM_MODIFY_FIELD = 19999;
+	private static final int MAKE_RANDOM_DELETE_FIELD = 999;
+	private static final int MAKE_RANDOM_MODIFY_FIELD = 9999;
 	private final String rowId;
 	private final String policyType;
 	private final String policyNum;
@@ -84,7 +84,7 @@ public class CsvRow {
 	private String getDate(String origDate) {
 		if (chance.feelingLuckyPunk(MAKE_RANDOM_MODIFY_FIELD)) {
 			// nothing fancy, just set to a fixed date
-			return "01/01/1970";
+			return "01/01/70";
 		} else if (chance.feelingLuckyPunk(MAKE_RANDOM_DELETE_FIELD)) {
 			return "";	
 		}
@@ -261,7 +261,7 @@ public class CsvRow {
 	 * @see java.lang.Object#toString()
 	 */
 	public static String headers() {
-		return "rowId,policyType, policyNum,forename,surname,addr1,addr2,addr3,postcode,dob,mobile,email,regNum,dln,deviceId,abiCode,alfKey,dateInc,dateExp,dateOrin,dateCanc";
+	    return "RowID,PolType,PolicyNo,ForeName,Surname,Addr1,Addr2,Addr3,Postcode,DOB,mobile,eMail,RegNo,DrvLicNo,DeviceID,ABICode,ALFKey,Date_Inc,Date_Exp,OrinDate,CanDate";
 	}
 	
 
