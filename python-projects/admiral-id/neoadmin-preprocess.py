@@ -2,6 +2,8 @@ import csv, sys, argparse, os, hashlib, time, Levenshtein
 
 from datetime import datetime
 from Levenshtein._levenshtein import distance, jaro, jaro_winkler
+from __builtin__ import False, True
+from Carbon.Aliases import false
 
 startTime = time.time()
 
@@ -43,36 +45,41 @@ col_dateCancellation=20
 col_fullnameDob=21
 col_surnamePostcode=22
 
+columnId=0
+columnText=1
+columnIsSuperField=2
+columnIsScoreField=3
+columWeighting=4
 
-csvFieldDefinitions = [
-	[ col_rowID, 'RowID', True, 2 ], 
-[ col_productName, 'PolType', True, 2 ], 
-[ col_productReference, 'PolicyNo', True, 2 ], 
-[ col_forename, 'ForeName', True, 2 ], 
-[ col_surname, 'Surname', True, 2 ], 
-[ col_address1, 'Addr1', True, 2 ], 
-[ col_address2, 'Addr2', True, 2 ], 
-[ col_address3, 'Addr3', True, 2 ], 
-[ col_postcode, 'Postcode', True, 2 ], 
-[ col_dateOfBirth, 'DOB', True, 2 ], 
-[ col_mobile, 'mobile', True, 2 ], 
-[ col_email, 'eMail', True, 2 ], 
-[ col_regNum, 'RegNo', True, 2 ], 
-[ col_dln, 'DrvLicNo', True, 2 ], 
-[ col_deviceId, 'DeviceID', True, 2 ], 
-[ col_abiCode, 'ABICode', True, 2 ], 
-[ col_alfKey, 'ALFKey', True, 2 ], 
-[ col_dateInception, 'Date_Inc', True, 2 ], 
-[ col_dateExpiry, 'Date_Exp', True, 2 ], 
-[ col_dateOrigin, 'OrinDate', True, 2 ], 
-[ col_dateCancellation, 'CanDate', True, 2 ], 
+csvFieldDefinitions = [      
+[ col_rowID, 'RowID',               False,  False, 0 ],
+[ col_productName, 'PolType',       False,  False, 0 ],
+[ col_productReference, 'PolicyNo', True,   False, 0 ],
+[ col_forename, 'ForeName',         False,  True,  2 ],
+[ col_surname, 'Surname',           False,  True,  2 ],
+[ col_address1, 'Addr1',            False,  False, 0 ],
+[ col_address2, 'Addr2',            False,  False, 0 ],
+[ col_address3, 'Addr3',            False,  False, 0 ],
+[ col_postcode, 'Postcode',         False,  False, 0 ],
+[ col_dateOfBirth, 'DOB',           False,  True,  2 ],
+[ col_mobile, 'mobile',             True,   True,  2 ],
+[ col_email, 'eMail',               True,   True,  1 ],
+[ col_regNum, 'RegNo',              True,   False, 0 ],
+[ col_dln, 'DrvLicNo',              True,   True,  3 ],
+[ col_deviceId, 'DeviceID',         True,   False, 0 ],
+[ col_abiCode, 'ABICode',           False,  False, 0 ],
+[ col_alfKey, 'ALFKey',             True,   False, 0 ],
+[ col_dateInception, 'Date_Inc',    False,  False, 0 ],
+[ col_dateExpiry, 'Date_Exp',       False,  False, 0 ],
+[ col_dateOrigin, 'OrinDate',       False,  False, 0 ],
+[ col_dateCancellation, 'CanDate',  False,  False, 0 ],
 
 # score = (lev_total * field_weighting) summed for ALL matched fields / total weighting for matched fields    
 # confidence = similarityWeighting of matchedFields / similarityWeighting of ALL fields 
 
 #--- composite columns
-col_fullnameDob
-col_surnamePostcode
+ [ col_fullnameDob, 'yyy',          True,   False, 0 ],
+ [ col_surnamePostcode, 'xxx',      True,   False, 0 ]
 
 	]
 
@@ -150,12 +157,26 @@ def removeDuplicateRows(file):
     os.system("head -n 1 " + file + " > tmp;tail -n +2 " + file + " | sort -u >> tmp; mv tmp " + file)
 
 def groupSuperFieldsInit():
-    for superFieldTuple in superFieldTuples:
-        matchMaps[superFieldTuple[0]] = {}
+	for csvField in csvFieldDefinitions:
+		if (csvField[columnIsSuperField] == True):
+			matchMaps[csvField[columnText]] = {}
 
 def matchSuperFields(row):
-    for superFieldTuple in superFieldTuples:
-    	matchSuperField(superFieldTuple[0],superFieldTuple[1],row)
+	for csvField in csvFieldDefinitions:
+		if (csvField[columnIsSuperField] == True):
+			matchSuperField(csvField[columnText],csvField[columnId],row)
+    	
+def listSuperFields():
+	print("Superfields:")
+	for csvField in csvFieldDefinitions:
+		if (csvField[columnIsSuperField] == True):
+		    print("[" + str(csvField[columnId]) + "] " + csvField[columnText])
+		    
+def listScoreFields():
+	print("Scorefields:")
+	for csvField in csvFieldDefinitions:
+		if (csvField[columnIsScoreField] == True):
+		    print("[" + str(csvField[columnId]) + "] " + csvField[columnText] + " w(" + str(csvField[columWeighting]) + ")")
 
 def score(matchRow, lookupSuperFieldIndex):
 	startRow=origRowData[int(matchRow[0])]
@@ -257,6 +278,7 @@ def writeMatches(matchWriter):
            sys.stdout.flush()
        index += 1
        # skip the first two fields which contain start and end row id
+       print("curr match : ", match)
        superfieldname = match[2]
        superfieldindex = lookupSuperFieldIndex[superfieldname]
        if match[0] == currentMatchRow[0] and match[1] == currentMatchRow[1]:
@@ -300,6 +322,9 @@ if not os.path.exists(outFolder):
 print("-----------------------------------------------------------------")
 print(" Normalise data [" + inFile + "] output [" + outFolder + "] ...")
 print("-----------------------------------------------------------------")
+
+listSuperFields()
+listScoreFields()
 
 groupSuperFieldsInit()
 
