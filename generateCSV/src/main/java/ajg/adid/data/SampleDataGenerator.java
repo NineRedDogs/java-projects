@@ -223,7 +223,7 @@ public class SampleDataGenerator {
 		        }
 		    }
 		}
-        System.out.println("\n\nCompleted. Created " + rowId + " rows in file : " + outputCsvFileName + "\n\n");
+        System.out.println("\n\nCompleted. Created " + rowId + " rows in file : " + outputCsvFileName+ "\n\n");
 
 	}
 	
