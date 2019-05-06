@@ -51,41 +51,51 @@ class Preprocessor(object):
                 outFile.writelines(sortedLines)
         outFile.close()
 
+            
     
-
-    
-    
-    
-    def __init__(self, inFile, outFile):
+    def __init__(self, inFile):
         if os.path.isfile(inFile):
             self.inFile = inFile
         else:
             print("input file ", inFile, " DOES NOT exist, exiting")
             quit()
             
-        if outFile:
-            self.outFile = outFile
-        else: 
-            # Output file NOT provided, using input file as base
-            self.outFile = inFile + "_PARSED"
-            
         self.outFolder = inFile.split(".csv")[0]
         if not os.path.exists(self.outFolder):
             os.makedirs(self.outFolder)
+            
+        self.generateFilenames()
 
         self.determineNumSuperFields()
         self.determineNumScoreFields()
         self.determineTotalScoreWeighting()
+        
+    def generateCsvFilename(self, prefix):
+        return self.outFolder + '/' + prefix + '.csv'
 
+    def generateFilenames(self):
+        self.personFname = self.generateCsvFilename('person')
+        self.addressFname = self.generateCsvFilename('address')
+        self.personAddresssFname = self.generateCsvFilename('person_address')
+        self.productFname = self.generateCsvFilename('product')
+        self.personProductFname = self.generateCsvFilename('person_product')
+        self.vehicleFname = self.generateCsvFilename('vehicle')
+        self.productVehicleFname = self.generateCsvFilename('product_vehicle')
+        self.deviceFname = self.generateCsvFilename('device')
+        self.productDeviceFname = self.generateCsvFilename('product_device')
+        self.matchFname = self.generateCsvFilename('matches')
+        self.tempMatchFname = self.generateCsvFilename('temp_matches')
+        
+        
         
     def getInFile(self):
         return self.inFile
     
-    def getOutFile(self):
-        return self.outFile
+    def getOutDir(self):
+        return self.outFolder
     
-    def openWriter(self, folder, prefix):
-        csvFile = open(folder + '/' + prefix +'.csv', 'w')
+    def openWriter(self, filePath):
+        csvFile = open(filePath, 'w')
         writer = csv.writer(csvFile , lineterminator='\n')
         # print("open " + prefix + " writer")
         self.openFiles.append(csvFile);
@@ -219,8 +229,7 @@ class Preprocessor(object):
         headerRow[0] = ":START_ID"
         headerRow[1] = ":END_ID"
     
-        tempMatchFilename = self.outFolder + "/temp_matches.csv"
-        tempMatchFile = open(tempMatchFilename, 'w')
+        tempMatchFile = open(self.tempMatchFname, 'w')
         tempMatchWriter = csv.writer(tempMatchFile, lineterminator='\n')
     
         #1 iterate outer map(superfieldname), 2) iterate inner map (superfield
@@ -247,11 +256,11 @@ class Preprocessor(object):
     
         tempMatchFile.close()
     
-        self.removeDuplicateRows(tempMatchFilename, headerRowPresent=False)
+        self.removeDuplicateRows(self.tempMatchFname, headerRowPresent=False)
         
         print "opening temp match file reader",
         
-        tempMatchFile = open(tempMatchFilename, 'r')
+        tempMatchFile = open(self.tempMatchFname, 'r')
         tempReader = csv.reader(tempMatchFile, delimiter=',', quotechar='"')
         print (": DONE")
     
@@ -318,8 +327,41 @@ class Preprocessor(object):
                 scoreColumn += 1
     
         return scoringFields
-
-
+    
+    
+    def getPersonFname(self):
+        return self.personFname
+        
+    def getAddressFname(self):
+        return self.addressFname
+        
+    def getPersonAddressFname(self):
+        return self.personAddresssFname
+        
+    def getProductFname(self):
+        return self.productFname
+        
+    def getPersonProductFname(self):
+        return self.personProductFname
+        
+    def getVehicleFname(self):
+        return self.vehicleFname
+        
+    def getProductVehicleFname(self):
+        return self.productVehicleFname
+        
+    def getDeviceFname(self):
+        return self.deviceFname
+        
+    def getProductDeviceFname(self):
+        return self.productDeviceFname
+        
+    def getMatchFname(self):
+        return self.matchFname
+        
+    def getTempMatchFname(self):
+        return self.tempMatchFname
+         
     def processCsv(self):
         
         startTime = time.time()
@@ -337,17 +379,16 @@ class Preprocessor(object):
         reader = csv.reader(sourceFile, delimiter=',', quotechar='"')
         print (": DONE")
 
-
-        personWriter = self.openWriter(self.outFolder,'person')
-        addressWriter = self.openWriter(self.outFolder,'address')
-        personAddressWriter = self.openWriter(self.outFolder,'person_address')
-        productWriter = self.openWriter(self.outFolder, 'product')
-        personProductWriter = self.openWriter(self.outFolder, 'person_product')
-        vehicleWriter = self.openWriter(self.outFolder, 'vehicle')
-        productVehicleWriter = self.openWriter(self.outFolder, 'product_vehicle')
-        deviceWriter = self.openWriter(self.outFolder, 'device')
-        productDeviceWriter = self.openWriter(self.outFolder, 'product_device')
-        matchWriter = self.openWriter(self.outFolder, 'matches')
+        personWriter = self.openWriter(self.getPersonFname())
+        addressWriter = self.openWriter(self.getAddressFname())
+        personAddressWriter = self.openWriter(self.getPersonAddressFname())
+        productWriter = self.openWriter(self.getProductFname())
+        personProductWriter = self.openWriter(self.getPersonProductFname())
+        vehicleWriter = self.openWriter(self.getVehicleFname())
+        productVehicleWriter = self.openWriter(self.getProductVehicleFname())
+        deviceWriter = self.openWriter(self.getDeviceFname())
+        productDeviceWriter = self.openWriter(self.getProductDeviceFname())
+        matchWriter = self.openWriter(self.getMatchFname())
         
         print ("Opened the following files: " + str(map(lambda aFile: aFile.name,self.openFiles)))
 
@@ -456,14 +497,14 @@ class Preprocessor(object):
         print ""
         print("files closed")
         
-        self.removeDuplicateRows(self.outFolder + "/vehicle.csv")
-        self.removeDuplicateRows(self.outFolder + "/device.csv")
-        self.removeDuplicateRows(self.outFolder + "/product.csv")
-        self.removeDuplicateRows(self.outFolder + "/address.csv", uniqueOnColumnZero=True)
-        self.removeDuplicateRows(self.outFolder + "/product_vehicle.csv")
-        self.removeDuplicateRows(self.outFolder + "/product_device.csv")
-        self.removeDuplicateRows(self.outFolder + "/person.csv")
-        self.removeDuplicateRows(self.outFolder + "/person_address.csv")
+        self.removeDuplicateRows(self.getVehicleFname())
+        self.removeDuplicateRows(self.getDeviceFname())
+        self.removeDuplicateRows(self.getProductFname())
+        self.removeDuplicateRows(self.getAddressFname(), uniqueOnColumnZero=True)
+        self.removeDuplicateRows(self.getProductVehicleFname())
+        self.removeDuplicateRows(self.getProductDeviceFname())
+        self.removeDuplicateRows(self.getPersonFname())
+        self.removeDuplicateRows(self.getPersonAddressFname())
         
         endTime = time.time()
         
