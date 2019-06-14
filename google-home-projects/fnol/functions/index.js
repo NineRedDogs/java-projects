@@ -143,13 +143,14 @@ app.intent(['favorite color - yes', 'favorite fake color - yes'], (conv) => {
 // agreed to PERMISSION prompt, then boolean value 'permissionGranted' is true.
 app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
 	if (!permissionGranted) {
-		conv.ask('OK, no worries, whats your favorite color?');
-		conv.ask(new Suggestions('Blue', 'Red', 'Green'));
+    fnolQueryPrefix='OK, no worries';
 	} else {
-		conv.user.storage.userName = conv.user.name.display;
-		conv.ask(`Thanks, ${conv.user.storage.userName}. Whats your favorite color?`);
-		conv.ask(new Suggestions('Blue', 'Red', 'Green'));
-	}
+		fnolQueryPrefix=`Thanks, ${conv.user.storage.userName}`;
+		// conv.user.storage.userName = conv.user.name.display;
+		conv.user.storage.userName = conv.user.name.given;
+  }
+  conv.ask(`${fnolQueryPrefix}, What seems to be the problem?`);
+  conv.ask(new Suggestions('Leaky roof', 'Fence Blown down', 'a Break-in'));
 });
 
 
