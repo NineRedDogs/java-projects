@@ -67,13 +67,13 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
   //conv.ask(`${fnolQueryPrefix}, What seems to be the problem?`);
   //conv.ask(new Suggestions('Leaky roof', 'Fence Blown down', 'a Break-in'));
   if (!permissionGranted) {
-    conv.ask(`Ok, no worries. 10:57  What's the fnol problem ?`);
+    conv.ask(`Ok, no worries. 11:36  What's the fnol problem ?`);
     conv.ask(new Suggestions('Leaky roof', 'Fence Blown down', 'a Break-in'));
   } else {
     conv.data.userName = conv.user.name.display;
-    conv.ask(`Thanks, ${conv.data.userName}. 10:57  What's the fnol problem ?`);
-    conv.ask(new Suggestions('Leaky roof', 'Fence Blown down', 'a Break-in'));
   }
+  conv.ask(`Thanks, ${conv.data.userName}. 11:36  What's the fnol problem ?`);
+  conv.ask(new Suggestions('Leaky roof', 'Fence Blown down', 'a Break-in'));
 });
 
 app.intent('actions_intent_PERMISSION-orig', (conv, params, permissionGranted) => {
