@@ -40,7 +40,7 @@ const app = dialogflow({debug: true});
 // Handle the Dialogflow intent named 'Start Intent'.
 app.intent('start Fnol', (conv) => {
   // uncomment following line to clear stored user info
-  // conv.user.storage = {};
+  conv.user.storage = {};
   const name = conv.user.storage.userName;
   if (!name) {
     // Asks the user's permission to know their name, for personalization.
@@ -48,9 +48,8 @@ app.intent('start Fnol', (conv) => {
       context: 'Hi there, if its ok, it would be nice to get to know you better',
       permissions: 'NAME',
     }));
-  } else {
-    conv.ask(`Hi again, ${name}. 12:23 What seems to be the problem?`);
   }
+  conv.ask(`Hi again, ${name}. 12:38 What seems to be the problem?`);
  });
 
 
