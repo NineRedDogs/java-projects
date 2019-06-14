@@ -40,12 +40,12 @@ const app = dialogflow({debug: true});
 // Handle the Dialogflow intent named 'Start Intent'.
 app.intent('start Fnol', (conv) => {
   // uncomment following line to clear stored user info
-  conv.user.storage = {};
+  // conv.user.storage = {};
   const name = conv.user.storage.userName;
   if (!name) {
     // Asks the user's permission to know their name, for personalization.
     conv.ask(new Permission({
-      context: 'Hi there, to get to know you better',
+      context: 'Hi there, if its ok, itd be nice to get to know you better',
       permissions: 'NAME',
     }));
   } else {
@@ -53,6 +53,31 @@ app.intent('start Fnol', (conv) => {
   }
  });
 
+
+// Handle the DialogFlow intent named 'actions_intent_PERMISSION'. If user
+// agreed to PERMISSION prompt, then boolean value 'permissionGranted' is true.
+app.intent('actions_intent_PERMISSION-AG', (conv, params, permissionGranted) => {
+	if (!permissionGranted) {
+    fnolQueryPrefix='OK, no worries';
+	} else {
+		// conv.user.storage.userName = conv.user.name.display;
+		conv.user.storage.userName = conv.user.name.given;
+		fnolQueryPrefix=`Thanks, ${conv.user.storage.userName}`;
+  }
+  conv.ask(`${fnolQueryPrefix}, What seems to be the problem?`);
+  conv.ask(new Suggestions('Leaky roof', 'Fence Blown down', 'a Break-in'));
+});
+
+app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
+  if (!permissionGranted) {
+    conv.ask(`Ok, no worries. Pray tell, What's your favorite color?`);
+    conv.ask(new Suggestions('Blue', 'Red', 'Green'));
+  } else {
+    conv.data.userName = conv.user.name.display;
+    conv.ask(`Thanks, ${conv.data.userName}. What's your favorite color?`);
+    conv.ask(new Suggestions('Blue', 'Red', 'Green'));
+  }
+});
 
  // Handle the Dialogflow intent named 'Start Intent'.
 app.intent('Start Intent', (conv) => {
@@ -139,19 +164,7 @@ app.intent(['favorite color - yes', 'favorite fake color - yes'], (conv) => {
 
 
 
-// Handle the DialogFlow intent named 'actions_intent_PERMISSION'. If user
-// agreed to PERMISSION prompt, then boolean value 'permissionGranted' is true.
-app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
-	if (!permissionGranted) {
-    fnolQueryPrefix='OK, no worries';
-	} else {
-		// conv.user.storage.userName = conv.user.name.display;
-		conv.user.storage.userName = conv.user.name.given;
-		fnolQueryPrefix=`Thanks, ${conv.user.storage.userName}`;
-  }
-  conv.ask(`${fnolQueryPrefix}, What seems to be the problem?`);
-  conv.ask(new Suggestions('Leaky roof', 'Fence Blown down', 'a Break-in'));
-});
+
 
 
 // Handle the Dialogflow NO_INPUT intent.
