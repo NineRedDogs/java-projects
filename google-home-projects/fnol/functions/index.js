@@ -57,23 +57,12 @@ app.intent('start Fnol', (conv) => {
 // Handle the DialogFlow intent named 'actions_intent_PERMISSION'. If user
 // agreed to PERMISSION prompt, then boolean value 'permissionGranted' is true.
 app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
-	//if (!permissionGranted) {
-  //  fnolQueryPrefix=`OK, no worries`;
-	//} else {
-	//	conv.user.storage.userName = conv.user.name.display;
-	//	//conv.user.storage.userName = conv.user.name.given;
-	//	fnolQueryPrefix=`Thanks, ${conv.user.storage.userName}`;
-  //}
-  //conv.ask(`${fnolQueryPrefix}, What seems to be the problem?`);
-  //conv.ask(new Suggestions('Leaky roof', 'Fence Blown down', 'a Break-in'));
   var queryPrefix="No worries";
   if (permissionGranted) {
     conv.user.storage.userName = conv.user.name.given;
     queryPrefix=`Great, ${conv.user.storage.userName}`;
   }
-  conv.ask(`${queryPrefix}. 11:59  What's the fnol problem ?`);
-  //conv.ask(`Thanks, ${conv.user.storage.userName}. 11:53  What's the fnol problem ?`);
-  //conv.ask(`Thanks, ${conv.data.userName}. 11:36  What's the fnol problem ?`);
+  conv.ask(`${queryPrefix}. What's the fnol problem ?`);
   conv.ask(new Suggestions('Leaky roof', 'Fence Blown down', 'a Break-in'));
 });
 
