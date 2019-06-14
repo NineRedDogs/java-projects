@@ -72,7 +72,7 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
   } else {
     //conv.data.userName = conv.user.name.display;
 	  //conv.user.storage.userName = conv.user.name.given;
-    conv.user.storage.userName = conv.user.name.display;
+    conv.user.storage.userName = conv.user.name.given;
   }
   conv.ask(`Thanks, ${conv.user.storage.userName}. 11:41  What's the fnol problem ?`);
   //conv.ask(`Thanks, ${conv.data.userName}. 11:36  What's the fnol problem ?`);
