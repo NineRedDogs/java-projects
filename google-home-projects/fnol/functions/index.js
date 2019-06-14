@@ -44,7 +44,7 @@ function whatsBeenDamaged(prefix, conv) {
 // Handle the Dialogflow intent named 'Start Intent'.
 app.intent('start Fnol', (conv) => {
   // uncomment following line to clear stored user info
-  conv.user.storage = {};
+  //conv.user.storage = {};
   const name = conv.user.storage.userName;
   if (!name) {
     // Asks the user's permission to know their name, for personalization.
