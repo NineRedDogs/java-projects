@@ -36,9 +36,9 @@ const functions = require('firebase-functions');
 const app = dialogflow({debug: true});
 
 
-function whatsBeenDamaged(prefix, conv) {
-  conv.ask(`${prefix},  Whats been damaged ?`);
-  conv.ask(new Suggestions('Roof', 'Fence', 'a Break-in'));
+function getFnolStatus(prefix, conv) {
+  conv.ask(`${prefix},  Do you want to start a new FNOL or resume an existing one ?`);
+  conv.ask(new Suggestions('new', 'resume', 'cancel'));
 }
 
 // Handle the Dialogflow intent named 'Start Intent'.
@@ -53,9 +53,10 @@ app.intent('start Fnol', (conv) => {
       permissions: 'NAME',
     }));
   } else {
-    whatsBeenDamaged(`Hi again, ${name}`, conv);
+    getFnolStatus(`Hi again, ${name}`, conv);
   }
  });
+
 
 
 // Handle the DialogFlow intent named 'actions_intent_PERMISSION'. If user
@@ -66,7 +67,17 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
     conv.user.storage.userName = conv.user.name.given;
     queryPrefix=`Great, ${conv.user.storage.userName}`;
   }
-  whatsBeenDamaged(queryPrefix, conv);
+  getFnolStatus(queryPrefix, conv);
+});
+
+// Handle the Dialogflow intent named 'Start Intent - new'.
+app.intent('start Fnol - new', (conv) => {
+  conv.close(`AJG10: you want to start a new FNOL`);
+});
+
+// Handle the Dialogflow intent named 'Start Intent - new'.
+app.intent('start Fnol - new', (conv) => {
+  conv.close(`AJG10: you want to resume an FNOL`);
 });
 
 
