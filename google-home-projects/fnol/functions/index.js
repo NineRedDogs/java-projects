@@ -73,21 +73,7 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
 // Handle the Dialogflow intent named 'fnol whats the problem'.
 // The intent collects a parameter named 'hhProblem'.
 app.intent('fnol whats the problem', (conv, {hhProblem}) => {
-  const luckyNumber = hhProblem.length;
-  const audioSound = 'https://actions.google.com/sounds/v1/cartoon/long_fart.ogg';
-
-  // Respond with the user's lucky number and end the conversation.
-  if (conv.user.storage.userName) {
-// if we've got the user name, address them by name and use SSML
-    // to embed an audio snippet in the response
-      conv.ask(`<speak>${conv.user.storage.userName}, Your fnol lucky number is ` + 
-           `${luckyNumber}. <audio src="${audioSound}"></audio>` +
-  `Would you like to give more details?</speak>`);
-  } else {
-      conv.ask(`<speak>Your fnol lucky number is ` + 
-           `${luckyNumber}. <audio src="${audioSound}"></audio>` +
-  `Would you like to give more details ?</speak>`);
-  }
+  conv.close(`AJG10: so the problem is ${hhProblem}`);
 });
 
 
