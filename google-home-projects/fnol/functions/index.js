@@ -35,6 +35,29 @@ const functions = require('firebase-functions');
 // Instantiate the Dialogflow client.
 const app = dialogflow({debug: true});
 
+
+
+// Handle the Dialogflow intent named 'Start Intent'.
+app.intent('start Fnol', (conv) => {
+  // uncomment following line to clear stored user info
+  conv.user.storage = {};
+  const name = conv.user.storage.userName;
+  if (!name) {
+    // Asks the user's permission to know their name, for personalization.
+    conv.ask(new Permission({
+      context: 'Hi there, to get to know you better',
+      permissions: 'NAME',
+    }));
+  } else {
+    conv.ask(`Hi again, ${name}. What seems to be the problem?`);
+  }
+ });
+
+
+
+
+// ================================================
+
 // In the case the user is interacting with the Action on a screened device
 // The Fake Color Carousel will display a carousel of color cards
 const fakeColorCarousel = () => {
