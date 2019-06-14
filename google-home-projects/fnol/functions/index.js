@@ -53,7 +53,8 @@ app.intent('start Fnol', (conv) => {
       permissions: 'NAME',
     }));
   } else {
-    whatsBeenDamaged(`Hi again, ${name}`);
+    conv.ask(`13:45-1  Whats been damaged ?`);
+    //whatsBeenDamaged(`Hi again, ${name}`);
     //conv.ask(`Hi again, ${name}. Whats been damaged ?`);
   }
  });
@@ -67,7 +68,8 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
     conv.user.storage.userName = conv.user.name.given;
     queryPrefix=`Great, ${conv.user.storage.userName}`;
   }
-  whatsBeenDamaged(queryPrefix);
+  conv.ask(`13:45-2  Whats been damaged ?`);
+  //whatsBeenDamaged(queryPrefix);
 
   //conv.ask(`${queryPrefix}. What's been damaged ?`);
   //conv.ask(new Suggestions('Roof', 'Fence', 'a Break-in'));
