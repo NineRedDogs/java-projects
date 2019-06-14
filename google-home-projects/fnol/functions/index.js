@@ -36,11 +36,15 @@ const functions = require('firebase-functions');
 const app = dialogflow({debug: true});
 
 
+function whatsBeenDamaged(prefix) {
+  conv.ask(`${prefix},  Whats been damaged ?`);
+  conv.ask(new Suggestions('Roof', 'Fence', 'a Break-in'));
+}
 
 // Handle the Dialogflow intent named 'Start Intent'.
 app.intent('start Fnol', (conv) => {
   // uncomment following line to clear stored user info
-  conv.user.storage = {};
+  // conv.user.storage = {};
   const name = conv.user.storage.userName;
   if (!name) {
     // Asks the user's permission to know their name, for personalization.
@@ -48,8 +52,10 @@ app.intent('start Fnol', (conv) => {
       context: 'Hi there, if its ok, it would be nice to get to know you better',
       permissions: 'NAME',
     }));
+  } else {
+    whatsBeenDamaged(`Hi again, ${name}`);
+    //conv.ask(`Hi again, ${name}. Whats been damaged ?`);
   }
-  conv.ask(`Hi again, ${name}. 12:38 What seems to be the problem?`);
  });
 
 
@@ -61,8 +67,10 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
     conv.user.storage.userName = conv.user.name.given;
     queryPrefix=`Great, ${conv.user.storage.userName}`;
   }
-  conv.ask(`${queryPrefix}. What's the fnol problem ?`);
-  conv.ask(new Suggestions('Leaky roof', 'Fence Blown down', 'a Break-in'));
+  whatsBeenDamaged(queryPrefix);
+
+  //conv.ask(`${queryPrefix}. What's been damaged ?`);
+  //conv.ask(new Suggestions('Roof', 'Fence', 'a Break-in'));
 });
 
 app.intent('actions_intent_PERMISSION-orig', (conv, params, permissionGranted) => {
