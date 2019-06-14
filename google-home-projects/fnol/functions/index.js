@@ -145,9 +145,9 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
 	if (!permissionGranted) {
     fnolQueryPrefix='OK, no worries';
 	} else {
-		fnolQueryPrefix=`Thanks, ${conv.user.storage.userName}`;
 		// conv.user.storage.userName = conv.user.name.display;
 		conv.user.storage.userName = conv.user.name.given;
+		fnolQueryPrefix=`Thanks, ${conv.user.storage.userName}`;
   }
   conv.ask(`${fnolQueryPrefix}, What seems to be the problem?`);
   conv.ask(new Suggestions('Leaky roof', 'Fence Blown down', 'a Break-in'));
