@@ -66,6 +66,7 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
   //}
   //conv.ask(`${fnolQueryPrefix}, What seems to be the problem?`);
   //conv.ask(new Suggestions('Leaky roof', 'Fence Blown down', 'a Break-in'));
+  var queryPrefix;
   if (!permissionGranted) {
     conv.ask(`Ok, no worries. 11:48  What's the fnol problem ?`);
     conv.ask(new Suggestions('Leaky roof', 'Fence Blown down', 'a Break-in'));
@@ -73,10 +74,10 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
     //conv.data.userName = conv.user.name.display;
 	  //conv.user.storage.userName = conv.user.name.given;
     conv.user.storage.userName = conv.user.name.given;
-    queryPrefix=`Cool, ${conv.user.storage.userName}. 11:53`;
+    queryPrefix=`Cool, ${conv.user.storage.userName}. 11:56`;
   }
-  //conv.ask(`${queryPrefix}. 11:50  What's the fnol problem ?`);
-  conv.ask(`Thanks, ${conv.user.storage.userName}. 11:53  What's the fnol problem ?`);
+  conv.ask(`${queryPrefix}. 11:56  What's the fnol problem ?`);
+  //conv.ask(`Thanks, ${conv.user.storage.userName}. 11:53  What's the fnol problem ?`);
   //conv.ask(`Thanks, ${conv.data.userName}. 11:36  What's the fnol problem ?`);
   conv.ask(new Suggestions('Leaky roof', 'Fence Blown down', 'a Break-in'));
 });
