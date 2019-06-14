@@ -49,7 +49,7 @@ app.intent('start Fnol', (conv) => {
       permissions: 'NAME',
     }));
   } else {
-    conv.ask(`Hi again, ${name}. What seems to be the problem?`);
+    conv.ask(`Hi again, ${name}. 12:23 What seems to be the problem?`);
   }
  });
 
