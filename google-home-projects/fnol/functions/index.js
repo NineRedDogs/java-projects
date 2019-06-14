@@ -54,6 +54,23 @@ app.intent('start Fnol', (conv) => {
  });
 
 
+ // Handle the Dialogflow intent named 'Start Intent'.
+app.intent('Start Intent', (conv) => {
+  // uncomment following line to clear stored user info
+  // conv.user.storage = {};
+  const name = conv.user.storage.userName;
+  if (!name) {
+    // Asks the user's permission to know their name, for personalization.
+    conv.ask(new Permission({
+      context: 'Hi there, to get to know you better',
+      permissions: 'NAME',
+    }));
+  } else {
+    conv.ask(`Hi again, ${name}. What's your favorite color?`);
+  }
+ });
+ 
+ 
 
 
 // ================================================
@@ -120,22 +137,6 @@ app.intent(['favorite color - yes', 'favorite fake color - yes'], (conv) => {
  if (conv.screen) return conv.ask(fakeColorCarousel());
 });
 
-
-// Handle the Dialogflow intent named 'Start Intent'.
-app.intent('Start Intent', (conv) => {
- // uncomment following line to clear stored user info
- // conv.user.storage = {};
- const name = conv.user.storage.userName;
- if (!name) {
-   // Asks the user's permission to know their name, for personalization.
-   conv.ask(new Permission({
-     context: 'Hi there, to get to know you better',
-     permissions: 'NAME',
-   }));
- } else {
-   conv.ask(`Hi again, ${name}. What's your favorite color?`);
- }
-});
 
 
 // Handle the DialogFlow intent named 'actions_intent_PERMISSION'. If user
