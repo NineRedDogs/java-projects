@@ -49,7 +49,7 @@ app.intent('start Fnol', (conv) => {
   if (!name) {
     // Asks the user's permission to know their name, for personalization.
     conv.ask(new Permission({
-      context: 'Hi there, if its ok, it would be nice to get to know you better',
+      context: 'Hi there, if its ok, it would be so nice to get to know you better',
       permissions: 'NAME',
     }));
   } else {
