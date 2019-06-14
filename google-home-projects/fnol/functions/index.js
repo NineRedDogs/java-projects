@@ -69,16 +69,28 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
   whatsBeenDamaged(queryPrefix, conv);
 });
 
-app.intent('actions_intent_PERMISSION-orig', (conv, params, permissionGranted) => {
-  if (!permissionGranted) {
-    conv.ask(`Ok, no worries. Pray tell, What's your favorite color?`);
-    conv.ask(new Suggestions('Blue', 'Red', 'Green'));
+
+// Handle the Dialogflow intent named 'fnol whats the problem'.
+// The intent collects a parameter named 'hhProblem'.
+app.intent('fnol whats the problem', (conv, {hhProblem}) => {
+  const luckyNumber = hhProblem.length;
+  const audioSound = 'https://actions.google.com/sounds/v1/cartoon/long_fart.ogg';
+
+  // Respond with the user's lucky number and end the conversation.
+  if (conv.user.storage.userName) {
+// if we've got the user name, address them by name and use SSML
+    // to embed an audio snippet in the response
+      conv.ask(`<speak>${conv.user.storage.userName}, Your fnol lucky number is ` + 
+           `${luckyNumber}. <audio src="${audioSound}"></audio>` +
+  `Would you like to give more details?</speak>`);
   } else {
-    conv.data.userName = conv.user.name.display;
-    conv.ask(`Thanks, ${conv.data.userName}. What's your favorite color?`);
-    conv.ask(new Suggestions('Blue', 'Red', 'Green'));
+      conv.ask(`<speak>Your fnol lucky number is ` + 
+           `${luckyNumber}. <audio src="${audioSound}"></audio>` +
+  `Would you like to give more details ?</speak>`);
   }
 });
+
+
 
  // Handle the Dialogflow intent named 'Start Intent'.
 app.intent('Start Intent', (conv) => {
