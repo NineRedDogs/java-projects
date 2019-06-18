@@ -172,7 +172,7 @@ const buildersCarousel = () => {
     },
     'AJW Builders 2': {
       title: 'AJW Builders 2',
-      synonyms: ['a2b', 'llanishen'],
+      synonyms: ['a2b2', 'llanishen2'],
       url: 'https://www.builderscardiff.com/',
       image: new Image({
         url: 'https://www.builderscardiff.com/wp-content/uploads/2017/07/ajwbuilderscardifflogo.png',
