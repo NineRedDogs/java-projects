@@ -81,18 +81,18 @@ app.intent('noArrangeBuilder', (conv) => {
 
 // Handle the Dialogflow follow-up intents
 app.intent(['arrangeBuilder', 'arrangeRoofer'], (conv) => {
-  conv.ask('Using your location, Ive identified 3 local builders, Which firm would you like to use, AJW, Best or MandR?');
   // If the user is using a screened device, display the carousel
-  const context = 'Sure, I have some sample images for you.';
-  const notification = 'Sample Images';
+  const context = 'I have some Building firm images for you.';
+  const notification = 'Images of Building firms';
   const capabilities = ['actions.capability.SCREEN_OUTPUT'];
-  
+
   if (conv.screen) {
     return conv.ask(buildersCarousel());
   } else if (screenAvailable) {
     conv.ask(new NewSurface({context, notification, capabilities}));
   } else {
-    conv.close("Sorry, you need a screen to see pictures");
+    //conv.close("Sorry, you need a screen to see pictures");
+    conv.ask('Using your location, Ive identified 3 local builders, Which firm would you like to use, AJW, Best or MandR?');
   };
  });
  
