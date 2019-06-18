@@ -72,6 +72,13 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
   getFnolStatus(queryPrefix, conv);
 });
 
+// Handle the Dialogflow intent named 'noArrangeBuilder'.
+app.intent('noArrangeBuilder', (conv) => {
+  const name = conv.user.storage.userName;
+  conv.close(`OK, ${name}, thanks for calling Admiral Home claims centre today. We'll be in touch regarding the claim. Cheerio.`);
+});
+
+
 // Handle the Dialogflow intent named 'Start Intent - new'.
 app.intent('start Fnol - new', (conv) => {
   conv.close(`AJG10: you want to start a new FNOL`);
