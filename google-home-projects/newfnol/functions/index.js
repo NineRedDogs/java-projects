@@ -42,7 +42,7 @@ function getFnolStatus(prefix, conv) {
 }
 
 // Handle the Dialogflow intent named 'Start Intent'.
-app.intent('start Fnol', (conv) => {
+app.intent('Default Welcome Intent', (conv) => {
   // uncomment following line to clear stored user info
   //conv.user.storage = {};
   const name = conv.user.storage.userName;
@@ -52,7 +52,7 @@ app.intent('start Fnol', (conv) => {
   if (!name) {
     // Asks the user's permission to know their name, for personalization.
     conv.ask(new Permission({
-      context: 'Hi there, if its ok, it would be so nice to get to know you better',
+      context: 'Hi Welcome to Admiral Home Claim centre. ',
       permissions: 'NAME',
     }));
   } else {
