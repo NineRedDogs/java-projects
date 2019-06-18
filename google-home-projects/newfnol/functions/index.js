@@ -37,8 +37,7 @@ const app = dialogflow({debug: true});
 
 
 function getFnolStatus(prefix, conv) {
-  conv.ask(`${prefix},  Do you want to start a new FNOL or resume an existing one ?`);
-  conv.ask(new Suggestions('new', 'resume', 'cancel'));
+  conv.ask(`${prefix},  Do you want to make a new claim ?`); // TBD add option to resume an existing claim
 }
 
 // Handle the Dialogflow intent named 'Start Intent'.
