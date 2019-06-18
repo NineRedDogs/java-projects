@@ -43,7 +43,7 @@ function getFnolStatus(prefix, conv) {
 // Handle the Dialogflow intent named 'Start Intent'.
 app.intent('Default Welcome Intent', (conv) => {
   // uncomment following line to clear stored user info
-  //conv.user.storage = {};
+  conv.user.storage = {};
   const name = conv.user.storage.userName;
 
   console.log("AJG: Just dumping out to the console");
