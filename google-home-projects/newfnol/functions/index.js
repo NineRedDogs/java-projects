@@ -162,8 +162,8 @@ const buildersCarousel = () => {
   const carousel = new Carousel({
    items: {
     'AJW': {
-      title: 'AJW Builders',
-      synonyms: ['a2b', 'llanishen'],
+      title: 'AJW',
+      synonyms: ['ajw', 'llanishen'],
       url: 'https://www.builderscardiff.com/',
       image: new Image({
         url: 'https://www.builderscardiff.com/wp-content/uploads/2017/07/ajwbuilderscardifflogo.png',
@@ -171,7 +171,7 @@ const buildersCarousel = () => {
       }),
     },
     'Best': {
-      title: 'Best Builders',
+      title: 'Best',
       synonyms: ['best', 'cardiff'],
       url: 'https://thebestbuilderscardiff.co.uk/',
       image: new Image({
@@ -180,8 +180,8 @@ const buildersCarousel = () => {
       }),
     },
     'MandR': {
-      title: 'M and R  Builders',
-      synonyms: ['mr', 'mnr'],
+      title: 'M and R Builders',
+      synonyms: ['mandr', 'mnr'],
       url: 'https://t.co/yOT5u5Fkuu',
       image: new Image({
         url: 'https://pbs.twimg.com/media/Dv61b5_XQAUsGnM.jpg',
