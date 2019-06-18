@@ -79,6 +79,15 @@ app.intent('noArrangeBuilder', (conv) => {
 });
 
 
+// Handle the Dialogflow follow-up intents
+app.intent(['arrangeBuilder', 'arrangeRoofer'], (conv) => {
+  conv.ask('Which builder would you like to use, A2B, Castle or someone else?');
+  // If the user is using a screened device, display the carousel
+  if (conv.screen) return conv.ask(buildersCarousel());
+ });
+ 
+
+
 // Handle the Dialogflow intent named 'Start Intent - new'.
 app.intent('start Fnol - new', (conv) => {
   conv.close(`AJG10: you want to start a new FNOL`);
@@ -148,34 +157,28 @@ app.intent('Start Intent', (conv) => {
 // ================================================
 
 // In the case the user is interacting with the Action on a screened device
-// The Fake Color Carousel will display a carousel of color cards
-const fakeColorCarousel = () => {
+// The Builders Carousel will display a carousel of potential builder cards
+const buildersCarousel = () => {
   const carousel = new Carousel({
    items: {
-     'indigo taco': {
-       title: 'Indigo Taco',
-       synonyms: ['indigo', 'taco'],
-       image: new Image({
-         url: 'https://storage.googleapis.com/material-design/publish/material_v_12/assets/0BxFyKV4eeNjDN1JRbF9ZMHZsa1k/style-color-uiapplication-palette1.png',
-         alt: 'Indigo Taco Color',
-       }),
-     },
-     'pink unicorn': {
-       title: 'Pink Unicorn',
-       synonyms: ['pink', 'unicorn'],
-       image: new Image({
-         url: 'https://storage.googleapis.com/material-design/publish/material_v_12/assets/0BxFyKV4eeNjDbFVfTXpoaEE5Vzg/style-color-uiapplication-palette2.png',
-         alt: 'Pink Unicorn Color',
-       }),
-     },
-     'blue grey coffee': {
-       title: 'Blue Grey Coffee',
-       synonyms: ['blue', 'grey', 'coffee'],
-       image: new Image({
-         url: 'https://storage.googleapis.com/material-design/publish/material_v_12/assets/0BxFyKV4eeNjDZUdpeURtaTUwLUk/style-color-colorsystem-gray-secondary-161116.png',
-         alt: 'Blue Grey Coffee Color',
-       }),
-     },
+    'AJW Builders': {
+      title: 'AJW Builders',
+      synonyms: ['a2b', 'llanishen'],
+      url: 'https://www.builderscardiff.com/',
+      image: new Image({
+        url: 'https://www.builderscardiff.com/wp-content/uploads/2017/07/ajwbuilderscardifflogo.png',
+        alt: 'AJW builders',
+      }),
+    },
+    'AJW Builders 2': {
+      title: 'AJW Builders 2',
+      synonyms: ['a2b', 'llanishen'],
+      url: 'https://www.builderscardiff.com/',
+      image: new Image({
+        url: 'https://www.builderscardiff.com/wp-content/uploads/2017/07/ajwbuilderscardifflogo.png',
+        alt: 'AJW builders 2',
+      }),
+    },
  }});
  return carousel;
 };
