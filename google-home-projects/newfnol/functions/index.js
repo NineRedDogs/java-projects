@@ -83,7 +83,17 @@ app.intent('noArrangeBuilder', (conv) => {
 app.intent(['arrangeBuilder', 'arrangeRoofer'], (conv) => {
   conv.ask('Using your location, Ive identified 3 local builders, Which firm would you like to use, AJW, Best or MandR?');
   // If the user is using a screened device, display the carousel
-  if (conv.screen) return conv.ask(buildersCarousel());
+  const context = 'Sure, I have some sample images for you.';
+  const notification = 'Sample Images';
+  const capabilities = ['actions.capability.SCREEN_OUTPUT'];
+  
+  if (conv.screen) {
+    return conv.ask(buildersCarousel());
+  } else if (screenAvailable) {
+    conv.ask(new NewSurface({context, notification, capabilities}));
+  } else {
+    conv.close("Sorry, you need a screen to see pictures");
+  };
  });
  
 
