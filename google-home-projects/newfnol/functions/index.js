@@ -81,7 +81,7 @@ app.intent('noArrangeBuilder', (conv) => {
 
 // Handle the Dialogflow follow-up intents
 app.intent(['arrangeBuilder', 'arrangeRoofer'], (conv) => {
-  conv.ask('Which builder would you like to use, A2B, Castle or someone else?');
+  conv.ask('Using your location, Ive identified 3 local builders, Which firm would you like to use, AJW, Best or MandR?');
   // If the user is using a screened device, display the carousel
   if (conv.screen) return conv.ask(buildersCarousel());
  });
@@ -161,7 +161,7 @@ app.intent('Start Intent', (conv) => {
 const buildersCarousel = () => {
   const carousel = new Carousel({
    items: {
-    'AJW Builders': {
+    'AJW': {
       title: 'AJW Builders',
       synonyms: ['a2b', 'llanishen'],
       url: 'https://www.builderscardiff.com/',
@@ -170,13 +170,22 @@ const buildersCarousel = () => {
         alt: 'AJW builders',
       }),
     },
-    'AJW Builders 2': {
-      title: 'AJW Builders 2',
-      synonyms: ['a2b2', 'llanishen2'],
-      url: 'https://www.builderscardiff.com/',
+    'Best': {
+      title: 'Best Builders',
+      synonyms: ['best', 'cardiff'],
+      url: 'https://thebestbuilderscardiff.co.uk/',
       image: new Image({
-        url: 'https://www.builderscardiff.com/wp-content/uploads/2017/07/ajwbuilderscardifflogo.png',
-        alt: 'AJW builders 2',
+        url: 'https://thebestbuilderscardiff.co.uk/wp-content/uploads/2016/03/LOGO.png',
+        alt: 'Best builders',
+      }),
+    },
+    'MandR': {
+      title: 'M and R  Builders',
+      synonyms: ['mr', 'mnr'],
+      url: 'https://t.co/yOT5u5Fkuu',
+      image: new Image({
+        url: 'https://pbs.twimg.com/media/Dv61b5_XQAUsGnM.jpg',
+        alt: 'M and R builders',
       }),
     },
  }});
