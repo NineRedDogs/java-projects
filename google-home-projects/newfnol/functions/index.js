@@ -75,11 +75,12 @@ conv.ask(new Permission(options));
 app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
   var queryPrefix="No worries";
   if (permissionGranted) {
-    conv.user.storage.user = conv.user;
+    //conv.user.storage.user = conv.user;
     conv.user.storage.userName = conv.user.name.given;
     conv.user.storage.location = conv.device;
     //conv.user.storage.locFormatted = conv.device.formattedAddress
-    queryPrefix=`OK, ${conv.user.storage.userName} of ${conv.user.storage.location.formattedAddress} full user : ${conv.user.storage.user}`;
+    //queryPrefix=`OK, ${conv.user.storage.userName} of ${conv.user.storage.location.formattedAddress} full user : ${conv.user.storage.user}`;
+    queryPrefix=`OK, ${conv.user.storage.userName}`;
   }
   getFnolStatus(queryPrefix, conv);
 });
