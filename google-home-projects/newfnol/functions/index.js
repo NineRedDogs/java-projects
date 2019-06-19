@@ -35,7 +35,8 @@ const functions = require('firebase-functions');
 
 const url = require('url');
 //const {ssml} = require('./util');
-const { ssml } = require('actions-on-google/util/ssml');
+//const { ssml } = require('actions-on-google/util/ssml');
+const { ssml } = require('./util/ssml');
 
 const config = functions.config();
 const STATIC_MAPS_ADDRESS = 'https://maps.googleapis.com/maps/api/staticmap';
