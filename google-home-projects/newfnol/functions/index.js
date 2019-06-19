@@ -49,7 +49,8 @@ app.intent('allSafe', (conv) => {
     // Asks the user's permission to know their name, for personalization.
     conv.ask(new Permission({
       context: 'Great, Welcome to Admiral Home Claim centre. ',
-      permissions: 'NAME',
+      //permissions: 'NAME',
+      permissions: ['NAME', 'DEVICE_PRECISE_LOCATION', 'DEVICE_COARSE_LOCATION'],
     }));
   } else {
     getFnolStatus(`Hi again, ${name}`, conv);
@@ -74,10 +75,11 @@ conv.ask(new Permission(options));
 app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
   var queryPrefix="No worries";
   if (permissionGranted) {
+    conv.user.storage.user = conv.user;
     conv.user.storage.userName = conv.user.name.given;
-    conv.user.storage.location = conv.user.location;
-    conv.user.storage.location = conv.user;
-    queryPrefix=`OK, ${conv.user.storage.userName}`;
+    conv.user.storage.location = conv.device;
+    //conv.user.storage.locFormatted = conv.device.formattedAddress
+    queryPrefix=`OK, ${conv.user.storage.userName} of ${conv.user.storage.location.formattedAddress} full user : ${conv.user.storage.user}`;
   }
   getFnolStatus(queryPrefix, conv);
 });
