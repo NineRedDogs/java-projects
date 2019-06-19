@@ -77,16 +77,16 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
   var queryPrefix="No worries";
   if (permissionGranted) {
     conv.user.storage.userName = conv.user.name.given;
+    conv.user.storage.formattedAddress = conv.device.location.formattedAddress;
     conv.user.storage.postalAddress = conv.device.location.postalAddress;
     const city = conv.device.location.city;
     const zip = conv.device.location.zipCode;
-    const formattedAddr = conv.device.location.formattedAddress;
     const longitude = conv.device.location.coordinates.longitude;
     const latitude = conv.device.location.coordinates.latitude;
     const name = conv.device.location.name;
     const phone  = conv.device.location.phoneNumber;
     const notes  = conv.device.location.notes;
-    queryPrefix=`OK, ${conv.user.storage.userName} of ${conv.user.storage.postalAddress} name:${name} notes:${notes} phone:${phone}`;
+    queryPrefix=`OK, ${conv.user.storage.userName} of ${conv.user.storage.formattedAddress} name:${name} notes:${notes} phone:${phone} city:${city} zip:${zip} [coords:${latitude},${longitude}]`;
   }
   getFnolStatus(queryPrefix, conv);
 });
