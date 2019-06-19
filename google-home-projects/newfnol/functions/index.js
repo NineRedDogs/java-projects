@@ -79,8 +79,11 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
     conv.user.storage.userName = conv.user.name.given;
     conv.user.storage.location = conv.device;
     conv.user.storage.locFormatted = conv.device.formattedAddress
-    //queryPrefix=`OK, ${conv.user.storage.userName} of ${conv.user.storage.location.formattedAddress} full user : ${conv.user.storage.user}`;
-    queryPrefix=`OK, ${conv.user.storage.userName}`;
+    queryPrefix=`OK, ${conv.user.storage.userName} of ${conv.user.storage.location} locF: ${conv.user.storage.locFormatted} full user : ${conv.user.storage.user}`;
+    //queryPrefix=`OK, ${conv.user.storage.userName}`;
+    //queryPrefix=`OK, ${conv.user.storage.user}`;
+    //queryPrefix=`OK, ${conv.user.storage.location}`;
+    //queryPrefix=`OK, ${conv.user.storage.locFormatted}`;
   }
   getFnolStatus(queryPrefix, conv);
 });
