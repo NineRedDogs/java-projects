@@ -35,9 +35,8 @@ const functions = require('firebase-functions');
 // Instantiate the Dialogflow client.
 const app = dialogflow({debug: true});
 
-
 function getFnolStatus(prefix, conv) {
-  conv.ask(`${prefix},  Do you want to make a new claim ?`); // TBD add option to resume an existing claim
+  conv.ask(`${prefix},  Do you want to make a new claim ?`);
 }
 
 // Handle the Dialogflow intent named 'Start Intent'.
@@ -65,7 +64,7 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
   var queryPrefix="No worries";
   if (permissionGranted) {
     conv.user.storage.userName = conv.user.name.given;
-    queryPrefix=`Great, ${conv.user.storage.userName}`;
+    queryPrefix=`OK, ${conv.user.storage.userName}`;
   }
   getFnolStatus(queryPrefix, conv);
 });
