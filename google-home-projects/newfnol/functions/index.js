@@ -78,8 +78,11 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
   if (permissionGranted) {
     conv.user.storage.userName = conv.user.name.given;
     const devA = conv.device;
+    const locA = conv.device.location;
+    const cityA = conv.device.location.city;
+    const zipA = conv.device.location.zipCode;
     const addrA = conv.device.formattedAddress
-    queryPrefix=`OK, ${conv.user.storage.userName} of ${addrA} with ${devA}`;
+    queryPrefix=`OK, ${conv.user.storage.userName} of ${addrA} with ${devA} and ${zipA} and ${cityA} and ${locA}`;
     //queryPrefix=`OK, ${conv.user.storage.userName}`;
     //queryPrefix=`OK, ${conv.user.storage.user}`;
     //queryPrefix=`OK, ${conv.user.storage.location}`;
