@@ -24,13 +24,36 @@ const {
 	Suggestions,
 	BasicCard,
 	Carousel,
-	Image,
+  Image,
+  NewSurface,
 } = require('actions-on-google');
 
 //
 //
 // Import the firebase-functions package for deployment.
 const functions = require('firebase-functions');
+
+
+ /**
+   * Shows the location of the user with a preference for a screen device.
+   * If on a speaker device, asks to transfer dialog to a screen device.
+   * Reads location from userStorage.
+   * @param {object} conv - The conversation instance.
+   * @return {Void}
+   */
+  const showLocationOnScreen = (conv) => {
+    const capability = 'actions.capability.SCREEN_OUTPUT';
+    if (conv.surface.capabilities.has(capability) ||
+      !conv.available.surfaces.capabilities.has(capability)) {
+      return conv.close(...responses.sayLocation(conv.user.storage.location));
+    }
+    conv.ask(new NewSurface({
+      context: responses.newSurfaceContext,
+      notification: responses.notificationText,
+      capabilities: capability,
+    }));
+  };
+
 
 // Instantiate the Dialogflow client.
 const app = dialogflow({debug: true});
@@ -59,34 +82,37 @@ app.intent('allSafe', (conv) => {
  });
 
 app.intent('sandbox', (conv) => {
-  // Choose one or more supported permissions to request:
-  // NAME, DEVICE_PRECISE_LOCATION, DEVICE_COARSE_LOCATION
-  const options = {
-    context: 'To address you by name and know your location',
-    // Ask for more than one permission. User can authorize all or none.
-    permissions: ['NAME', 'DEVICE_PRECISE_LOCATION'],
-  };
-conv.ask(new Permission(options));
+
 });
 
+app.intent('new_surface', (conv) => {
+  conv.close(...responses.sayLocation(conv.user.storage.location));
+});
 
+app.catch((conv, e) => {
+  console.error(e);
+  conv.close(responses.readMindError);
+});
 
 // Handle the DialogFlow intent named 'actions_intent_PERMISSION'. If user
 // agreed to PERMISSION prompt, then boolean value 'permissionGranted' is true.
 app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
   var queryPrefix="No worries";
   if (permissionGranted) {
+    // save the info grabbed from google
     conv.user.storage.userName = conv.user.name.given;
     conv.user.storage.formattedAddress = conv.device.location.formattedAddress;
     conv.user.storage.postalAddress = conv.device.location.postalAddress;
-    const city = conv.device.location.city;
-    const zip = conv.device.location.zipCode;
-    const longitude = conv.device.location.coordinates.longitude;
-    const latitude = conv.device.location.coordinates.latitude;
-    const name = conv.device.location.name;
-    const phone  = conv.device.location.phoneNumber;
-    const notes  = conv.device.location.notes;
-    queryPrefix=`OK, ${conv.user.storage.userName} of ${conv.user.storage.formattedAddress} name:${name} notes:${notes} phone:${phone} city:${city} zip:${zip} [coords:${latitude},${longitude}]`;
+    conv.user.storage.city = conv.device.location.city;
+    conv.user.storage.zip = conv.device.location.zipCode;
+    conv.user.storage.longitude = conv.device.location.coordinates.longitude;
+    conv.user.storage.latitude = conv.device.location.coordinates.latitude;
+    conv.user.storage.name = conv.device.location.name;
+    conv.user.storage.phone  = conv.device.location.phoneNumber;
+    conv.user.storage.notes  = conv.device.location.notes;
+    queryPrefix=`OK, ${conv.user.storage.userName} of ${conv.user.storage.formattedAddress}`;
+
+    return showLocationOnScreen(conv);
   }
   getFnolStatus(queryPrefix, conv);
 });
