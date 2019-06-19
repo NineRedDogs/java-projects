@@ -114,7 +114,7 @@ app.intent('sandbox', (conv) => {
   console.log("into sandbox test handler method ...");
   conv.data.someNum = '18006';
   conv.data.someNum2 = 7865;
-  res
+  respond(conv, 'sandybox', 'https://sandbox.com');
 });
 
 // Handle the Dialogflow intent named 'fnol whats the problem'.
