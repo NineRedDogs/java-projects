@@ -110,6 +110,13 @@ app.intent('cStart', (conv) => {
   //conv.close(`AJG10: so the problem is ${hhProblem}`);
 });
 
+app.intent('sandbox', (conv) => {
+  console.log("into sandbox test handler method ...");
+  conv.data.someNum = '18006';
+  conv.data.someNum2 = 7865;
+  res
+});
+
 // Handle the Dialogflow intent named 'fnol whats the problem'.
 // The intent collects a parameter named 'hhProblem'.
 app.intent('cNotHabitable', (conv) => {
