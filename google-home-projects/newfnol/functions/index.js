@@ -41,12 +41,10 @@ function getFnolStatus(prefix, conv) {
 }
 
 // Handle the Dialogflow intent named 'Start Intent'.
-app.intent('Default Welcome Intent', (conv) => {
+app.intent('allSafe', (conv) => {
   // uncomment following line to clear stored user info
   conv.user.storage = {};
   const name = conv.user.storage.userName;
-
-  console.log("AJG: Just dumping out to the console");
 
   if (!name) {
     // Asks the user's permission to know their name, for personalization.
