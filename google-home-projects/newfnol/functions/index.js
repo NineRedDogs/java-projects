@@ -29,10 +29,88 @@ const {
 } = require('actions-on-google');
 
 //
-//
 // Import the firebase-functions package for deployment.
 const functions = require('firebase-functions');
 
+
+const url = require('url');
+const {ssml} = require('./util');
+
+const config = functions.config();
+const STATIC_MAPS_ADDRESS = 'https://maps.googleapis.com/maps/api/staticmap';
+const STATIC_MAPS_SIZE = '640x640';
+
+const locationResponse = (city, speech) => {
+  const staticMapsURL = url.parse(STATIC_MAPS_ADDRESS, true);
+  staticMapsURL.query = {
+    key: config.maps.key,
+    size: STATIC_MAPS_SIZE,
+  };
+  staticMapsURL.query.center = city;
+  const mapViewURL = url.format(staticMapsURL);
+  return [
+    speech,
+    new Image({
+      url: mapViewURL,
+      alt: 'City Map',
+    }),
+  ];
+};
+
+const responses = {
+  sayName: (name) => ssml`
+    <speak>
+      I am reading your mind now.
+      <break time="2s"/>
+      This is easy, you are ${name}
+      <break time="500ms"/>
+      I hope I pronounced that right.
+      <break time="500ms"/>
+      Okay! I am off to read more minds.
+    </speak>
+  `,
+  sayLocation: (city) => locationResponse(city, ssml`
+    <speak>
+      I am reading your mind now.
+      <break time="2s"/>
+      This is easy, you are in ${city}
+      <break time="500ms"/>
+      That is a beautiful town.
+      <break time="500ms"/>
+      Okay! I am off to read more minds.
+    </speak>
+  `),
+  greetUser: ssml`
+    <speak>
+      Welcome to your Psychic!
+      <break time="500ms"/>
+      My mind is more powerful than you know.
+      I wonder which of your secrets I shall unlock.
+      Would you prefer I guess your name, or your location?
+    </speak>
+  `,
+  unhandledDeepLinks: (input) => ssml`
+    <speak>
+      Welcome to your Psychic! I can guess many things about you,
+      but I cannot make guesses about ${input}.
+      Instead, I shall guess your name or location. Which do you prefer?
+    </speak>
+  `,
+  readMindError: ssml`
+    <speak>
+      Wow!
+      <break time="1s"/>
+      This has never happened before. I cannot read your mind.
+      I need more practice.
+      Ask me again later.
+    </speak>
+  `,
+  permissionReason: 'To read your mind',
+  newSurfaceContext: 'To show you your location',
+  notificationText: 'See you where you are...',
+};
+
+//
 
  /**
    * Shows the location of the user with a preference for a screen device.
