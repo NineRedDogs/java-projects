@@ -48,7 +48,7 @@ app.intent('allSafe', (conv) => {
   if (!name) {
     // Asks the user's permission to know their name, for personalization.
     conv.ask(new Permission({
-      context: 'Great, Welcome to Admiral Home Claim centre. 1357',
+      context: 'Great, Welcome to Admiral Home Claim centre. ',
       //permissions: 'NAME',
       //permissions: ['NAME', 'DEVICE_COARSE_LOCATION'],
       permissions: ['NAME', 'DEVICE_PRECISE_LOCATION'],
@@ -82,7 +82,7 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
     const addr = conv.device.location.formattedAddress
     const longitude = conv.device.location.coordinates.longitude
     const latitude = conv.device.location.coordinates.latitude
-    queryPrefix=`OK, ${conv.user.storage.userName} of ${addr} postcode: ${zip}, city: ${city} (coords : ${longitude}:${latitude})`;
+    queryPrefix=`OK, ${conv.user.storage.userName} of ${addr} postcode: ${zip}, city: ${city} (coords : ${latitude},${longitude})`;
   }
   getFnolStatus(queryPrefix, conv);
 });
