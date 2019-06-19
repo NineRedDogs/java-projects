@@ -49,7 +49,7 @@ app.intent('allSafe', (conv) => {
   if (!name) {
     // Asks the user's permission to know their name, for personalization.
     conv.ask(new Permission({
-      context: 'Hi Welcome to Admiral Home Claim centre. ',
+      context: 'Great, Welcome to Admiral Home Claim centre. ',
       permissions: 'NAME',
     }));
   } else {
