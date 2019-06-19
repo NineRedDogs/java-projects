@@ -56,6 +56,17 @@ app.intent('allSafe', (conv) => {
   }
  });
 
+app.intent('sandbox', (conv) => {
+  // Choose one or more supported permissions to request:
+  // NAME, DEVICE_PRECISE_LOCATION, DEVICE_COARSE_LOCATION
+  const options = {
+    context: 'To address you by name and know your location',
+    // Ask for more than one permission. User can authorize all or none.
+    permissions: ['NAME', 'DEVICE_PRECISE_LOCATION'],
+  };
+conv.ask(new Permission(options));
+});
+
 
 
 // Handle the DialogFlow intent named 'actions_intent_PERMISSION'. If user
@@ -64,6 +75,8 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
   var queryPrefix="No worries";
   if (permissionGranted) {
     conv.user.storage.userName = conv.user.name.given;
+    conv.user.storage.location = conv.user.location;
+    conv.user.storage.location = conv.user;
     queryPrefix=`OK, ${conv.user.storage.userName}`;
   }
   getFnolStatus(queryPrefix, conv);
@@ -108,13 +121,6 @@ app.intent('cStart', (conv) => {
   console.log("About to assign random claim id ...");
   conv.data.claimId = '2447';
   //conv.close(`AJG10: so the problem is ${hhProblem}`);
-});
-
-app.intent('sandbox', (conv) => {
-  console.log("into sandbox test handler method ...");
-  conv.data.someNum = '18006';
-  conv.data.someNum2 = 7865;
-  respond(conv, 'sandybox', 'https://sandbox.com');
 });
 
 // Handle the Dialogflow intent named 'fnol whats the problem'.
