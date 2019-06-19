@@ -50,8 +50,8 @@ app.intent('allSafe', (conv) => {
     conv.ask(new Permission({
       context: 'Great, Welcome to Admiral Home Claim centre. ',
       //permissions: 'NAME',
-      permissions: ['NAME', 'DEVICE_COARSE_LOCATION'],
-      //permissions: ['NAME', 'DEVICE_PRECISE_LOCATION'],
+      //permissions: ['NAME', 'DEVICE_COARSE_LOCATION'],
+      permissions: ['NAME', 'DEVICE_PRECISE_LOCATION'],
     }));
   } else {
     getFnolStatus(`Hi again, ${name}`, conv);
