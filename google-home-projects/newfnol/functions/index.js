@@ -76,11 +76,10 @@ conv.ask(new Permission(options));
 app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
   var queryPrefix="No worries";
   if (permissionGranted) {
-    conv.user.storage.user = conv.user.name;
     conv.user.storage.userName = conv.user.name.given;
-    conv.user.storage.location = conv.device;
-    conv.user.storage.locFormatted = conv.device.formattedAddress
-    queryPrefix=`OK, ${conv.user.storage.userName} of ${conv.user.storage.location} locF: ${conv.user.storage.locFormatted} full user : ${conv.user.storage.user}`;
+    const devA = conv.device;
+    const addrA = conv.device.formattedAddress
+    queryPrefix=`OK, ${conv.user.storage.userName} of ${addrA} with ${devA}`;
     //queryPrefix=`OK, ${conv.user.storage.userName}`;
     //queryPrefix=`OK, ${conv.user.storage.user}`;
     //queryPrefix=`OK, ${conv.user.storage.location}`;
