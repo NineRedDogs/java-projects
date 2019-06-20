@@ -228,6 +228,12 @@ app.intent('cInjury', (conv) => {
 });
 
 // Handle the Dialogflow intent named 'Start Intent - new'.
+app.intent('breakIn - no', (conv) => {
+  conv.close(`${conv.user.storage.userName}, I'm really sorry, but we need the crime number to continue. Please can you get in touch with the police and call us back with the crime number. For your reference, your claim number is : 15001.`);
+});
+
+
+// Handle the Dialogflow intent named 'Start Intent - new'.
 app.intent('breakIn - yes', (conv) => {
   conv.close(`Thanks ${conv.user.storage.userName}, I've just created claim 15001 to cover this issue, Next, we'll need to find out what's been stolen or damaged. To save your call charges, I'm going to get a colleague from our crime team to give you a call  straight after this call`);
 });
