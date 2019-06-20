@@ -107,7 +107,7 @@ const responses = {
   `,
   permissionReason: 'To read your mind',
   newSurfaceContext: 'To show you your location',
-  notificationText: 'See you where you are...',
+  notificationText: 'Choose a builder...',
 };
 
 //
@@ -205,9 +205,10 @@ app.intent('noArrangeBuilder', (conv) => {
 
 // Handle the Dialogflow follow-up intents
 app.intent(['arrangeBuilder', 'arrangeRoofer'], (conv) => {
-  conv.ask('Using your location, Ive identified 3 local builders, Which firm would you like to use, AJW, Best or MandR?');
+  showLocationOnScreen(conv);
+  //conv.ask('Using your location, Ive identified 3 local builders, Which firm would you like to use, AJW, Best or MandR?');
   // If the user is using a screened device, display the carousel
-  if (conv.screen) return conv.ask(buildersCarousel());
+  //if (conv.screen) return conv.ask(buildersCarousel());
  });
  
 
