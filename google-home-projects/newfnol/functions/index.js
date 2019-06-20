@@ -37,7 +37,7 @@ const url = require('url');
 //const {ssml} = require('./util');
 //const { ssml } = require('actions-on-google/util/ssml');
 //const { ssml } = require('./util/ssml');
-const { ssml } = require('ssml');
+const { ssml } = require('./node_modules/ssml');
 
 const config = functions.config();
 const STATIC_MAPS_ADDRESS = 'https://maps.googleapis.com/maps/api/staticmap';
@@ -83,7 +83,7 @@ const responses = {
       Okay! I am off to read more minds.
     </speak>
   `),
-  greetUser: ssml`
+  greetUser: (user) => ssml`
     <speak>
       Welcome to your Psychic!
       <break time="500ms"/>
@@ -99,7 +99,7 @@ const responses = {
       Instead, I shall guess your name or location. Which do you prefer?
     </speak>
   `,
-  readMindError: ssml`
+  readMindError: (errorx) => ssml`
     <speak>
       Wow!
       <break time="1s"/>
