@@ -224,7 +224,7 @@ app.intent('start Fnol - new', (conv) => {
 
 // Handle the Dialogflow intent named 'Start Intent - new'.
 app.intent('cInjury', (conv) => {
-  conv.close(`${conv.user.storage.userName}, I'm sorry to hear that. To save your call charges and to ensure we provide you with the best possible service, we're going to get someone from our medical team to give you a call to discuss further. For info your claim number is $claimId .We'll be in touch shortly.`);
+  conv.close(`${conv.user.storage.userName}, I'm sorry to hear that. To save your call charges and to ensure we provide you with the best possible service, we're going to get someone from our medical team to give you a call to discuss further. For info your claim number is 15001 .We'll be in touch shortly.`);
 });
 
 // Handle the Dialogflow intent named 'Start Intent - new'.
