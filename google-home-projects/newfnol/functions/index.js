@@ -222,6 +222,11 @@ app.intent('start Fnol - new', (conv) => {
   conv.close(`AJG10: you want to resume an FNOL`);
 });
 
+// Handle the Dialogflow intent named 'Start Intent - new'.
+app.intent('breakIn - yes', (conv) => {
+  conv.close(`Thanks ${conv.user.storage.userName}, I've created claim 15001 to cover this issue, We'll need to find out what's been stolen next. To save your call charges, I'm going to get a colleague from our crime team to give you a call  straight after this call`);
+});
+
 
 // Handle the Dialogflow intent named 'fnol whats the problem'.
 // The intent collects a parameter named 'hhProblem'.
