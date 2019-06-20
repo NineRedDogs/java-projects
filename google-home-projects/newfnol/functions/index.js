@@ -224,7 +224,7 @@ app.intent('start Fnol - new', (conv) => {
 
 // Handle the Dialogflow intent named 'Start Intent - new'.
 app.intent('breakIn - yes', (conv) => {
-  conv.close(`Thanks ${conv.user.storage.userName}, I've created claim 15001 to cover this issue, We'll need to find out what's been stolen next. To save your call charges, I'm going to get a colleague from our crime team to give you a call  straight after this call`);
+  conv.close(`Thanks ${conv.user.storage.userName}, I've just created claim 15001 to cover this issue, Next, we'll need to find out what's been stolen or damaged. To save your call charges, I'm going to get a colleague from our crime team to give you a call  straight after this call`);
 });
 
 
