@@ -34,9 +34,6 @@ const functions = require('firebase-functions');
 
 
 const url = require('url');
-//const {ssml} = require('./util');
-//const { ssml } = require('actions-on-google/util/ssml');
-//const { ssml } = require('./util/ssml');
 const { ssml } = require('./node_modules/ssml');
 
 const config = functions.config();
@@ -191,9 +188,10 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
     conv.user.storage.name = conv.device.location.name;
     conv.user.storage.phone  = conv.device.location.phoneNumber;
     conv.user.storage.notes  = conv.device.location.notes;
-    queryPrefix=`OK, ${conv.user.storage.userName} of ${conv.user.storage.formattedAddress}`;
+    //queryPrefix=`OK, ${conv.user.storage.userName} of ${conv.user.storage.formattedAddress}`;
+    queryPrefix=`OK, ${conv.user.storage.userName} `;
 
-    return showLocationOnScreen(conv);
+    //return showLocationOnScreen(conv);
   }
   getFnolStatus(queryPrefix, conv);
 });
