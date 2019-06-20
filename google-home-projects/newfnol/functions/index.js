@@ -239,6 +239,10 @@ app.intent('breakIn - yes', (conv) => {
   conv.close(`Thanks ${conv.user.storage.userName}, I've just created claim 15001 to cover this issue, Next, we'll need to find out what's been stolen or damaged. To save your call charges, I'm going to get a colleague from our crime team to give you a call  straight after this call. Bye.`);
 });
 
+// Handle the Dialogflow intent named 'Start Intent - new'.
+app.intent('leakIssues', (conv) => {
+  conv.close(`Thanks ${conv.user.storage.userName}, I see you're calling from ${conv.user.storage.city}, I've just emailed you details of a few local plumbers that you can contact to get some quotes. Bye.`);
+});
 
 // Handle the Dialogflow intent named 'fnol whats the problem'.
 // The intent collects a parameter named 'hhProblem'.
