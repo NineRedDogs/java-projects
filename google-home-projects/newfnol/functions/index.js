@@ -241,7 +241,7 @@ app.intent('breakIn - yes', (conv) => {
 
 // Handle the Dialogflow intent named 'Start Intent - new'.
 app.intent('leakIssues', (conv) => {
-  conv.close(`Thanks ${conv.user.storage.userName}, I see you're calling from ${conv.user.storage.city}, I've just emailed you details of a few local plumbers that you can contact to get some quotes. Bye.`);
+  conv.close(`Thanks ${conv.user.storage.userName}, We've got enough details to proceed. I see you're calling from ${conv.user.storage.city}, I've just emailed you details of a few local plumbers that you can contact to get some quotes. Give us a call when you have some news regarding a quote. Goodbye ${conv.user.storage.userName}`);
 });
 
 // Handle the Dialogflow intent named 'fnol whats the problem'.
