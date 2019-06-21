@@ -137,7 +137,7 @@ const responses = {
 const app = dialogflow({debug: true});
 
 function getFnolStatus(prefix, conv) {
-  conv.ask(`${prefix},  Do you want to make a new claim ?`);
+  conv.ask(`${prefix},  I understand you'd like to make a claim against your home policy ?`);
 }
 
 // Handle the Dialogflow intent named 'Start Intent'.
