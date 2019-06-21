@@ -123,8 +123,9 @@ const responses = {
     const capability = 'actions.capability.SCREEN_OUTPUT';
     if (conv.surface.capabilities.has(capability) ||
       !conv.available.surfaces.capabilities.has(capability)) {
+        return conv.close(...responses.sayLocation('caerphilly'));
         //return conv.close(...responses.sayLocation(conv.user.storage.location));
-        return conv.ask(buildersCarousel());
+        //return conv.ask(buildersCarousel());
       }
     conv.ask(new NewSurface({
       context: responses.newSurfaceContext,
@@ -207,8 +208,8 @@ app.intent('noArrangeBuilder', (conv) => {
 
 // Handle the Dialogflow follow-up intents
 app.intent(['arrangeBuilder', 'arrangeRoofer'], (conv) => {
-  conv.ask('are you having a giraffe ???');
-  //showLocationOnScreen(conv);
+  //conv.ask('are you having a giraffe ???');
+  showLocationOnScreen(conv);
   //conv.ask('Using your location, Ive identified 3 local builders, Which firm would you like to use, AJW, Best or MandR?');
   // If the user is using a screened device, display the carousel
   //if (conv.screen) return conv.ask(buildersCarousel());
