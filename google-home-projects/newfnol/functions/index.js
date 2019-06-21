@@ -121,8 +121,7 @@ const responses = {
    */
   const showLocationOnScreen = (conv) => {
     const capability = 'actions.capability.SCREEN_OUTPUT';
-    if (conv.surface.capabilities.has(capability) ||
-      !conv.available.surfaces.capabilities.has(capability)) {
+    if (conv.surface.capabilities.has(capability) || !conv.available.surfaces.capabilities.has(capability)) {
         return conv.close(...responses.sayLocation('caerphilly'));
         //return conv.close(...responses.sayLocation(conv.user.storage.location));
         //return conv.ask(buildersCarousel());
@@ -161,14 +160,7 @@ app.intent('allSafe', (conv) => {
   }
  });
 
-app.intent('sandbox', (conv) => {
 
-});
-
-app.intent('new_surface', (conv) => {
-  //conv.close(...responses.sayLocation(conv.user.storage.location));
-  conv.ask(buildersCarousel())
-});
 
 app.catch((conv, e) => {
   console.error(e);
@@ -300,7 +292,41 @@ app.intent('Start Intent', (conv) => {
   }
  });
  
- 
+ // ==========================================================
+
+ const imageResponses = [
+  `AJG: Here is an andy grahame image`,
+  new Image({
+    url: 'https://thebestbuilderscardiff.co.uk/wp-content/uploads/2016/03/LOGO.png',
+    alt: 'Andy Logo',
+  })
+]
+
+app.intent('sandbox', conv => {
+  const capability = 'actions.capability.SCREEN_OUTPUT'
+  if (conv.surface.capabilities.has(capability)) {
+    conv.close(...imageResponses)
+  } else {
+    conv.ask(new NewSurface({
+      capabilities: capability,
+      context: 'AJG: 11 To show you an image',
+      notification: 'AJG: 22 Check out this image',
+    }))
+  }
+})
+
+// Create a Dialogflow intent with the `actions_intent_NEW_SURFACE` event
+app.intent('Get New Surface', (conv, input, newSurface) => {
+  if (newSurface.status === 'OK') {
+    conv.close(...imageResponses)
+  } else {
+    conv.close(`AJG: 33 . Ok, I understand. You don't want to see pictures. Bye`)
+  }
+})
+
+app.intent('new_surface', (conv) => {
+  conv.ask('AJG: 55 in new_surface intent ...');
+});
 
 
 // ================================================
