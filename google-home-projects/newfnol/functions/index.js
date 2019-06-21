@@ -123,8 +123,9 @@ const responses = {
     const capability = 'actions.capability.SCREEN_OUTPUT';
     if (conv.surface.capabilities.has(capability) ||
       !conv.available.surfaces.capabilities.has(capability)) {
-      return conv.close(...responses.sayLocation(conv.user.storage.location));
-    }
+        //return conv.close(...responses.sayLocation(conv.user.storage.location));
+        return conv.ask(buildersCarousel());
+      }
     conv.ask(new NewSurface({
       context: responses.newSurfaceContext,
       notification: responses.notificationText,
@@ -164,7 +165,8 @@ app.intent('sandbox', (conv) => {
 });
 
 app.intent('new_surface', (conv) => {
-  conv.close(...responses.sayLocation(conv.user.storage.location));
+  //conv.close(...responses.sayLocation(conv.user.storage.location));
+  conv.ask(buildersCarousel())
 });
 
 app.catch((conv, e) => {
