@@ -318,7 +318,8 @@ app.intent('sandbox', conv => {
 // Create a Dialogflow intent with the `actions_intent_NEW_SURFACE` event
 app.intent('Get New Surface', (conv, input, newSurface) => {
   if (newSurface.status === 'OK') {
-    conv.close(...imageResponses)
+    //conv.close(...imageResponses)
+    conv.ask(...imageResponses)
   } else {
     conv.close(`AJG: 33 . Ok, I understand. You don't want to see pictures. Bye`)
   }
