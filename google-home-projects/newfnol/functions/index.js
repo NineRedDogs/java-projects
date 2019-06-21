@@ -325,9 +325,6 @@ app.intent('Get New Surface', (conv, input, newSurface) => {
   }
 })
 
-app.intent('new_surface', (conv) => {
-  conv.ask('AJG: 55 in new_surface intent ...');
-});
 
 
 // ================================================
