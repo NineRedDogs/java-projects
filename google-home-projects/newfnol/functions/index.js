@@ -295,10 +295,10 @@ app.intent('Start Intent', (conv) => {
  // ==========================================================
 
  const imageResponses = [
-  `AJG: Here is an andy grahame image`,
+  `AJG: Here is an nice pic of the builders image`,
   new Image({
     url: 'https://thebestbuilderscardiff.co.uk/wp-content/uploads/2016/03/LOGO.png',
-    alt: 'Andy Logo',
+    alt: 'AJG Logo',
   })
 ]
 
@@ -309,7 +309,7 @@ app.intent('sandbox', conv => {
   } else {
     conv.ask(new NewSurface({
       capabilities: capability,
-      context: 'AJG: 11 To show you an image',
+      context: 'AJG: 11 To show you the choice of builders',
       notification: 'AJG: 22 Check out this image',
     }))
   }
@@ -319,13 +319,23 @@ app.intent('sandbox', conv => {
 app.intent('Get New Surface', (conv, input, newSurface) => {
   if (newSurface.status === 'OK') {
     //conv.close(...imageResponses)
-    conv.ask(...imageResponses)
+    //conv.ask(...imageResponses)
+    conv.close('see ya, wouldnt want to be yaaah');
   } else {
     conv.close(`AJG: 33 . Ok, I understand. You don't want to see pictures. Bye`)
   }
 })
 
-
+app.intent('new_surface_intent', (conv, input, newSurface) => {
+  if (newSurface.status === 'OK') {
+    conv.close(new Image({
+      url: url,
+      alt: 'Google Pixel'
+    }));
+  } else {
+    conv.close(`Ok, I understand. You don't want to see pictures. Bye`);
+  }
+});
 
 // ================================================
 
