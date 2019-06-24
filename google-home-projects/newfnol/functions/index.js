@@ -326,7 +326,7 @@ app.intent('Start Intent', (conv) => {
 });
 
  const imageResponses = [
-  `The nearest certified builder to you is XYZ builders, here are their details, would you like to call them ?`,
+  `The nearest certified builder to you is Cardiff Premier Builders, are these ok ?`,
   new Image({
     url: 'https://thebestbuilderscardiff.co.uk/wp-content/uploads/2016/03/LOGO.png',
     alt: 'XYZ Logo',
