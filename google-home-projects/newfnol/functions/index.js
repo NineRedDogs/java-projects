@@ -36,6 +36,9 @@ const functions = require('firebase-functions');
 const url = require('url');
 const { ssml } = require('./node_modules/ssml');
 
+var express = require('express');
+
+
 const config = functions.config();
 const STATIC_MAPS_ADDRESS = 'https://maps.googleapis.com/maps/api/staticmap';
 const STATIC_MAPS_SIZE = '640x640';
@@ -200,11 +203,17 @@ app.intent('noArrangeBuilder', (conv) => {
 
 // Handle the Dialogflow follow-up intents
 app.intent(['arrangeBuilder', 'arrangeRoofer'], (conv) => {
-  //conv.ask('are you having a giraffe ???');
-  showLocationOnScreen(conv);
-  //conv.ask('Using your location, Ive identified 3 local builders, Which firm would you like to use, AJW, Best or MandR?');
-  // If the user is using a screened device, display the carousel
-  //if (conv.screen) return conv.ask(buildersCarousel());
+  const capability = 'actions.capability.SCREEN_OUTPUT'
+
+  if (conv.surface.capabilities.has(capability)) {
+    conv.close(...imageResponses)
+  } else {
+    conv.ask(new NewSurface({
+      capabilities: capability,
+      context: `I see you're calling from ${conv.user.storage.city}, I'd like to send details of your nearest certified builder.`,
+      notification: 'Check out this image',
+    }))
+  }
  });
  
 
@@ -221,7 +230,7 @@ app.intent('start Fnol - new', (conv) => {
 
 // Handle the Dialogflow intent named 'Start Intent - new'.
 app.intent('cInjury', (conv) => {
-  conv.close(`${conv.user.storage.userName}, I'm sorry to hear that. To save your call charges and to ensure we provide you with the best possible service, we're going to get someone from our medical team to give you a call to discuss further. For info your claim number is 15001 .We'll be in touch shortly. Goodbye.`);
+  conv.close(`${conv.user.storage.userName}, I'm sorry to hear that. To save your call charges and to ensure we provide you with the best possible service, we're going to get someone from our medical team to give you a call to discuss further. For info your claim number is 15001. We'll be in touch shortly. Goodbye.`);
 });
 
 // Handle the Dialogflow intent named 'Start Intent - new'.
@@ -294,50 +303,91 @@ app.intent('Start Intent', (conv) => {
  
  // ==========================================================
 
+
+ const ajgCard = new BasicCard({
+
+  text: `This is a basic card.  Text in a basic card can include "quotes" and
+  most other unicode characters including emoji 📱.  Basic cards also support
+  some markdown formatting like *emphasis* or _italics_, **strong** or
+  __bold__, and ***bold itallic*** or ___strong emphasis___ as well as other
+  things like line  \nbreaks`, // Note the two spaces before '\n' required for
+                               // a line break to be rendered in the card.
+  subtitle: 'This is a subtitle',
+  title: 'Title: this is a title',
+  buttons: new Button({
+    title: 'This is a button',
+    url: 'https://assistant.google.com/',
+  }),
+  image: new Image({
+    url: 'https://example.com/image.png',
+    alt: 'Image alternate text',
+  }),
+  display: 'CROPPED',
+});
+
  const imageResponses = [
-  `AJG: Here is an nice pic of the builders image`,
+  `The nearest certified builder to you is XYZ builders, here are their details, would you like to call them ?`,
   new Image({
     url: 'https://thebestbuilderscardiff.co.uk/wp-content/uploads/2016/03/LOGO.png',
-    alt: 'AJG Logo',
+    alt: 'XYZ Logo',
+    buttons: [
+      {
+       title: 'Call',
+       openUrlAction: {
+           url: 'tel:+442920860544',
+           androidApp: {
+               packageName: 'com.android.phone'
+           },
+           versions: []
+       }
+     },
+     {
+      title: "Send Mail to XYZ buildersJay",
+      openUrlAction: {
+          url: "mailto:andrew@agrahame.com",
+          androidApp: {
+              packageName: "android.intent.extra.EMAIL"
+          },
+          versions: []
+      }
+    }
+    ]
   })
 ]
 
 app.intent('sandbox', conv => {
   const capability = 'actions.capability.SCREEN_OUTPUT'
+  console.log('ajg12')
+
   if (conv.surface.capabilities.has(capability)) {
-    conv.close(...imageResponses)
+    //conv.close(...imageResponses)
+    conv.close(...ajgCard)
   } else {
     conv.ask(new NewSurface({
       capabilities: capability,
-      context: 'AJG: 11 To show you the choice of builders',
-      notification: 'AJG: 22 Check out this image',
+      context: `I see you're calling from ${conv.user.storage.city}, I'd like to send details of your nearest certified builder.`,
+      notification: 'Check out this image',
     }))
   }
 })
 
-// Create a Dialogflow intent with the `actions_intent_NEW_SURFACE` event
-app.intent('Get New Surface', (conv, input, newSurface) => {
+app.intent('actions.intent.NEW_SURFACE', (conv, input, newSurface) => {
   if (newSurface.status === 'OK') {
-    //conv.close(...imageResponses)
-    //conv.ask(...imageResponses)
-    conv.close('see ya, wouldnt want to be yaaah');
-  } else {
-    conv.close(`AJG: 33 . Ok, I understand. You don't want to see pictures. Bye`)
-  }
-})
-
-app.intent('new_surface_intent', (conv, input, newSurface) => {
-  if (newSurface.status === 'OK') {
-    conv.close(new Image({
-      url: url,
-      alt: 'Google Pixel'
-    }));
+    //conv.close(new Image({url: url, alt: 'Google Pixel' }));
+    //return conv.ask(...imageResponses)
+    return conv.ask(...ajgCard)
+    //conv.ask(buildersCarousel());
+    //return conv.ask(buildersCarousel())
   } else {
     conv.close(`Ok, I understand. You don't want to see pictures. Bye`);
   }
 });
 
+
 // ================================================
+
+
+// =================================================
 
 // In the case the user is interacting with the Action on a screened device
 // The Builders Carousel will display a carousel of potential builder cards
