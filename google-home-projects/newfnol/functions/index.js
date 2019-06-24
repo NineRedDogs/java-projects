@@ -304,54 +304,32 @@ app.intent('Start Intent', (conv) => {
  // ==========================================================
 
 
- const ajgCard = new BasicCard({
+//  const ajgCard = new BasicCard({
 
-  text: `This is a basic card.  Text in a basic card can include "quotes" and
-  most other unicode characters including emoji 📱.  Basic cards also support
-  some markdown formatting like *emphasis* or _italics_, **strong** or
-  __bold__, and ***bold itallic*** or ___strong emphasis___ as well as other
-  things like line  \nbreaks`, // Note the two spaces before '\n' required for
-                               // a line break to be rendered in the card.
-  subtitle: 'This is a subtitle',
-  title: 'Title: this is a title',
-  buttons: new Button({
-    title: 'This is a button',
-    url: 'https://assistant.google.com/',
-  }),
-  image: new Image({
-    url: 'https://example.com/image.png',
-    alt: 'Image alternate text',
-  }),
-  display: 'CROPPED',
-});
+//   text: `This is a basic card.  Text in a basic card can include "quotes" and
+//   most other unicode characters including emoji 📱.  Basic cards also support
+//   some markdown formatting like *emphasis* or _italics_, **strong** or
+//   __bold__, and ***bold itallic*** or ___strong emphasis___ as well as other
+//   things like line  \nbreaks`, // Note the two spaces before '\n' required for
+//                                // a line break to be rendered in the card.
+//   subtitle: 'This is a subtitle',
+//   title: 'Title: this is a title',
+//   buttons: new Button({
+//     title: 'This is a button',
+//     url: 'https://assistant.google.com/',
+//   }),
+//   image: new Image({
+//     url: 'https://example.com/image.png',
+//     alt: 'Image alternate text',
+//   }),
+//   display: 'CROPPED',
+// });
 
  const imageResponses = [
   `The nearest certified builder to you is Cardiff Premier Builders, are these ok ?`,
   new Image({
     url: 'https://thebestbuilderscardiff.co.uk/wp-content/uploads/2016/03/LOGO.png',
     alt: 'XYZ Logo',
-    buttons: [
-      {
-       title: 'Call',
-       openUrlAction: {
-           url: 'tel:+442920860544',
-           androidApp: {
-               packageName: 'com.android.phone'
-           },
-           versions: []
-       }
-     },
-     {
-      title: "Send Mail to XYZ buildersJay",
-      openUrlAction: {
-          url: "mailto:andrew@agrahame.com",
-          androidApp: {
-              packageName: "android.intent.extra.EMAIL"
-          },
-          versions: []
-      }
-    }
-    ]
   })
 ]
 
@@ -360,8 +338,8 @@ app.intent('sandbox', conv => {
   console.log('ajg12')
 
   if (conv.surface.capabilities.has(capability)) {
-    //conv.close(...imageResponses)
-    conv.close(...ajgCard)
+    conv.close(...imageResponses)
+    //conv.close(...ajgCard)
   } else {
     conv.ask(new NewSurface({
       capabilities: capability,
@@ -374,8 +352,8 @@ app.intent('sandbox', conv => {
 app.intent('actions.intent.NEW_SURFACE', (conv, input, newSurface) => {
   if (newSurface.status === 'OK') {
     //conv.close(new Image({url: url, alt: 'Google Pixel' }));
-    //return conv.ask(...imageResponses)
-    return conv.ask(...ajgCard)
+    return conv.ask(...imageResponses)
+    //return conv.ask(...ajgCard)
     //conv.ask(buildersCarousel());
     //return conv.ask(buildersCarousel())
   } else {
