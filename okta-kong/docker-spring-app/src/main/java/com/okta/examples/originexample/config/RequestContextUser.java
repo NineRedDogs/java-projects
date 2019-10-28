@@ -3,6 +3,7 @@ package com.okta.examples.originexample.config;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -109,6 +110,7 @@ public class RequestContextUser {
 
             // 2. decode using client secret
             User user = decodeJwt(strippedAuthHdr);
+            return user;
 
             // 3. parse json
 
@@ -131,23 +133,43 @@ public class RequestContextUser {
         try {
             Jwt jwt = jwtVerifier.decode(jwtEncoded);
             Map<String, Object> claims = jwt.getClaims();
-
-            /** 
-             * [
-             * ver=1, 
-             * jti=AT.6pamXm5mC-3BESAsO6VS0CGR83I94SyX7EQjdM9p_Co, 
-             * iss=https://dev-424995.okta.com/oauth2/default, 
-             * aud=api://default, 
-             * iat=1572272677, 
-             * exp=1572276277, 
-             * cid=0oa1mjs256xq3tKmN357, 
-             * uid=00u1mjkp9xKSzOgIG357, 
-             * scp=[email, openid], 
-             * sub=work@agrahame.com, 
-             * groups=[Everyone, admins]
-             * ]
-*/
             log.error(Arrays.toString(claims.entrySet().toArray()));
+
+            final String keyID = "sub";
+            final String keyFirstName = "user.firstName";
+            final String keyLastName = "user.lastName";
+            final String keyEmail = "user.email";
+            final String keyGroups = "groups";
+
+            String id = (String) claims.get(keyID);
+            log.error("ID : " + id);
+
+            String firstName = (String) claims.get(keyFirstName);
+            String lastName = (String) claims.get(keyLastName);
+            log.error("Full name : [" + firstName + "_" + lastName + "]");
+
+            String email = (String) claims.get(keyEmail);
+            log.error("email : " + email);
+
+            List<String> groups = (List<String>) claims.get(keyGroups);
+            StringBuilder sb = new StringBuilder("Groups: [");
+            for (String g : groups) {
+                sb.append(g + ",");
+            }
+            sb.append("] numGroups : " + groups.size());
+
+            log.error("groups : " + sb.toString());
+
+            User u = new User(email, firstName + " " + lastName, id, groups);
+            return u;
+
+            /**
+             * [ ver=1, jti=AT.6pamXm5mC-3BESAsO6VS0CGR83I94SyX7EQjdM9p_Co,
+             * iss=https://dev-424995.okta.com/oauth2/default, aud=api://default,
+             * iat=1572272677, exp=1572276277, cid=0oa1mjs256xq3tKmN357,
+             * uid=00u1mjkp9xKSzOgIG357, scp=[email, openid], sub=work@agrahame.com,
+             * groups=[Everyone, admins] ]
+             */
         } catch (JwtVerificationException e) {
             log.error("Caught JwtVerificationException when decoding jwt, e:" + e.getMessage());
         }
