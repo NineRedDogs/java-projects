@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements UserDetails {
 
     @JsonProperty("user.email")
@@ -59,10 +59,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return groups
-            .stream()
-            .map(SimpleGrantedAuthority::new)
-            .collect(Collectors.toList());
+        return groups.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override
@@ -93,5 +90,12 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User(String email, String fullName, String id, List<String> groups) {
+        this.email = email;
+        this.fullName = fullName;
+        this.id = id;
+        this.groups = groups;
     }
 }
