@@ -24,12 +24,12 @@
 <!-- Render the REST response here -->
 <div id="rest-response-container" class="row">
     <div class="box col-md-10 col-md-offset-1">
-        <div class="okta-header">
-            <img width="300px" src="/images/OktaLogo.png"/>
+        <div class="golf-header">
+            <img width="300px" src="/images/pgatour_fb.jpg"/>
         </div>
 
         <h3 th:inline="text">Hello, [[${user.fullName}]]</h3>
-        <h3>Groups you belong to:</h3>
+        <h3>Golf groups you belong to:</h3>
         <div th:each="group : ${user.groups}">
             <h4 th:inline="text">- [[${group}]]</h4>
         </div>

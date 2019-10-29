@@ -99,9 +99,10 @@ curl -i -X POST --url localhost:8001/plugins \
      --data 'config.client_secret=XaewflSG_nlmMm07971BHd69Qj-fTrqdQXtN2xwd' \
      --data 'config.scopes=openid' \
      --data 'config.scopes=email' \
-     --data 'config.upstream_user_info_header=x-userinfo' \
      --data 'config.redirect_uri=http://localhost:8000/'
 echo " --- "; echo " ---"
+#     --data 'config.upstream_access_token_header=x-userinfo' \
+#     --data 'config.upstream_user_info_header=x-userinfo' \
 
 # 8. create upstream & target
 curl -i -X POST --url localhost:8001/upstreams/  --data 'name=andy-protected-resources'
