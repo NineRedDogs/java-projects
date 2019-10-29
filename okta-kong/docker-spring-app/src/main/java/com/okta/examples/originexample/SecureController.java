@@ -25,16 +25,16 @@ public class SecureController {
         return "authenticated";
     }
 
-    @RequestMapping("/users")
-    @PreAuthorize("hasAuthority('users')")
-    public String users(Model model) {
+    @RequestMapping("/club_golfers")
+    @PreAuthorize("hasAuthority('club_golfers')")
+    public String club_golfers(Model model) {
         model.addAttribute("user", user);
         return "roles";
     }
 
-    @RequestMapping("/admins")
-    @PreAuthorize("hasAuthority('admins')")
-    public String admins(Model model) {
+    @RequestMapping("/major_winners")
+    @PreAuthorize("hasAuthority('major_winners')")
+    public String major_winners(Model model) {
         model.addAttribute("user", user);
         return "roles";
     }
