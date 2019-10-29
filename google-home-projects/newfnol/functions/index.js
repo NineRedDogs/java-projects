@@ -165,11 +165,6 @@ app.intent('allSafe', (conv) => {
 
 
 
-app.catch((conv, e) => {
-  console.error(e);
-  conv.close(responses.readMindError);
-});
-
 // Handle the DialogFlow intent named 'actions_intent_PERMISSION'. If user
 // agreed to PERMISSION prompt, then boolean value 'permissionGranted' is true.
 app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
