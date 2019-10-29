@@ -68,25 +68,9 @@ public class RequestContextUser {
                 req.setAttribute(User.class.getName(), userFromAuth);
                 return userFromAuth;
             }
-
-            /**
-             * if ( reqAttr instanceof ServletRequestAttributes && (req =
-             * ((ServletRequestAttributes) reqAttr).getRequest()) != null && (userInfoHeader
-             * = req.getHeader(USER_HEADER)) != null ) { log.error("XXXXXXXXXXXXX-Found user
-             * info from {} header with value {}", USER_HEADER, userInfoHeader);
-             * log.debug("Found user info from {} header with value {}", USER_HEADER,
-             * userInfoHeader);
-             * 
-             * // decode x-userinfo header here ????
-             * 
-             * User user = mapper.readValue(userInfoHeader, User.class);
-             * req.setAttribute(User.class.getName(), user); return user; }
-             */
-
         } catch (Exception e) {
             log.error("Unable to resolve user from {} header", USER_HEADER, e);
         }
-
         log.debug("Did not find user from {} header.", USER_HEADER);
         return null;
     }
@@ -104,22 +88,11 @@ public class RequestContextUser {
             final String strippedAuthHdr = authHdr.substring(bearer.length());
             log.error("(Stripped) Auth hdr : " + strippedAuthHdr);
 
-            // Claims c = decodeJWT(strippedAuthHdr, clientSecret);
-            // log.error("decoded JWT: " + c.toString());
-            // log.error("decoded JWT values: " + c.values());
-
-            // 2. decode using client secret
+            // 2. decode and create user object
             User user = decodeJwt(strippedAuthHdr);
             return user;
-
-            // 3. parse json
-
-            // 4. create user object
-
         }
-
         return null;
-
     }
 
     public static User decodeJwt(String jwtEncoded) {
@@ -162,14 +135,6 @@ public class RequestContextUser {
 
             User u = new User(email, firstName + " " + lastName, id, groups);
             return u;
-
-            /**
-             * [ ver=1, jti=AT.6pamXm5mC-3BESAsO6VS0CGR83I94SyX7EQjdM9p_Co,
-             * iss=https://dev-424995.okta.com/oauth2/default, aud=api://default,
-             * iat=1572272677, exp=1572276277, cid=0oa1mjs256xq3tKmN357,
-             * uid=00u1mjkp9xKSzOgIG357, scp=[email, openid], sub=work@agrahame.com,
-             * groups=[Everyone, admins] ]
-             */
         } catch (JwtVerificationException e) {
             log.error("Caught JwtVerificationException when decoding jwt, e:" + e.getMessage());
         }
