@@ -7,7 +7,7 @@ echo " "; echo " -- --  -"
 docker build --no-cache -t ajg-nginxplus-centos .
 
 echo " "; echo " -- --  -"
-docker run --name nginxplus -p 8000:80 -d ajg-nginxplus-centos
+docker run --name nginxplus -p 8000:80 -p 8010:8010 -d ajg-nginxplus-centos
 
 
 echo " "; echo " -- --  -"

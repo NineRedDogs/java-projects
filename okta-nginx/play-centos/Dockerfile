@@ -6,6 +6,7 @@ FROM centos:7
 COPY nginx-repo.crt /etc/ssl/nginx/
 COPY nginx-repo.key /etc/ssl/nginx/
 COPY load_modules.conf /
+COPY set_default_port.conf /
 COPY nginx-openid-connect/frontend.conf /etc/nginx/conf.d/
 COPY nginx-openid-connect/openid_connect.js /etc/nginx/conf.d/
 COPY nginx-openid-connect/openid_connect.server_conf /etc/nginx/conf.d/
@@ -22,6 +23,7 @@ RUN systemctl enable nginx.service
 RUN yum install -y nginx-plus-module-njs
 
 RUN cat /load_modules.conf /etc/nginx/nginx.conf > out && mv out /etc/nginx/nginx.conf
+#RUN sed -i '/http {/ r /set_default_port.conf' /etc/nginx/nginx.conf
 
 
 # Forward request logs to Docker log collector
@@ -29,6 +31,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
   && ln -sf /dev/stderr /var/log/nginx/error.log
 
 EXPOSE 80
+EXPOSE 8010
 
 STOPSIGNAL SIGTERM
 
