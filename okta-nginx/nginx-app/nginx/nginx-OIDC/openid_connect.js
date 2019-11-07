@@ -8,6 +8,8 @@
  */
 
 function oidcCodeExchange(r) {
+    r.error("AJG: called oidcCodeExchange");
+
     // First check that we received an authorization code from the IdP
     if (r.variables.arg_code.length == 0) {
         if (r.variables.arg_error) {
@@ -85,6 +87,8 @@ function oidcCodeExchange(r) {
 }
 
 function oidcRefreshRequest(r) {
+    r.error("AJG: called oidcRefreshRequest");
+
     // Pass the refresh token to the /_refresh location so that it can be
     // proxied to the IdP in exchange for a new id_token
     r.subrequest("/_refresh", "token=" + r.variables.refresh_token,
@@ -157,12 +161,16 @@ function oidcRefreshRequest(r) {
 }
 
 function hashRequestId(r) {
+    r.error("AJG: called hashRequestId");
+
     var c = require('crypto');
     var h = c.createHmac('sha256', r.variables.oidc_hmac_key).update(r.variables.request_id);
     return h.digest('base64url');
 }
 
 function validateIdToken(r) {
+    r.error("AJG: called validateIdToken");
+
     // Check mandatory claims
     var required_claims = ["iat", "iss", "sub"]; // aud is checked separately
     var missing_claims = [];
