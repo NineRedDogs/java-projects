@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework</groupId>
-    <artifactId>spring-kong-header</artifactId>
+    <artifactId>spring-nginx-oidc-app</artifactId>
     <version>0.1.0</version>
 
     <name>spring-boot-check-kong-header</name>
@@ -17,7 +17,7 @@
     </parent>
 
     <properties>
-        <docker.image.prefix>andy-kong</docker.image.prefix>
+        <docker.image.prefix>andy-nginx</docker.image.prefix>
         <java.version>1.8</java.version>
     </properties>
 
