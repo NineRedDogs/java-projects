@@ -1,17 +1,17 @@
-#For Debian 10
 FROM centos:7
-
-# Download certificate and key from the customer portal (https://cs.nginx.com)
-# and copy to the build context
+# This Dockerfile inspired by : https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-docker/#docker_plus
+#
+#
+# TRIAL NGINX+, so received crt and key when registering for trial
 COPY nginx-repo.crt /etc/ssl/nginx/
 COPY nginx-repo.key /etc/ssl/nginx/
 COPY load_modules.conf /
 COPY set_default_port.conf /
-#COPY nginx-openid-connect/* /etc/nginx/conf.d/
-#COPY nginx-openid-connect/frontend.conf /etc/nginx/conf.d/
-COPY nginx-openid-connect/frontend.conf.manually-modified /etc/nginx/conf.d/frontend.conf
-COPY nginx-openid-connect/openid_connect.js /etc/nginx/conf.d/
-COPY nginx-openid-connect/openid_connect.server_conf /etc/nginx/conf.d/
+#COPY nginx-OIDC/* /etc/nginx/conf.d/
+#COPY nginx-OIDC/frontend.conf /etc/nginx/conf.d/
+COPY nginx-OIDC/manually-modified-frontend.conf /etc/nginx/conf.d/frontend.conf
+COPY nginx-OIDC/openid_connect.js /etc/nginx/conf.d/
+COPY nginx-OIDC/openid_connect.server_conf /etc/nginx/conf.d/
 
 
 RUN yum install -y ca-certificates wget epel-release && yum clean all
@@ -42,6 +42,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 
 EXPOSE 80
 EXPOSE 8010
+EXPOSE 8311
 
 STOPSIGNAL SIGTERM
 
