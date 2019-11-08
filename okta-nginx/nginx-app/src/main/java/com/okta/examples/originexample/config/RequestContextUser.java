@@ -27,6 +27,7 @@ public class RequestContextUser {
 
     public static final String USER_HEADER = "x-userinfo";
     public static final String AUTH_HDR = "authorization";
+    public static final String USERNAME_HDR = "username";
 
     public static User findUser() {
         String userInfoHeader;
@@ -62,6 +63,12 @@ public class RequestContextUser {
             final String authHdr = ((ServletRequestAttributes) reqAttr).getRequest().getHeader(AUTH_HDR);
             log.error("auth header : " + ((ServletRequestAttributes) reqAttr).getRequest().getHeader(AUTH_HDR));
 
+            final String usernameHdr = ((ServletRequestAttributes) reqAttr).getRequest().getHeader(USERNAME_HDR);
+            log.error("username header : " + ((ServletRequestAttributes) reqAttr).getRequest().getHeader(USERNAME_HDR));
+
+            User user2FromAuth = decodeAndExtractUsername(usernameHdr);
+
+
             User userFromAuth = decodeAndExtractUserData(authHdr);
             if (userFromAuth != null) {
                 req = ((ServletRequestAttributes) reqAttr).getRequest();
@@ -95,6 +102,21 @@ public class RequestContextUser {
         return null;
     }
 
+    private static User decodeAndExtractUsername(String unHdr) {
+        log.error("[[[ in decodeAndExtractUsername ..... ]]]]");
+
+        // final String clientSecret = "XaewflSG_nlmMm07971BHd69Qj-fTrqdQXtN2xwd";
+        log.error("username hdr : " + unHdr);
+
+        if (unHdr != null) {
+
+            // 1. decode and create user object
+            User user = decodeJwt(unHdr);
+            return user;
+        }
+        return null;
+    }
+
     public static User decodeJwt(String jwtEncoded) {
         AccessTokenVerifier jwtVerifier = JwtVerifiers.accessTokenVerifierBuilder()
                 .setIssuer("https://dev-424995.okta.com/oauth2/default").setAudience("api://default") // defaults to
@@ -104,9 +126,11 @@ public class RequestContextUser {
                 .build();
 
         try {
+            log.error("AJG=1==========================");
             Jwt jwt = jwtVerifier.decode(jwtEncoded);
             Map<String, Object> claims = jwt.getClaims();
             log.error(Arrays.toString(claims.entrySet().toArray()));
+            log.error("AJG=2==========================");
 
             final String keyID = "sub";
             final String keyFirstName = "user.firstName";
