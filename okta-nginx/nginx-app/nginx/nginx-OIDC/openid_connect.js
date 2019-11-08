@@ -169,7 +169,15 @@ function hashRequestId(r) {
 }
 
 function validateIdToken(r) {
-    r.error("AJG: called validateIdToken");
+    r.log("AJG: called validateIdToken");
+    r.log("AJG ---->>> variable.args : " + r.variables.args);
+    
+    //
+    // be good to work out how to dump this (without getting a type error) - have a search ..... !!!!!!
+    //r.log("AJG variables  :::>>>>>>>" + r.variables);
+    //
+    //
+
 
     // Check mandatory claims
     var required_claims = ["iat", "iss", "sub"]; // aud is checked separately
@@ -177,7 +185,7 @@ function validateIdToken(r) {
     for (var i in required_claims) {
         if (r.variables["jwt_claim_" + required_claims[i]].length == 0 ) {
             missing_claims.push(required_claims[i]);
-        }
+        } 
     }
     if (r.variables.jwt_audience.length == 0) missing_claims.push("aud");
     if (missing_claims.length) {
