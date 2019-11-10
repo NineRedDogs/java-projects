@@ -170,7 +170,8 @@ function hashRequestId(r) {
 
 function validateIdToken(r) {
     r.log("AJG: called validateIdToken");
-    r.log("AJG ---->>> variable.args : " + r.variables.args);
+    r.log("AJG ---->>> variable.args : [" + r.variables.args + "]");
+    //r.variables.agtoken = r.variables.args;
     
     //
     // be good to work out how to dump this (without getting a type error) - have a search ..... !!!!!!
@@ -180,12 +181,15 @@ function validateIdToken(r) {
 
 
     // Check mandatory claims
-    var required_claims = ["iat", "iss", "sub"]; // aud is checked separately
+    var required_claims = ["iat", "iss", "sub", "email", "name" /*, "groups"*/]; // aud is checked separately
     var missing_claims = [];
     for (var i in required_claims) {
         if (r.variables["jwt_claim_" + required_claims[i]].length == 0 ) {
             missing_claims.push(required_claims[i]);
-        } 
+            r.log(">>>>>>>>>>> Missing expected claim : " + required_claims[i]);
+        } else {
+            r.log(">>>>>>>>>>> Found expected claim : " + required_claims[i] + " val=[" + r.variables["jwt_claim_" + required_claims[i]] + "]");
+        }
     }
     if (r.variables.jwt_audience.length == 0) missing_claims.push("aud");
     if (missing_claims.length) {
@@ -233,3 +237,17 @@ function validateIdToken(r) {
         r.return(403);
     }
 }
+
+
+
+// function parseJwt (token) {
+//     var base64Url = token.split('.')[1];
+//     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+//     var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+//         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+//     }).join(''));
+
+//     return JSON.parse(jsonPayload);
+// };
+
+
