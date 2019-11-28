@@ -16,6 +16,8 @@ window.addEventListener('click', clickOutside);
 // function to open modal
 function openModal(){
     console.log("ajg pressed open button");
+    console.log("modal ID : " + modal.id);
+    console.log("modal ID : ", modal.id);
     modal.style.display = 'block';
 }
 
