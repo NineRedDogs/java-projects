@@ -27,7 +27,7 @@ public class RequestContextUserFilter extends GenericFilterBean {
     ) throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) servletRequest;
-        log.error("=====================>>>> AJG-2 : " + getReqContents(req));
+        log.error("=====================>>>> doFilter, request : \n\n" + getReqContents(req));
         User user = RequestContextUser.findUser();
         if (user != null) {
             SecurityContextHolder.clearContext();
@@ -40,45 +40,35 @@ public class RequestContextUserFilter extends GenericFilterBean {
 
 
     public static String getReqContents(final HttpServletRequest request) {
-        StringBuilder sb = new StringBuilder("Req: ");
-
-        log.error("====AJG-1");
-        sb.append("method: " + request.getMethod() + ", uri: " + request.getRequestURI());
+        StringBuilder sb = new StringBuilder("\n-------------------------------------------------------------------------\n\nReq:\n");
+        sb.append("method: " + request.getMethod() + ", uri: " + request.getRequestURI() + "\n\n");
 
         request.getParameterNames();
 
-        Cookie[] cookies = request.getCookies();
-        log.error("====AJG-2 - cookies : " + cookies);
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                sb.append("cookie - " + cookie.getName() + ", Value - " + cookie.getValue() + "\n");
-            }
-        }
-        log.error("====AJG-3");
-
-        Enumeration<String> paramNames = request.getParameterNames();
-        while(paramNames.hasMoreElements()) {
-            String paramName = paramNames.nextElement();
-            sb.append("Param Name - " + paramName + ", Value - " + request.getParameter(paramName) + "\n");
-        }
-        log.error("====AJG-4a");        
-        
+        /** get headers */
         Enumeration<String> headerNames = request.getHeaderNames();
         while(headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
-            sb.append("Header Name - " + headerName + ", Value - " + request.getHeader(headerName) + "\n");
+            sb.append("   Header [" + headerName + "] :=> [" + request.getHeader(headerName) + "]\n");
         }
-        log.error("====AJG-4b");
 
-
-        Enumeration<String> params = request.getParameterNames();
-        while(params.hasMoreElements()){
-            String paramName = params.nextElement();
-            sb.append("Parameter Name - " + paramName + ", Value - " + request.getParameter(paramName) + "\n");
+        /** get paramaters */
+        Enumeration<String> paramNames = request.getParameterNames();
+        while(paramNames.hasMoreElements()) {
+            String paramName = paramNames.nextElement();
+            sb.append("   Query Param [" + paramName + "] :=> [" + request.getParameter(paramName) + "]\n");
         }
-        log.error("====AJG-5");
 
+        /** get cookies */
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                sb.append("   Cookie [" + cookie.getName() + "] :=> [" + cookie.getValue() + "]\n");
+            }
+        }
+        sb.append("\n-------------------------------------------------------------------------\n\n");
+
+        
         return sb.toString();
     }
 }

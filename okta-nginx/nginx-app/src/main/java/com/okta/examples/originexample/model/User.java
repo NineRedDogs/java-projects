@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements UserDetails {
 
+    /** */
+    private static final long serialVersionUID = -4776231876501880891L;
+
     @JsonProperty("user.email")
     String email;
 
