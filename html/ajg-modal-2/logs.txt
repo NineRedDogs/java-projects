@@ -1,0 +1,70 @@
+============================================================
+
+modal.js:392 AJG: initialise 
+modal.js:380 AJG: configuration 
+modal.js:210 AJG: _addOpenModalLinkAttr 
+modal.js:336 AJG: _addModalSection 
+modal.js:280 AJG: _getModalTitle 
+modal.js:269 AJG: _getTitleText 
+2modal.js:293 AJG: _getModalSVG 
+modal.js:309 AJG: _getModalDesc 
+modal.js:322 AJG: _getModalCloseLink 
+modal.js:293 AJG: _getModalSVG 
+modal.js:362 AJG: _addLightbox 
+index.html:50 Live reload enabled.
+modal.js:96 AJG: _resizeIframes 
+modal.js:82 AJG: _getModalSize 
+
+
+--------------
+click link 
+
+modal.js:169 AJG: _openModal 
+modal.js:155 AJG: _getTarget 
+modal.js:121 AJG: _addIframe 
+modal.js:82 AJG: _getModalSize 
+modal.js:45 AJG: _setContentObjs 
+index.html:1 A cookie associated with a cross-site resource at https://session.bbc.co.uk/ was set without the `SameSite` attribute. A future release of Chrome will only deliver cookies with cross-site requests if they are set with `SameSite=None` and `Secure`. You can review cookies in developer tools under Application>Storage>Cookies and see more details at https://www.chromestatus.com/feature/5088147346030592 and https://www.chromestatus.com/feature/5633521622188032.
+index.html:1 A cookie associated with a cross-site resource at http://www.bbc.co.uk/ was set without the `SameSite` attribute. A future release of Chrome will only deliver cookies with cross-site requests if they are set with `SameSite=None` and `Secure`. You can review cookies in developer tools under Application>Storage>Cookies and see more details at https://www.chromestatus.com/feature/5088147346030592 and https://www.chromestatus.com/feature/5633521622188032.
+index.html:1 A cookie associated with a cross-site resource at http://bbc.co.uk/ was set without the `SameSite` attribute. A future release of Chrome will only deliver cookies with cross-site requests if they are set with `SameSite=None` and `Secure`. You can review cookies in developer tools under Application>Storage>Cookies and see more details at https://www.chromestatus.com/feature/5088147346030592 and https://www.chromestatus.com/feature/5633521622188032.
+index.html:1 A cookie associated with a cross-site resource at https://bbc.co.uk/ was set without the `SameSite` attribute. A future release of Chrome will only deliver cookies with cross-site requests if they are set with `SameSite=None` and `Secure`. You can review cookies in developer tools under Application>Storage>Cookies and see more details at https://www.chromestatus.com/feature/5088147346030592 and https://www.chromestatus.com/feature/5633521622188032.
+
+==============================================================
+
+modal.js:392 AJG: initialise 
+modal.js:380 AJG: configuration 
+modal.js:210 AJG: _addOpenModalLinkAttr 
+modal.js:336 AJG: _addModalSection 
+modal.js:280 AJG: _getModalTitle 
+modal.js:269 AJG: _getTitleText 
+2modal.js:293 AJG: _getModalSVG 
+modal.js:309 AJG: _getModalDesc 
+modal.js:322 AJG: _getModalCloseLink 
+modal.js:293 AJG: _getModalSVG 
+modal.js:362 AJG: _addLightbox 
+index.html:341 Live reload enabled.
+:5500/insurance-api/policy:1 Failed to load resource: the server responded with a status of 404 (Not Found)
+index.html:1 Uncaught SyntaxError: Unexpected token < in JSON at position 0
+    at JSON.parse (<anonymous>)
+    at XMLHttpRequest.insuranceApiRequest.onload (insurance.js:5)
+:5500/loans-api/loan:1 Failed to load resource: the server responded with a status of 404 (Not Found)
+index.html:1 Uncaught SyntaxError: Unexpected token < in JSON at position 0
+    at JSON.parse (<anonymous>)
+    at XMLHttpRequest.loansApiRequest.onload (loans.js:5)
+modal.js:96 AJG: _resizeIframes 
+modal.js:82 AJG: _getModalSize 
+
+-------------------------------
+
+click link :
+
+modal.js:169 AJG: _openModal 
+modal.js:155 AJG: _getTarget 
+modal.js:121 AJG: _addIframe 
+modal.js:82 AJG: _getModalSize 
+modal.js:45 AJG: _setContentObjs 
+
+5A cookie associated with a cross-site resource at <URL> was set without the `SameSite` attribute. A future release of Chrome will only deliver cookies with cross-site requests if they are set with `SameSite=None` and `Secure`. You can review cookies in developer tools under Application>Storage>Cookies and see more details at <URL> and <URL>.
+
+
+===============================================
