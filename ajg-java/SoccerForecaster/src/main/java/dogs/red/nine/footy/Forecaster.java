@@ -1,5 +1,6 @@
 package dogs.red.nine.footy;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +14,13 @@ import org.apache.logging.log4j.Logger;
 
 public class Forecaster {
 	
-    private static final Logger logger = LogManager.getLogger("Forecaster");
+	private static final Logger logger = LogManager.getLogger("Forecaster");
+	
+	private static final String DATA_DIR_NAME = "data";
+
+	public static final File CWD = new File(System.getProperty("user.dir"));
+	public static final File DATA_DIR = new File(CWD, DATA_DIR_NAME);
+
     
 	// set this to use a local sample fixture file, instead of trying to retrieve from remote site 
 	public static final boolean DEV_MODE = false;
@@ -204,6 +211,7 @@ public class Forecaster {
 
 
 	public static void main(String[] args) throws IOException, ParseException {
+		System.out.println(">>>>>> CWD : " + CWD);
 
 		Forecaster f = new Forecaster();
 

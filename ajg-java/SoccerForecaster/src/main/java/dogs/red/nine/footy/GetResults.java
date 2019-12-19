@@ -1,6 +1,7 @@
 package dogs.red.nine.footy;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -20,7 +21,9 @@ import org.apache.logging.log4j.Logger;
 public class GetResults {
 	private static final Logger logger = LogManager.getLogger("GetResults");
 
-	private static final String FOOTBALL_DATA_URL_FILE="/home/agrahame/Dropbox/workspace/FootballRest/data/dataUrls.txt";
+	private static final String DATA_URLS_FILE_NAME = "dataUrls.txt";
+	private static final File FOOTBALL_DATA_URL_FILE = new File(Forecaster.DATA_DIR, DATA_URLS_FILE_NAME);
+	
 	private static final String DATA_FILE_COLUMN_KEY_LINE = "Div,";
 	
 	private final List<Division> supportedDivisions;
@@ -49,7 +52,7 @@ public class GetResults {
 	
 	
 	public void getResultsFromDataUrls(final Teams teams) throws IOException {
-		List<String> dataUrls = setAllFootballDataUrls(FOOTBALL_DATA_URL_FILE);
+		List<String> dataUrls = setAllFootballDataUrls(FOOTBALL_DATA_URL_FILE.getAbsolutePath());
 		
 		for (String dataUrl : dataUrls) {
 			//logger.debug("getting results from data url : " + dataUrl);
