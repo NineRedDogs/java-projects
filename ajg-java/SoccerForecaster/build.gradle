@@ -24,8 +24,7 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.7'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5'
     compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
-    testCompile group: 'junit', name: 'junit', version: '4.+'
-    
+    testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
 }
 
 
@@ -39,3 +38,10 @@ jar {
   from {configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
+
+test {
+	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+}
