@@ -1,35 +1,35 @@
 # england
-http://www.football-data.co.uk/mmz4281/1516/E0.csv
-http://www.football-data.co.uk/mmz4281/1516/E1.csv
-http://www.football-data.co.uk/mmz4281/1516/E2.csv
-http://www.football-data.co.uk/mmz4281/1516/E3.csv
-http://www.football-data.co.uk/mmz4281/1516/EC.csv
+http://www.football-data.co.uk/mmz4281/1920/E0.csv
+http://www.football-data.co.uk/mmz4281/1920/E1.csv
+http://www.football-data.co.uk/mmz4281/1920/E2.csv
+http://www.football-data.co.uk/mmz4281/1920/E3.csv
+http://www.football-data.co.uk/mmz4281/1920/EC.csv
 
 # scotland
-http://www.football-data.co.uk/mmz4281/1516/SC0.csv
-http://www.football-data.co.uk/mmz4281/1516/SC1.csv
-http://www.football-data.co.uk/mmz4281/1516/SC2.csv
-http://www.football-data.co.uk/mmz4281/1516/SC3.csv
+http://www.football-data.co.uk/mmz4281/1920/SC0.csv
+http://www.football-data.co.uk/mmz4281/1920/SC1.csv
+http://www.football-data.co.uk/mmz4281/1920/SC2.csv
+http://www.football-data.co.uk/mmz4281/1920/SC3.csv
 
 # germany
-http://www.football-data.co.uk/mmz4281/1516/D1.csv
+http://www.football-data.co.uk/mmz4281/1920/D1.csv
 
 # italy
-http://www.football-data.co.uk/mmz4281/1516/I1.csv
+http://www.football-data.co.uk/mmz4281/1920/I1.csv
 
 # spain
-http://www.football-data.co.uk/mmz4281/1516/SP1.csv
+http://www.football-data.co.uk/mmz4281/1920/SP1.csv
 
 # france
-http://www.football-data.co.uk/mmz4281/1516/F1.csv
+http://www.football-data.co.uk/mmz4281/1920/F1.csv
 
 # netherlands
-http://www.football-data.co.uk/mmz4281/1516/N1.csv
+http://www.football-data.co.uk/mmz4281/1920/N1.csv
 
 # belgium
-http://www.football-data.co.uk/mmz4281/1516/B1.csv
+http://www.football-data.co.uk/mmz4281/1920/B1.csv
 
 # portugal
-http://www.football-data.co.uk/mmz4281/1516/P1.csv
+http://www.football-data.co.uk/mmz4281/1920/P1.csv
 
 
