@@ -33,7 +33,7 @@ public class FixtureData {
 	}
 
 	public FixtureData(String lineReadFromDataFile, String[] keyData) throws ParseException, NumberFormatException {
-		String[] matchFixtureElems = lineReadFromDataFile.split(DATA_SEPARATOR_CHAR);
+		String[] matchFixtureElems = lineReadFromDataFile.split(DATA_SEPARATOR_CHAR,-1);
 		
 		if (keyData == null) {
 			throw new ParseException("match fixture parse problem : key data is null !!", 0);
