@@ -68,7 +68,10 @@ public class GetFixtures {
 			while ((lineReadFromFixturesFile = in.readLine()) != null) {
 				if (lineReadFromFixturesFile.startsWith(DATA_FILE_COLUMN_KEY_LINE)) {
 					String keyLine = lineReadFromFixturesFile;
-					keyData = keyLine.split(",");
+					keyData = keyLine.split("," , -1);
+					System.out.println("Num columns : " + keyData.length);
+					System.out.println(" --- ");
+					//Div,Date,Time,HomeTeam,AwayTeam,FTHG,FTAG,FTR,HTHG,HTAG,HTR,B365H,B365D,B365A,BWH,BWD,BWA,IWH,IWD,IWA,PSH,PSD,PSA,WHH,WHD,WHA,VCH,VCD,VCA,MaxH,MaxD,MaxA,AvgH,AvgD,AvgA,B365>2.5,B365<2.5,P>2.5,P<2.5,Max>2.5,Max<2.5,Avg>2.5,Avg<2.5,AHh,B365AHH,B365AHA,PAHH,PAHA,MaxAHH,MaxAHA,AvgAHH,AvgAHA,B365CH,B365CD,B365CA,BWCH,BWCD,BWCA,IWCH,IWCD,IWCA,PSCH,PSCD,PSCA,WHCH,WHCD,WHCA,VCCH,VCCD,VCCA,MaxCH,MaxCD,MaxCA,AvgCH,AvgCD,AvgCA,B365C>2.5,B365C<2.5,PC>2.5,PC<2.5,MaxC>2.5,MaxC<2.5,AvgC>2.5,AvgC<2.5,AHCh,B365CAHH,B365CAHA,PCAHH,PCAHA,MaxCAHH,MaxCAHA,AvgCAHH,AvgCAHA
 				} else {
 
 					//System.out.println("fixture : " + lineReadFromFixturesFile);
@@ -95,5 +98,6 @@ public class GetFixtures {
 		}
 		return allFixtures;
 	}
+
 
 }
