@@ -55,7 +55,7 @@ public class GetResults {
 		List<String> dataUrls = setAllFootballDataUrls(FOOTBALL_DATA_URL_FILE.getAbsolutePath());
 		
 		for (String dataUrl : dataUrls) {
-			//logger.debug("getting results from data url : " + dataUrl);
+			logger.debug("getting results from data url : " + dataUrl);
 			String[] keyData=null;
 			
 			URL url = null;
@@ -74,7 +74,7 @@ public class GetResults {
 			    while ((lineReadFromDataFile = in.readLine()) != null) {
 			    	if (lineReadFromDataFile.startsWith(DATA_FILE_COLUMN_KEY_LINE)) {
 			    		String keyLine = lineReadFromDataFile;
-			    		keyData = keyLine.split(",");
+			    		keyData = keyLine.split("," , -1);
 			    	} else {
 			    		MatchData match;
 						try {
