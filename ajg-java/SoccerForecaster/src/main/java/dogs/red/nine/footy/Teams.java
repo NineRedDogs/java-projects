@@ -38,7 +38,7 @@ public class Teams {
 
 	public void updateStats() {
 		for(Map.Entry<String, Team> team : teamMap.entrySet()){
-            //System.out.println("Updating stats for team : " + team.getKey());
+            System.out.println("Updating stats for team : " + team.getKey());
             team.getValue().updateStats();
         }
 	}

@@ -59,7 +59,7 @@ public class MatchData extends FixtureData implements Comparable<MatchData> {
 	public MatchData(String lineReadFromDataFile, String[] keyData) throws ParseException, NumberFormatException {
 		super();
 		
-		String[] matchResultElems = lineReadFromDataFile.split(DATA_SEPARATOR_CHAR);
+		String[] matchResultElems = lineReadFromDataFile.split(DATA_SEPARATOR_CHAR, -1);
 		
 		if (keyData == null) {
 			throw new ParseException("match result parse problem : key data is null !!", 0);
