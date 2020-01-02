@@ -1,0 +1,13 @@
+{
+    "configurations": [
+
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Gatherer",
+            "request": "launch",
+            "mainClass": "dogs.red.nine.oracle.gatherer.Gatherer",
+            "projectName": "TheGatherer",
+            "vmArgs": [ "-Doracle.season=1920" ]
+        }
+    ]
+}
