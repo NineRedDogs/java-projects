@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+  <Appenders>
+
+    <RollingFile name="PREDICTIONS"
+                 fileName="logs/predictions.log" 
+                 filePattern="logs/predictions---%d{yyyy-MM-dd}-%i.log"
+                 append="false">
+      <PatternLayout pattern="%m%n"/>
+      <TimeBasedTriggeringPolicy/>
+    </RollingFile>
+    
+    <Console name="STDOUT" target="SYSTEM_OUT">
+      <!-- <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/> -->
+      <PatternLayout pattern="%m%n"/>
+    </Console>
+
+  </Appenders>
+
+  <Loggers>
+
+    <Root level="trace">
+      <AppenderRef ref="STDOUT" level="DEBUG"/>
+        <AppenderRef ref="PREDICTIONS" level="INFO"/>
+    </Root>
+
+  </Loggers>
+</Configuration>
