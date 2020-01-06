@@ -13,9 +13,8 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import dogs.red.nine.oracle.data.Division;
 import dogs.red.nine.oracle.data.MatchData;
@@ -58,6 +57,15 @@ public class GetResults {
 		}
 		return dataUrls;
 	}
+
+	private void getResultsDataFilesFromRemote() {
+		FileUtils.copyURLToFile(
+  new URL("http://example.com/my-file-path.txt"), 
+  new File("/Users/username/Documents/file_name.txt"), 
+  CONNECTION_TIMEOUT, 
+  READ_TIMEOUT);
+	}
+
 	
 	
 	public Teams getResultsFromDataUrls() throws IOException {
