@@ -69,7 +69,7 @@ public class Gatherer {
     
 	public static final boolean SHOW_DETAILED_STATS = false;
 
-	public static final String SEASON_TO_USE = System.getProperty("oracle.season", "0506");
+	public static final String SEASON_TO_USE = System.getProperty("oracle.season", "1920");
 
 	private final List<Division> leaguesToProcess;
 
