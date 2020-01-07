@@ -28,7 +28,7 @@ public class Results {
 	}
 	public void addResult(MatchData resultData) {
 		results.add(resultData);
-		if (resultData.getHomeTeam().getName().equalsIgnoreCase(teamName)) {
+		if (resultData.getHomeTeam().equalsIgnoreCase(teamName)) {
 			homeResults.add(resultData);
 		} else {
 			awayResults.add(resultData);

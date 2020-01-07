@@ -105,7 +105,7 @@ public class TeamStats {
 
 			float gameMultiplier = ((float) currGame / (float) gamesPlayed);
 
-			boolean homeTeam = (this.teamName.equalsIgnoreCase(result.getHomeTeam().getName()));
+			boolean homeTeam = (this.teamName.equalsIgnoreCase(result.getHomeTeam()));
 			
 			if (homeTeam) {
 				this.goalsScored += result.getHomeTeamScore();
