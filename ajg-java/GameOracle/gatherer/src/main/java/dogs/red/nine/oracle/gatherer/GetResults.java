@@ -1,61 +1,58 @@
 package dogs.red.nine.oracle.gatherer;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
+import dogs.red.nine.oracle.data.Division;
+import dogs.red.nine.oracle.data.MatchData;
+import dogs.red.nine.oracle.data.Teams;
+import dogs.red.nine.oracle.general.ResultDataUrlUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.*;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import dogs.red.nine.oracle.data.Division;
-import dogs.red.nine.oracle.data.MatchData;
-import dogs.red.nine.oracle.data.Teams;
-import dogs.red.nine.oracle.general.ResultDataUrlUtils;
-
+import java.util.Map;
 
 public class GetResults {
 	private static final Logger logger = LogManager.getLogger("GetResults");
 
 	private static final String DATA_URLS_FILE_NAME = "dataUrls.txt";
 	private static final File FOOTBALL_DATA_URL_FILE = new File(Gatherer.DATA_DIR, DATA_URLS_FILE_NAME);
-	
+
 	private static final String DATA_FILE_COLUMN_KEY_LINE = "Div,";
-	
+
 	private final List<Division> supportedDivisions;
+
+	private Map<Division, List<MatchData>> allMatches = new HashMap<Division, List<MatchData>>();
 
 	/**
 	 * @param supportedDivisions
 	 */
 	public GetResults(List<Division> supportedDivisions) {
 		this.supportedDivisions = supportedDivisions;
+		for (Division division : supportedDivisions) {
+			allMatches.put(division, new ArrayList<MatchData>());
+		}
 	}
 
 	public List<Division> getSupportedDivisions() {
 		return supportedDivisions;
 	}
 
-
 	private List<String> setAllFootballDataUrls(final String urlFileName) throws IOException {
 
 		List<String> dataUrls = new ArrayList<String>();
 		for (String line : Files.readAllLines(Paths.get(urlFileName), StandardCharsets.UTF_8)) {
-			
+
 			if (line.startsWith("http")) {
-				
+
 				// found a real url, save it
 				dataUrls.add(line);
 			}
@@ -63,80 +60,157 @@ public class GetResults {
 		return dataUrls;
 	}
 
-	private File getResultsDataFilesFromRemote(final String datafileUrl) {
+	private File getResultsDataFileFromRemote(final String datafileUrl) {
 
 		final String fname = FilenameUtils.getName(datafileUrl);
 		final File localFile = new File(Gatherer.DATA_DIR, fname);
 
 		try {
+			logger.debug("getting results from data url : " + datafileUrl);
 			InputStream in = new URL(datafileUrl).openStream();
 			Files.copy(in, Paths.get(localFile.toURI()), StandardCopyOption.REPLACE_EXISTING);
 			logger.debug("set up local file : " + fname);
-		}
-		catch (Exception ex) {
-			logger.debug("using existing data file (if one exists), as couldnt get file [" + datafileUrl + "] ex: " + ex.getClass().getName() + ", " + ex.getLocalizedMessage());
+		} catch (Exception ex) {
+			logger.debug("using existing data file (if one exists), as couldnt get file [" + datafileUrl + "] ex: "
+					+ ex.getClass().getName() + ", " + ex.getLocalizedMessage());
 		}
 
 		return localFile;
 	}
 
-	
-	
 	public Teams getResultsFromDataUrls() throws IOException {
+
+		// get result data from data source
+		readResultsFromDataUrls();
+
+		// determine game week numbers for matches
+		assignGameWeekToMatches();
+
+		// enrich result data with league positions prior to game
+		assignLeaguePositionsToMatches();
+
+		// enrich result data further with form indicators prior to game
+		assignFormPositionsToMatches();
+
+		return generateTeamsFromMatches();
+	}
+
+	private Teams generateTeamsFromMatches() {
 		Teams teams = new Teams();
-		
-		for (Division division : getSupportedDivisions()) {
-			final String divisionResultsUrl = ResultDataUrlUtils.generateResultUrl(division);
-
-			logger.debug("getting results from data url : " + divisionResultsUrl);
-
-			final File dataFile = getResultsDataFilesFromRemote(divisionResultsUrl);
-
-			String[] keyData=null;
-			
-			// URL url = null;
-			String lineReadFromDataFile;
-			
-			// try {
-			//     url = new URL(divisionResultsUrl);
-			// } catch (MalformedURLException e) {
-			//     e.printStackTrace();
-			// }
-			BufferedReader in;
-			try {
-			    // URLConnection con = url.openConnection();
-			    // con.setReadTimeout( 1000 ); //1 second
-			    // in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-			    in = new BufferedReader(new InputStreamReader(new FileInputStream(dataFile)));
-			    while ((lineReadFromDataFile = in.readLine()) != null) {
-			    	if (lineReadFromDataFile.startsWith(DATA_FILE_COLUMN_KEY_LINE)) {
-			    		String keyLine = lineReadFromDataFile;
-			    		keyData = keyLine.split("," , -1);
-			    	} else {
-			    		MatchData match;
-						try {
-							match = new MatchData(lineReadFromDataFile, keyData);
-							//System.out.println("Parsed match data : " + match);
-
-							if (supportedDivisions.contains(match.getDivision())) {
-								//logger.debug("Match: " + match);
-								teams.addMatchResult(match);
-							}
-						} catch (ParseException | NumberFormatException e) {
-							//System.out.println("Parse problem with result : " + lineReadFromDataFile);
-							//e.printStackTrace();
-						}
-			    	}
-			    }
-			    in.close();
-
-			} catch (IOException e) {
-			    e.printStackTrace();
+		for (Division division : supportedDivisions) {
+			for (MatchData match : allMatches.get(division)) {
+				teams.addMatchResult(match);
 			}
 		}
 		teams.updateStats();
 		return teams;
 	}
 
+	private void assignGameWeekToMatches() {
+	}
+
+	private void assignFormPositionsToMatches() {
+
+		// use the following pattern for the creation of all form tables - can even use it for the full table:
+		//
+		// loop through the matches - gather names of all teams, then
+		// filter matches into a new map for a given team
+		// then remove any matches that are outside the form range (none removed for the full table)
+		// may also keep a home-form table, or home-full-season table - where we filter out away matches for our team.
+		//
+		// this approach will leave a set of match results that we can then use to create a form table
+		// will need to make sure only the given i.e. filtered team is used.
+		//
+		//
+	}
+
+	private void assignLeaguePositionsToMatches() {
+		for (Division division : getSupportedDivisions()) {
+			assignLeaguePositions(division);
+		}
+	}
+
+	private void assignLeaguePositions(Division division) {
+
+		
+	}
+
+	private void readResultsFromDataUrls() throws IOException {
+
+		for (Division division : getSupportedDivisions()) {
+			readDivisionResults(division);
+		}
+	}
+
+	private void readDivisionResults(final Division division) throws IOException {
+
+		final String divisionResultsUrl = ResultDataUrlUtils.generateResultUrl(division);
+		final File dataFile = getResultsDataFileFromRemote(divisionResultsUrl);
+		String[] keyData = null;
+		String lineReadFromDataFile;
+
+		BufferedReader in;
+		try {
+			in = new BufferedReader(new InputStreamReader(new FileInputStream(dataFile)));
+			while ((lineReadFromDataFile = in.readLine()) != null) {
+				if (lineReadFromDataFile.startsWith(DATA_FILE_COLUMN_KEY_LINE)) {
+					String keyLine = lineReadFromDataFile;
+					keyData = keyLine.split(",", -1);
+				} else {
+					MatchData match;
+					try {
+						match = new MatchData(lineReadFromDataFile, keyData);
+						// logger.debug("Parsed match data : " + match);
+
+						if (supportedDivisions.contains(match.getDivision())) {
+							// logger.debug("Match: " + match);
+							allMatches.get(division).add(match);
+						}
+					} catch (ParseException | NumberFormatException e) {
+						logger.debug("Parse problem with result : " + lineReadFromDataFile + ", e:" + e.getMessage());
+					}
+				}
+			}
+			in.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// public void readDivisionResultsFromDataUrl(final Division division) throws IOException {
+	// 	final String divisionResultsUrl = ResultDataUrlUtils.generateResultUrl(division);
+	// 	final File dataFile = getResultsDataFileFromRemote(divisionResultsUrl);
+	// 	String[] keyData = null;
+	// 	String lineReadFromDataFile;
+
+	// 	BufferedReader in;
+	// 	try {
+	// 		in = new BufferedReader(new InputStreamReader(new FileInputStream(dataFile)));
+	// 		while ((lineReadFromDataFile = in.readLine()) != null) {
+	// 			if (lineReadFromDataFile.startsWith(DATA_FILE_COLUMN_KEY_LINE)) {
+	// 				String keyLine = lineReadFromDataFile;
+	// 				keyData = keyLine.split(",", -1);
+	// 			} else {
+	// 				MatchData match;
+	// 				try {
+	// 					match = new MatchData(lineReadFromDataFile, keyData);
+	// 					// logger.debug("Parsed match data : " + match);
+
+	// 					if (supportedDivisions.contains(match.getDivision())) {
+	// 						// logger.debug("Match: " + match);
+	// 						allMatches.add(match);
+	// 					}
+	// 				} catch (ParseException | NumberFormatException e) {
+	// 					logger.debug("Parse problem with result : " + lineReadFromDataFile + ", e:" + e.getMessage());
+	// 				}
+	// 			}
+	// 		}
+	// 		in.close();
+
+	// 	} catch (IOException e) {
+	// 		e.printStackTrace();
+	// 	}
+	// }
 
 }
