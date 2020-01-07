@@ -25,13 +25,13 @@ public class Teams {
 
 
 	public void addMatchResult(MatchData match) {
-		final String htName = match.getHomeTeam().getName();
+		final String htName = match.getHomeTeam();
 		if (!teamMap.containsKey(htName)) {
 			teamMap.put(htName, new Team(htName));
 		}
 		teamMap.get(htName).addResult(match);
 
-		final String atName = match.getAwayTeam().getName();
+		final String atName = match.getAwayTeam();
 		if (!teamMap.containsKey(atName)) {
 			teamMap.put(atName, new Team(atName));
 		}
