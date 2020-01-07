@@ -13,8 +13,8 @@ public class FixtureData {
 	
 	private Division division;
 	private Date date;
-	private Team homeTeam;
-	private Team awayTeam;
+	private String homeTeam;
+	private String awayTeam;
 	
 
 	/**
@@ -23,8 +23,7 @@ public class FixtureData {
 	 * @param homeTeam
 	 * @param awayTeam
 	 */
-	public FixtureData(Division division, Date date, Team homeTeam,
-			Team awayTeam) {
+	public FixtureData(Division division, Date date, String homeTeam, String awayTeam) {
 		this.division = division;
 		this.date = date;
 		this.homeTeam = homeTeam;
@@ -60,11 +59,11 @@ public class FixtureData {
 				break;
 
 			case "HomeTeam" : 
-				homeTeam = new Team(matchFixtureElems[colNum]);
+				homeTeam = matchFixtureElems[colNum];
 				break;
 
 			case "AwayTeam" : 
-				awayTeam = new Team(matchFixtureElems[colNum]);
+				awayTeam = matchFixtureElems[colNum];
 				break;
 				
 				default:
@@ -89,7 +88,7 @@ public class FixtureData {
 
 
 
-	public Team getHomeTeam() {
+	public String getHomeTeam() {
 		return homeTeam;
 	}
 
@@ -107,29 +106,25 @@ public class FixtureData {
 
 
 
-	public void setHomeTeam(Team homeTeam) {
+	public void setHomeTeam(String homeTeam) {
 		this.homeTeam = homeTeam;
 	}
 
 
 
-	public void setAwayTeam(Team awayTeam) {
+	public void setAwayTeam(String awayTeam) {
 		this.awayTeam = awayTeam;
 	}
 
 
 
-	public Team getAwayTeam() {
+	public String getAwayTeam() {
 		return awayTeam;
 	}
 
 
-	public boolean hasTeam(final String teamName) {
-		return hasTeam(new Team(teamName));
-	}
 
-
-	private boolean hasTeam(Team team) {
+	private boolean hasTeam(String team) {
 		return (team.equals(homeTeam) || team.equals(awayTeam));
 	}
 
@@ -152,7 +147,7 @@ public class FixtureData {
 	
 	public String fixturePrint(DisplayExtras displayExtras) {
 		StringBuilder sb = new StringBuilder(getDateAndDivFixed());
-		sb.append(homeTeam.getName(displayExtras.isHlHome()) + " v " + awayTeam.getName(displayExtras.isHlAway()));
+		sb.append(homeTeam + " v " + awayTeam);
 		return sb.toString();
 	}
 	

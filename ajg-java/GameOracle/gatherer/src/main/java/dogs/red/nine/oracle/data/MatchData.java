@@ -92,7 +92,8 @@ public class MatchData extends FixtureData implements Comparable<MatchData> {
 				break;
 			
 			case "HomeTeam" : 
-				setHomeTeam(new Team(matchResultElems[colNum]));
+				setHomeTeam(matchResultElems[colNum]);
+				// setHomeTeam(new Team(matchResultElems[colNum]));
 				break;
 
 			case "FTHG" : 
@@ -103,8 +104,9 @@ public class MatchData extends FixtureData implements Comparable<MatchData> {
 				homeTeamHTScore = Integer.parseInt(matchResultElems[colNum]);
 				break;
 			
-			case "AwayTeam" : 
-				setAwayTeam(new Team(matchResultElems[colNum]));
+			case "AwayTeam" :
+				setAwayTeam(matchResultElems[colNum]);
+				// setAwayTeam(new Team(matchResultElems[colNum]));
 				break;
 				
 			case "FTAG": 
@@ -164,8 +166,8 @@ public class MatchData extends FixtureData implements Comparable<MatchData> {
 		
 		sb.append(new SimpleDateFormat("EEE MMM d yyyy").format(getDate()) + " ");
 		sb.append(getDivision() + ": ");
-		sb.append(getHomeTeam().getName() + " " + homeTeamScore + ":");
-		sb.append(awayTeamScore + " " + getAwayTeam().getName());
+		sb.append(getHomeTeam() + " " + homeTeamScore + ":");
+		sb.append(awayTeamScore + " " + getAwayTeam());
 		sb.append(" [HT " + homeTeamHTScore + ":" + awayTeamHTScore + "]");
 		return sb.toString();
 	}
