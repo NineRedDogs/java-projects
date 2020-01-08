@@ -1,10 +1,12 @@
-package dogs.red.nine.oracle.data;
+package dogs.red.nine.oracle.data.tables;
 
+import dogs.red.nine.oracle.data.MatchData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class TableEntry implements Comparable<TableEntry> {
 
+    public static String formattedHeaders = "                           P    W    D    L    F    A    GD   Pts";
     private final String teamName;
     private int gamesPlayed;
     private int gamesWon;
@@ -143,7 +145,15 @@ public class TableEntry implements Comparable<TableEntry> {
     }
 
 
-
-
-    
+    @Override
+    public String toString() {
+        return "     " + gamesPlayed +
+                "  " + gamesWon +
+                "  " + gamesDrawn +
+                "  " + gamesLost +
+                "  " + goalsFor +
+                "  " + goalsAgainst +
+                "  " + getGoalDifference() +
+                "  " + points;
+    }
 }

@@ -3,6 +3,8 @@ package dogs.red.nine.oracle.gatherer;
 import dogs.red.nine.oracle.data.Division;
 import dogs.red.nine.oracle.data.MatchData;
 import dogs.red.nine.oracle.data.Teams;
+import dogs.red.nine.oracle.data.tables.FullSeasonTable;
+import dogs.red.nine.oracle.data.tables.TableGenerator;
 import dogs.red.nine.oracle.general.ResultDataUrlUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -28,6 +30,7 @@ public class GetResults {
 	private final List<Division> supportedDivisions;
 	private final Map<Division, SortedSet<String>> divisionTeams = new HashMap<Division, SortedSet<String>>();
 	private final Map<Division, List<MatchData>> allMatches = new HashMap<Division, List<MatchData>>();
+	private final TableGenerator tableGenerator = new TableGenerator();
 
 	/**
 	 * @param supportedDivisions
@@ -124,14 +127,16 @@ public class GetResults {
 
 	private void assignLeaguePositionsToMatches() {
 		for (Division division : getSupportedDivisions()) {
-			assignLeaguePositions(division);
+			tableGenerator.generateTables(division, allMatches.get(division), divisionTeams.get(division));
 		}
 	}
 
-	private void assignLeaguePositions(Division division) {
-		Date currDate = new Date();
+	private void generateTables(Division division) {
+		Date currDate = allMatches.get(division).get(0).getDate();
+		FullSeasonTable fullSeasonTable;
 
 		for (MatchData match : allMatches.get(division)) {
+
 
 
 		}
