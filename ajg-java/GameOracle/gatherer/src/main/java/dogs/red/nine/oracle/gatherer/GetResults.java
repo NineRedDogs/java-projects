@@ -129,6 +129,12 @@ public class GetResults {
 	}
 
 	private void assignLeaguePositions(Division division) {
+		Date currDate = new Date();
+
+		for (MatchData match : allMatches.get(division)) {
+
+
+		}
 
 		
 	}
