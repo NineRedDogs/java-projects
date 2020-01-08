@@ -15,10 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GetResults {
 	private static final Logger logger = LogManager.getLogger("GetResults");
@@ -29,8 +26,8 @@ public class GetResults {
 	private static final String DATA_FILE_COLUMN_KEY_LINE = "Div,";
 
 	private final List<Division> supportedDivisions;
-
-	private Map<Division, List<MatchData>> allMatches = new HashMap<Division, List<MatchData>>();
+	private final Map<Division, SortedSet<String>> divisionTeams = new HashMap<Division, SortedSet<String>>();
+	private final Map<Division, List<MatchData>> allMatches = new HashMap<Division, List<MatchData>>();
 
 	/**
 	 * @param supportedDivisions
@@ -39,6 +36,7 @@ public class GetResults {
 		this.supportedDivisions = supportedDivisions;
 		for (Division division : supportedDivisions) {
 			allMatches.put(division, new ArrayList<MatchData>());
+			divisionTeams.put(division, new TreeSet<String>());
 		}
 	}
 
@@ -162,6 +160,10 @@ public class GetResults {
 						match = new MatchData(lineReadFromDataFile, keyData);
 						// logger.debug("Parsed match data : " + match);
 
+						// generate a list of all teams in this division
+						divisionTeams.get(division).add(match.getHomeTeam());
+						divisionTeams.get(division).add(match.getAwayTeam());
+
 						if (supportedDivisions.contains(match.getDivision())) {
 							// logger.debug("Match: " + match);
 							allMatches.get(division).add(match);
@@ -176,7 +178,10 @@ public class GetResults {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		logger.debug("Division <" + division + "> :teams::" + divisionTeams.get(division));
 	}
+
+
 
 	// public void readDivisionResultsFromDataUrl(final Division division) throws IOException {
 	// 	final String divisionResultsUrl = ResultDataUrlUtils.generateResultUrl(division);
