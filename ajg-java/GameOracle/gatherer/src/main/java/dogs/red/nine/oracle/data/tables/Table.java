@@ -1,9 +1,14 @@
 package dogs.red.nine.oracle.data.tables;
 
-import java.util.SortedMap;
-import java.util.concurrent.ConcurrentSkipListMap;
+import dogs.red.nine.oracle.data.Division;
+import dogs.red.nine.oracle.data.MatchData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.List;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public abstract class Table {
 
@@ -11,8 +16,15 @@ public abstract class Table {
     private final String tableName;
     private SortedMap<String, TableEntry> table = new ConcurrentSkipListMap<String, TableEntry>();
 
-    protected Table(String tableName) {
+    public abstract void generateTable(List<MatchData> matchData);
+    public final Division division;
+
+    protected Table(String tableName, Division division, SortedSet<String> teams) {
         this.tableName = tableName;
+        this.division = division;
+        for (String team : teams) {
+            table.put(team, new TableEntry(team));
+        }
     }
 
     public void displayTable() {
