@@ -9,6 +9,9 @@ import java.util.SortedSet;
 public class FullSeasonTable extends Table {
     protected FullSeasonTable(Division division, SortedSet<String> teams) {
         super("Full Table", division, teams);
+        for (String team : teams) {
+            table.put(team, new FullSeasonTableEntry(team));
+        }
     }
 
     public void generateTable(List<MatchData> matches) {
