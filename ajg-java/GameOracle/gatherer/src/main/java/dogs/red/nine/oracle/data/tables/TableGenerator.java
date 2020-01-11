@@ -14,7 +14,9 @@ public class TableGenerator {
     private final SortedMap<Date, Table> fullTables = new ConcurrentSkipListMap<Date, Table>();
 
 
+
     public void generateTables(Division division, List<MatchData> matchData, SortedSet<String> teams) {
+
 
         // generate all the full season tables - one for each date ...
         Date currDate = matchData.get(0).getDate();
@@ -23,8 +25,9 @@ public class TableGenerator {
         // create a new matchData structure
         for (MatchData match : matchData) {
             if (currDate != match.getDate()) {
-                Table fullTableUntilCurrDate = FullSeasonTable.generate(division, matchData, teams);
-                fullTables.put(currDate, fullTableUntilCurrDate);
+                FullSeasonTable fullSeasonTable = new FullSeasonTable(division, teams);
+                fullSeasonTable.generateTable(tableMatches);
+                fullTables.put(currDate, fullSeasonTable);
             }
             tableMatches.add(match);
         }

@@ -4,7 +4,7 @@ import dogs.red.nine.oracle.data.MatchData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class TableEntry implements Comparable<TableEntry> {
+public abstract class TableEntry implements Comparable<TableEntry> {
 
     public static String formattedHeaders = "                           P    W    D    L    F    A    GD   Pts";
     private final String teamName;
@@ -19,32 +19,60 @@ public class TableEntry implements Comparable<TableEntry> {
     private static final Logger logger = LogManager.getLogger("TableEntry");
 
 
-    public void setGamesPlayed(int gamesPlayed) {
+    protected void setGamesPlayed(int gamesPlayed) {
         this.gamesPlayed = gamesPlayed;
     }
 
-    public void setGamesWon(int gamesWon) {
+    protected void setGamesWon(int gamesWon) {
         this.gamesWon = gamesWon;
     }
 
-    public void setGamesDrawn(int gamesDrawn) {
+    protected void setGamesDrawn(int gamesDrawn) {
         this.gamesDrawn = gamesDrawn;
     }
 
-    public void setGamesLost(int gamesLost) {
+    protected void setGamesLost(int gamesLost) {
         this.gamesLost = gamesLost;
     }
 
-    public void setGoalsFor(int goalsFor) {
+    protected void incrementGamesPlayed() {
+        this.gamesPlayed++;
+    }
+
+    protected void incrementGamesWon() {
+        this.gamesWon++;
+    }
+
+    protected void incrementGamesDrawn() {
+        this.gamesDrawn++;
+    }
+
+    protected void incrementGamesLost() {
+        this.gamesLost++;
+    }
+
+    protected void setGoalsFor(int goalsFor) {
         this.goalsFor = goalsFor;
     }
 
-    public void setGoalsAgainst(int goalsAgainst) {
+    protected void setGoalsAgainst(int goalsAgainst) {
         this.goalsAgainst = goalsAgainst;
     }
 
-    public void setPoints(int points) {
+    protected void setPoints(int points) {
         this.points = points;
+    }
+
+    protected void incrementGoalsFor(int goalsFor) {
+        this.goalsFor += goalsFor;
+    }
+
+    protected void incrementGoalsAgainst(int goalsAgainst) {
+        this.goalsAgainst += goalsAgainst;
+    }
+
+    protected void incrementPoints(int points) {
+        this.points += points;
     }
 
     public String getTeamName() {
@@ -87,34 +115,8 @@ public class TableEntry implements Comparable<TableEntry> {
         this.teamName = teamName;
     }
 
-    public void addResult(final MatchData result) {
-        if (teamName.equalsIgnoreCase(result.getHomeTeam())) {
-            // team is home team
-            add(result.getHomeTeamScore(), result.getAwayTeamScore());
 
-        } else if (teamName.equalsIgnoreCase(result.getAwayTeam())) {
-            // team is away team
-            add(result.getAwayTeamScore(), result.getHomeTeamScore());
-        } else {
-            logger.debug("current team not home OR away in given match !!!");
-        }
-    }
-
-    private void add(int ourScore, int otherTeamScore) {
-        gamesPlayed++;
-        if (ourScore > otherTeamScore) {
-            gamesWon++;
-            points += 3;
-        } else if (ourScore == otherTeamScore) {
-            gamesDrawn++;
-            points += 1;
-        } else {
-            gamesLost++;
-        }
-        goalsFor += ourScore;
-        goalsAgainst += otherTeamScore;
-
-    }
+    public abstract void addResult(final MatchData result);
 
 
     @Override
