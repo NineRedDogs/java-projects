@@ -37,12 +37,4 @@ jar {
     }
 }
 
-task customFatJar(type: Jar) {
-    manifest {
-        attributes 'Main-Class': 'dogs.red.nine.oracle.gatherer.Gatherer'
-    }
-    archiveBaseName = 'all-in-one-jar'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
 
