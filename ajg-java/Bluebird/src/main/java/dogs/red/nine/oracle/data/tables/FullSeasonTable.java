@@ -17,8 +17,9 @@ public class FullSeasonTable extends Table {
     public void generateTable(List<MatchData> matches) {
 
         for (MatchData match : matches) {
-
+            table.get(match.getHomeTeam()).addResult(match);
+            table.get(match.getAwayTeam()).addResult(match);
         }
-
+        displayTable();
     }
 }
