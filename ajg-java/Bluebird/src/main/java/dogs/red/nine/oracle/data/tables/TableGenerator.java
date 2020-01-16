@@ -22,17 +22,38 @@ public class TableGenerator {
         Date currDate = matchData.get(0).getDate();
         List<MatchData> tableMatches = new ArrayList<MatchData>();
 
+
         // create a new matchData structure
         for (MatchData match : matchData) {
-            if (currDate != match.getDate()) {
-                FullSeasonTable fullSeasonTable = new FullSeasonTable(division, teams);
-                fullSeasonTable.generateTable(tableMatches);
-                fullTables.put(currDate, fullSeasonTable);
+//            logger.debug("======================================================");
+//            logger.debug(" comparing currDate:" + currDate + " vs match date:" + match.getDate() + " compare: " +
+//                    currDate.compareTo(match.getDate()));
+
+            if (currDate.compareTo(match.getDate()) < 0) {
+                // current match has a new date, so generate table for all matches so far
+                genTable(division, teams, tableMatches, currDate);
+
+
+
+                // move curr date on
                 currDate = match.getDate();
-                fullSeasonTable.displayTable(currDate.toString());
+//                logger.debug(" moving up currDate:" + currDate);
             }
             tableMatches.add(match);
         }
 
+        // record final table
+        genTable(division, teams, tableMatches, currDate);
+
     }
+
+    private void genTable(Division division, SortedSet<String> teams, List<MatchData> tableMatches, Date currDate) {
+        FullSeasonTable fullSeasonTable = new FullSeasonTable(division, teams);
+        fullSeasonTable.generateTable(tableMatches);
+        fullTables.put(currDate, fullSeasonTable);
+        logger.debug("storing table for date : " + currDate);
+        fullSeasonTable.displayTable(currDate.toString());
+    }
+
+
 }
