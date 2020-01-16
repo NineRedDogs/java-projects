@@ -5,10 +5,7 @@ import dogs.red.nine.oracle.data.MatchData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public abstract class Table {
@@ -18,7 +15,7 @@ public abstract class Table {
     protected final Division division;
 
     //protected SortedMap<String, TableEntry> table = new ConcurrentSkipListMap<String, TableEntry>();
-    protected SortedMap<String, TableEntry> table = new TreeMap<String, TableEntry>();
+    protected Map<String, TableEntry> table = new LinkedHashMap<String, TableEntry>();
 
     public abstract void generateTable(List<MatchData> matchData);
 
@@ -29,8 +26,8 @@ public abstract class Table {
 
 
 
-    public void displayTable() {
-        logger.debug("Displaying table [" + tableName + "]");
+    public void displayTable(final String title) {
+        logger.debug("Displaying table [" + tableName + "] - " + title);
         logger.debug(TableEntry.formattedHeaders);
         table.forEach((key, value) -> logger.debug(" " + key + "  " + value));
     }
