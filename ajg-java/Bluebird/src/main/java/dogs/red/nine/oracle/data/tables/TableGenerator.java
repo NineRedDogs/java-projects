@@ -12,6 +12,8 @@ public class TableGenerator {
 
     private static final Logger logger = LogManager.getLogger("TableGenerator");
     private final SortedMap<Date, Table> fullTables = new ConcurrentSkipListMap<Date, Table>();
+    private final SortedMap<Date, Table> fullHomeTables = new ConcurrentSkipListMap<Date, Table>();
+    private final SortedMap<Date, Table> fullAwayTables = new ConcurrentSkipListMap<Date, Table>();
 
 
 
@@ -48,11 +50,23 @@ public class TableGenerator {
     }
 
     private void genTable(Division division, SortedSet<String> teams, List<MatchData> tableMatches, Date currDate) {
+        logger.debug("storing table for date : " + currDate);
+
         FullSeasonTable fullSeasonTable = new FullSeasonTable(division, teams);
         fullSeasonTable.generateTable(tableMatches);
         fullTables.put(currDate, fullSeasonTable);
-        logger.debug("storing table for date : " + currDate);
-        fullSeasonTable.displayTable(currDate.toString());
+        //fullSeasonTable.displayTable(currDate.toString());
+
+        FullSeasonHomeTable fullSeasonHomeTable = new FullSeasonHomeTable(division, teams);
+        fullSeasonHomeTable.generateTable(tableMatches);
+        fullHomeTables.put(currDate, fullSeasonHomeTable);
+        //fullSeasonHomeTable.displayTable(currDate.toString());
+
+
+        FullSeasonAwayTable fullSeasonAwayTable = new FullSeasonAwayTable(division, teams);
+        fullSeasonAwayTable.generateTable(tableMatches);
+        fullAwayTables.put(currDate, fullSeasonAwayTable);
+        fullSeasonAwayTable.displayTable(currDate.toString());
     }
 
 
