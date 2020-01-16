@@ -98,7 +98,7 @@ public class Gatherer {
 		GetResults gr = new GetResults(f.getLeaguesToProcess());
 		Teams teams = gr.getResultsFromDataUrls();
 
-		System.out.println("all teams : " + teams.displayTeamStats());
+		//System.out.println("all teams : " + teams.displayTeamStats());
 		
 
 		
