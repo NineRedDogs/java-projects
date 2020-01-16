@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public abstract class Table {
@@ -16,7 +17,8 @@ public abstract class Table {
     protected final String tableName;
     protected final Division division;
 
-    protected SortedMap<String, TableEntry> table = new ConcurrentSkipListMap<String, TableEntry>();
+    //protected SortedMap<String, TableEntry> table = new ConcurrentSkipListMap<String, TableEntry>();
+    protected SortedMap<String, TableEntry> table = new TreeMap<String, TableEntry>();
 
     public abstract void generateTable(List<MatchData> matchData);
 
