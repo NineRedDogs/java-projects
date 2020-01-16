@@ -5,16 +5,16 @@ import dogs.red.nine.oracle.data.MatchData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.SortedSet;
 
-public class FullSeasonTable extends Table {
-    private static final Logger logger = LogManager.getLogger("FullSeasonTable");
+public class FullSeasonHomeTable extends Table {
+    private static final Logger logger = LogManager.getLogger("FullSeasonHomeTable");
 
-    protected FullSeasonTable(Division division, SortedSet<String> teams) {
-        super("Full Table", division, teams);
+    protected FullSeasonHomeTable(Division division, SortedSet<String> teams) {
+        super("Full Home Table", division, teams);
         for (String team : teams) {
-            table.put(team, new FullSeasonTableEntry(team));
+            table.put(team, new FullSeasonHomeTableEntry(team));
         }
     }
 
@@ -22,7 +22,6 @@ public class FullSeasonTable extends Table {
 
         for (MatchData match : matches) {
             table.get(match.getHomeTeam()).addResult(match);
-            table.get(match.getAwayTeam()).addResult(match);
         }
         table = sortTable();
     }

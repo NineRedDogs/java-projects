@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.stream.Collectors;
 
 public abstract class Table {
 
@@ -24,7 +25,16 @@ public abstract class Table {
         this.division = division;
     }
 
-
+    protected Map<String, TableEntry> sortTable() {
+        Map<String, TableEntry> x = table.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+        return x;
+    }
 
     public void displayTable(final String title) {
         logger.debug("Displaying table [" + tableName + "] - " + title);
