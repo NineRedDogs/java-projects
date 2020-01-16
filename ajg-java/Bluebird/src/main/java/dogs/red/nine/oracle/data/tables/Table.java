@@ -29,7 +29,7 @@ public abstract class Table {
     public void displayTable(final String title) {
         logger.debug("Displaying table [" + tableName + "] - " + title);
         logger.debug(TableEntry.formattedHeaders);
-        table.forEach((key, value) -> logger.debug(" " + key + "  " + value));
+        table.forEach((key, value) -> logger.debug(" " + String.format("%-20s", key).replace(' ', '.') + "  " + value));
     }
 
 

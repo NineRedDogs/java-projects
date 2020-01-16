@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 public abstract class TableEntry implements Comparable<TableEntry> {
 
-    public static String formattedHeaders = "                           P    W    D    L    F    A    GD   Pts";
+    public static String formattedHeaders = "                           P    W    D    L    F    A   GD  Pts";
     private final String teamName;
     private int gamesPlayed;
     private int gamesWon;
@@ -150,13 +150,17 @@ public abstract class TableEntry implements Comparable<TableEntry> {
 
     @Override
     public String toString() {
-        return "     " + gamesPlayed +
-                "  " + gamesWon +
-                "  " + gamesDrawn +
-                "  " + gamesLost +
-                "  " + goalsFor +
-                "  " + goalsAgainst +
-                "  " + getGoalDifference() +
-                "  " + points;
+        return " " + formatInt(gamesPlayed) +
+                " " + formatInt(gamesWon) +
+                " " + formatInt(gamesDrawn) +
+                " " + formatInt(gamesLost) +
+                " " + formatInt(goalsFor) +
+                " " + formatInt(goalsAgainst) +
+                " " + formatInt(getGoalDifference()) +
+                " " + formatInt(points);
+    }
+
+    private String formatInt(int num) {
+        return String.format("%4s", num);
     }
 }
