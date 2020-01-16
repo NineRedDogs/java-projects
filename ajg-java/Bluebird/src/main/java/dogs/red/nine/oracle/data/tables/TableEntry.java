@@ -124,21 +124,22 @@ public abstract class TableEntry implements Comparable<TableEntry> {
 	// compareTo should return < 0 if this is supposed to be
 		// less than other, > 0 if this is supposed to be greater than 
 		// other and 0 if they are supposed to be equal
+//        logger.debug("comparing " + this + " with " + otherEntry +  " ...");
 
 		if (getPoints() < otherEntry.getPoints()) {
-			return -1;
-		} else if (getPoints() > otherEntry.getPoints()) {
 			return 1;
+		} else if (getPoints() > otherEntry.getPoints()) {
+			return -1;
 		} else {
             if (getGoalDifference() < otherEntry.getGoalDifference()) {
-                return -1;
-            } else if (getGoalDifference() > otherEntry.getGoalDifference()) {
                 return 1;
+            } else if (getGoalDifference() > otherEntry.getGoalDifference()) {
+                return -1;
             } else {
                 if (getGoalsFor() < otherEntry.getGoalsFor()) {
-                    return -1;
-                } else if (getGoalDifference() > otherEntry.getGoalDifference()) {
                     return 1;
+                } else if (getGoalDifference() > otherEntry.getGoalDifference()) {
+                    return -1;
                 }
             }
 			// must be the same 

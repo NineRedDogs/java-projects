@@ -28,6 +28,8 @@ public class TableGenerator {
                 FullSeasonTable fullSeasonTable = new FullSeasonTable(division, teams);
                 fullSeasonTable.generateTable(tableMatches);
                 fullTables.put(currDate, fullSeasonTable);
+                currDate = match.getDate();
+                fullSeasonTable.displayTable(currDate.toString());
             }
             tableMatches.add(match);
         }
