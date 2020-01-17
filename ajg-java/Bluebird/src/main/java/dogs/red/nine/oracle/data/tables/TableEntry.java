@@ -111,6 +111,10 @@ public abstract class TableEntry implements Comparable<TableEntry> {
         return points;
     }
 
+    public float getPointsRate() { return (points / (gamesPlayed * 3)); }
+    public int getAvgeScoreFor() { return (goalsFor / gamesPlayed); }
+    public int getAvgeScoreAgainst() { return (goalsAgainst / gamesPlayed); }
+
     public TableEntry(String teamName) {
         this.teamName = teamName;
     }
@@ -157,10 +161,14 @@ public abstract class TableEntry implements Comparable<TableEntry> {
                 " " + formatInt(goalsFor) +
                 " " + formatInt(goalsAgainst) +
                 " " + formatInt(getGoalDifference()) +
-                " " + formatInt(points);
+                " " + formatInt(points) +
+                " " + formatFloat(3);
     }
 
     private String formatInt(int num) {
+        return String.format("%4s", num);
+    }
+    private String formatFloat(float num) {
         return String.format("%4s", num);
     }
 }
