@@ -14,42 +14,40 @@ public class TableGenerator {
     private final SortedMap<Date, Table> fullTables = new ConcurrentSkipListMap<Date, Table>();
     private final SortedMap<Date, Table> fullHomeTables = new ConcurrentSkipListMap<Date, Table>();
     private final SortedMap<Date, Table> fullAwayTables = new ConcurrentSkipListMap<Date, Table>();
-
-
+    private final SortedMap<Date, Table> formTables = new ConcurrentSkipListMap<Date, Table>();
+    private final SortedMap<Date, Table> formHomeTables = new ConcurrentSkipListMap<Date, Table>();
+    private final SortedMap<Date, Table> formAwayTables = new ConcurrentSkipListMap<Date, Table>();
 
     public void generateTables(Division division, List<MatchData> matchData, SortedSet<String> teams) {
+        generateFullSeasonTables(division, matchData, teams);
+        generateFormTables(division, matchData, teams);
+    }
 
+
+    private void generateFullSeasonTables(Division division, List<MatchData> matchData, SortedSet<String> teams) {
 
         // generate all the full season tables - one for each date ...
         Date currDate = matchData.get(0).getDate();
         List<MatchData> tableMatches = new ArrayList<MatchData>();
 
-
         // create a new matchData structure
         for (MatchData match : matchData) {
-//            logger.debug("======================================================");
-//            logger.debug(" comparing currDate:" + currDate + " vs match date:" + match.getDate() + " compare: " +
-//                    currDate.compareTo(match.getDate()));
-
             if (currDate.compareTo(match.getDate()) < 0) {
                 // current match has a new date, so generate table for all matches so far
-                genTable(division, teams, tableMatches, currDate);
-
-
+                genFullSeasonTable(division, teams, tableMatches, currDate);
 
                 // move curr date on
                 currDate = match.getDate();
-//                logger.debug(" moving up currDate:" + currDate);
             }
             tableMatches.add(match);
         }
 
         // record final table
-        genTable(division, teams, tableMatches, currDate);
+        genFullSeasonTable(division, teams, tableMatches, currDate);
 
     }
 
-    private void genTable(Division division, SortedSet<String> teams, List<MatchData> tableMatches, Date currDate) {
+    private void genFullSeasonTable(Division division, SortedSet<String> teams, List<MatchData> tableMatches, Date currDate) {
         logger.debug("storing table for date : " + currDate);
 
         FullSeasonTable fullSeasonTable = new FullSeasonTable(division, teams);
@@ -62,12 +60,57 @@ public class TableGenerator {
         fullHomeTables.put(currDate, fullSeasonHomeTable);
         //fullSeasonHomeTable.displayTable(currDate.toString());
 
-
         FullSeasonAwayTable fullSeasonAwayTable = new FullSeasonAwayTable(division, teams);
         fullSeasonAwayTable.generateTable(tableMatches);
         fullAwayTables.put(currDate, fullSeasonAwayTable);
-        fullSeasonAwayTable.displayTable(currDate.toString());
+        //fullSeasonAwayTable.displayTable(currDate.toString());
     }
+
+
+
+    private void generateFormTables(Division division, List<MatchData> matchData, SortedSet<String> teams) {
+
+        // generate all the full season tables - one for each date ...
+        Date currDate = matchData.get(0).getDate();
+        List<MatchData> tableMatches = new ArrayList<MatchData>();
+
+        // create a new matchData structure
+        for (MatchData match : matchData) {
+            if (currDate.compareTo(match.getDate()) < 0) {
+                // current match has a new date, so generate table for all matches so far
+                genFormTable(division, teams, tableMatches, currDate);
+
+                // move curr date on
+                currDate = match.getDate();
+            }
+            tableMatches.add(match);
+        }
+
+        // record final table
+        genFullSeasonTable(division, teams, tableMatches, currDate);
+
+    }
+
+    private void genFormTable(Division division, SortedSet<String> teams, List<MatchData> tableMatches, Date currDate) {
+        logger.debug("storing table for date : " + currDate);
+
+        CurrentFormTable currentFormTable = new CurrentFormTable(division, teams);
+        currentFormTable.generateTable(tableMatches);
+        formTables.put(currDate, currentFormTable);
+        //currentFormTable.displayTable(currDate.toString());
+
+        CurrentFormHomeTable currentFormHomeTable = new CurrentFormHomeTable(division, teams);
+        currentFormHomeTable.generateTable(tableMatches);
+        formHomeTables.put(currDate, currentFormHomeTable);
+        //currentFormHomeTable.displayTable(currDate.toString());
+
+        CurrentFormAwayTable currentFormAwayTable = new CurrentFormAwayTable(division, teams);
+        currentFormAwayTable.generateTable(tableMatches);
+        formAwayTables.put(currDate, currentFormAwayTable);
+        currentFormAwayTable.displayTable(currDate.toString());
+
+    }
+
 
 
 }
