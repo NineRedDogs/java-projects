@@ -4,12 +4,12 @@ import dogs.red.nine.oracle.data.MatchData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class CurrentFormTableEntry extends TableEntry {
+public class CurrentFormHomeTableEntry extends TableEntry {
 
-    private static final Logger logger = LogManager.getLogger("CurrentFormTableEntry");
+    private static final Logger logger = LogManager.getLogger("CurrentFormHomeTableEntry");
 
 
-    public CurrentFormTableEntry(String teamName) {
+    public CurrentFormHomeTableEntry(String teamName) {
         super(teamName);
     }
 
@@ -17,12 +17,8 @@ public class CurrentFormTableEntry extends TableEntry {
         if (getTeamName().equalsIgnoreCase(result.getHomeTeam())) {
             // team is home team
             add(result.getHomeTeamScore(), result.getAwayTeamScore());
-
-        } else if (getTeamName().equalsIgnoreCase(result.getAwayTeam())) {
-            // team is away team
-            add(result.getAwayTeamScore(), result.getHomeTeamScore());
         } else {
-            logger.debug("current team not home OR away in given match !!!");
+            logger.debug("current team not home in given match !!!");
         }
     }
 
