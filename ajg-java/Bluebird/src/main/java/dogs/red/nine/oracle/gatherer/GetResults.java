@@ -128,6 +128,7 @@ public class GetResults {
 	private void assignLeaguePositionsToMatches() {
 		for (Division division : getSupportedDivisions()) {
 			tableGenerator.generateTables(division, allMatches.get(division), divisionTeams.get(division));
+			tableGenerator.displayCurrentTables();
 		}
 	}
 

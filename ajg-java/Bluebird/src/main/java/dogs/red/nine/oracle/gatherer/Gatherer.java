@@ -46,6 +46,17 @@ public class Gatherer {
 	private static final List<Division> EPL = Arrays.asList(
 		Division.England_Premier_League);
 
+	private static final List<Division> ENG_TOP2 = Arrays.asList(
+			Division.England_Premier_League,
+			Division.England_Championship);
+
+	private static final List<Division> ENG_DIVISIONS = Arrays.asList(
+			Division.England_Premier_League,
+			Division.England_Championship,
+			Division.England_League_1,
+			Division.England_League_2,
+			Division.England_Conference);
+
     private static final List<Division> UK_DIVISIONS = Arrays.asList(
 			Division.England_Premier_League, 
 			Division.England_Championship, 
@@ -80,6 +91,8 @@ public class Gatherer {
 
 		if (DEV_MODE) {
 			leaguesToProcess = EPL;
+			//leaguesToProcess = ENG_TOP2;
+			//leaguesToProcess = ENG_DIVISIONS;
 		} else if (USE_UK_LEAGUES) {
 			leaguesToProcess = UK_DIVISIONS;
 		} else {

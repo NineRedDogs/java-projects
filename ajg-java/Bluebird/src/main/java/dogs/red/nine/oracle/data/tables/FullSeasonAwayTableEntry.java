@@ -22,20 +22,5 @@ public class FullSeasonAwayTableEntry extends TableEntry {
         }
     }
 
-    private void add(int ourScore, int otherTeamScore) {
-        incrementGamesPlayed();
-        if (ourScore > otherTeamScore) {
-            incrementGamesWon();
-            incrementPoints(3);
-        } else if (ourScore == otherTeamScore) {
-            incrementGamesDrawn();
-            incrementPoints(1);
-        } else {
-            incrementGamesLost();
-        }
-        incrementGoalsFor(ourScore);
-        incrementGoalsAgainst(otherTeamScore);
-
-    }
 
 }
