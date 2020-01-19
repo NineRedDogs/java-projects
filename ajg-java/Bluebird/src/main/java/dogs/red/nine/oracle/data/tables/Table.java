@@ -37,17 +37,17 @@ public abstract class Table {
     }
 
     public int getPosition(final String team) {
-        return new ArrayList<String>(table.keySet()).indexOf(team);
-    }
-
-    public int getPosition2(final String team) {
-        return new ArrayList<String>(table.keySet()).indexOf(team);
+        return new ArrayList<String>(table.keySet()).indexOf(team) + 1;
     }
 
     public void displayTable(final String title) {
         logger.debug("Displaying table [" + tableName + "] - " + title);
         logger.debug(TableEntry.formattedHeaders);
         table.forEach((key, value) -> logger.debug(" " + String.format("%-20s", key).replace(' ', '.') + "  " + value));
+
+        logger.debug("Southampton pos : " + getPosition("Southampton"));
+        logger.debug("Burnley pos : " + getPosition("Burnley"));
+        logger.debug("Chelsea pos : " + getPosition("Chelsea"));
     }
 
 
