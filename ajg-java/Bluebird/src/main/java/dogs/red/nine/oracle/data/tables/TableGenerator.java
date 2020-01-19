@@ -24,6 +24,15 @@ public class TableGenerator {
     }
 
 
+    public void displayCurrentTables() {
+        fullTables.get(fullTables.lastKey()).displayTable("Current League Table");
+        fullHomeTables.get(fullHomeTables.lastKey()).displayTable("Current Home League Table");
+        fullAwayTables.get(fullAwayTables.lastKey()).displayTable("Current Away League Table");
+        formTables.get(formTables.lastKey()).displayTable("Current Form Table");
+        formHomeTables.get(formHomeTables.lastKey()).displayTable("Current Form Home Table");
+        formAwayTables.get(formAwayTables.lastKey()).displayTable("Current Form Away Table");
+    }
+
     private void generateFullSeasonTables(Division division, List<MatchData> matchData, SortedSet<String> teams) {
 
         // generate all the full season tables - one for each date ...
@@ -107,7 +116,7 @@ public class TableGenerator {
         CurrentFormAwayTable currentFormAwayTable = new CurrentFormAwayTable(division, teams);
         currentFormAwayTable.generateTable(tableMatches);
         formAwayTables.put(currDate, currentFormAwayTable);
-        currentFormAwayTable.displayTable(currDate.toString());
+        //currentFormAwayTable.displayTable(currDate.toString());
 
     }
 
