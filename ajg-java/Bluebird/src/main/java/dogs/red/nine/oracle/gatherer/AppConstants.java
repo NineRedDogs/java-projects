@@ -7,7 +7,7 @@ public class AppConstants {
 
     private static final Logger logger = LogManager.getLogger("AppConstants");
 
-    public static final int CURRENT_FORM_GAMES = 3;
+    public static final int CURRENT_FORM_GAMES = 4;
 
     private int doDiv(int a, int b) {
         float x = (float) ((double)a / b);
