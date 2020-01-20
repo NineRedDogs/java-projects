@@ -2,7 +2,7 @@ package dogs.red.nine.oracle.data.tables;
 
 import dogs.red.nine.oracle.data.Division;
 import dogs.red.nine.oracle.data.MatchData;
-import dogs.red.nine.oracle.gatherer.AppConstants;
+import dogs.red.nine.oracle.AppConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

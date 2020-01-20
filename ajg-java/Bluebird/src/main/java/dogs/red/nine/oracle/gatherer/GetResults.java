@@ -30,12 +30,13 @@ public class GetResults {
 	private final List<Division> supportedDivisions;
 	private final Map<Division, SortedSet<String>> divisionTeams = new HashMap<Division, SortedSet<String>>();
 	private final Map<Division, List<MatchData>> allMatches = new HashMap<Division, List<MatchData>>();
-	private final TableGenerator tableGenerator = new TableGenerator();
+	private final TableGenerator tabGen;
 
 	/**
 	 * @param supportedDivisions
 	 */
-	public GetResults(List<Division> supportedDivisions) {
+	public GetResults(List<Division> supportedDivisions, TableGenerator tableGenerator) {
+		this.tabGen = tableGenerator;
 		this.supportedDivisions = supportedDivisions;
 		for (Division division : supportedDivisions) {
 			allMatches.put(division, new ArrayList<MatchData>());
@@ -127,8 +128,8 @@ public class GetResults {
 
 	private void assignLeaguePositionsToMatches() {
 		for (Division division : getSupportedDivisions()) {
-			tableGenerator.generateTables(division, allMatches.get(division), divisionTeams.get(division));
-			tableGenerator.displayCurrentTables();
+			tabGen.generateTables(division, allMatches.get(division), divisionTeams.get(division));
+			tabGen.displayCurrentTables();
 		}
 	}
 

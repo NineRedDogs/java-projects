@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 public class GetFixtures {
 	private static final Logger logger = LogManager.getLogger("GetFixtures");
 
+
 	// get fixtures from : http://www.football-data.co.uk/matches.php
 
 	// use this URL to get fixtures (after 17:00 Friday - see below) http://www.football-data.co.uk/fixtures.csv
@@ -48,7 +49,11 @@ public class GetFixtures {
 		if (Gatherer.DEV_MODE) {
 			// in dev mode the fixtures will not be available - unless developing after friday 17:00 :)
 			// so read in a sample fixtures file
-			url = Paths.get(Gatherer.SAMPLE_FIXTURE_DEV_MODE_FILE).toUri().toURL();
+//			url = Paths.get(Gatherer.SAMPLE_FIXTURE_DEV_MODE_FILE).toUri().toURL();
+			url = Gatherer.SAMPLE_FIXTURE_DEV_MODE_FILE.toURI().toURL();
+			logger.debug("#################################################");
+			logger.debug("##### getfixtures : devMode #####################");
+			logger.debug("#################################################");
 
 		} else {
 			// Real fixtures to read in , lets get some forecasts !!!!!!
