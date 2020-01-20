@@ -1,11 +1,11 @@
 package dogs.red.nine.oracle.data;
 
+import dogs.red.nine.oracle.general.DisplayExtras;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import dogs.red.nine.oracle.general.DisplayExtras;
 
 public class FixtureData {
 	
@@ -13,8 +13,8 @@ public class FixtureData {
 	
 	private Division division;
 	private Date date;
-	private String homeTeam;
-	private String awayTeam;
+	private Team homeTeam;
+	private Team awayTeam;
 	
 
 	/**
@@ -23,7 +23,8 @@ public class FixtureData {
 	 * @param homeTeam
 	 * @param awayTeam
 	 */
-	public FixtureData(Division division, Date date, String homeTeam, String awayTeam) {
+	public FixtureData(Division division, Date date, Team homeTeam,
+			Team awayTeam) {
 		this.division = division;
 		this.date = date;
 		this.homeTeam = homeTeam;
@@ -59,11 +60,11 @@ public class FixtureData {
 				break;
 
 			case "HomeTeam" : 
-				homeTeam = matchFixtureElems[colNum];
+				homeTeam = new Team(matchFixtureElems[colNum]);
 				break;
 
 			case "AwayTeam" : 
-				awayTeam = matchFixtureElems[colNum];
+				awayTeam = new Team(matchFixtureElems[colNum]);
 				break;
 				
 				default:
@@ -88,7 +89,7 @@ public class FixtureData {
 
 
 
-	public String getHomeTeam() {
+	public Team getHomeTeam() {
 		return homeTeam;
 	}
 
@@ -106,25 +107,29 @@ public class FixtureData {
 
 
 
-	public void setHomeTeam(String homeTeam) {
+	public void setHomeTeam(Team homeTeam) {
 		this.homeTeam = homeTeam;
 	}
 
 
 
-	public void setAwayTeam(String awayTeam) {
+	public void setAwayTeam(Team awayTeam) {
 		this.awayTeam = awayTeam;
 	}
 
 
 
-	public String getAwayTeam() {
+	public Team getAwayTeam() {
 		return awayTeam;
 	}
 
 
+	public boolean hasTeam(final String teamName) {
+		return hasTeam(new Team(teamName));
+	}
 
-	private boolean hasTeam(String team) {
+
+	private boolean hasTeam(Team team) {
 		return (team.equals(homeTeam) || team.equals(awayTeam));
 	}
 
@@ -147,7 +152,7 @@ public class FixtureData {
 	
 	public String fixturePrint(DisplayExtras displayExtras) {
 		StringBuilder sb = new StringBuilder(getDateAndDivFixed());
-		sb.append(homeTeam + " v " + awayTeam);
+		sb.append(homeTeam.getName(displayExtras.isHlHome()) + " v " + awayTeam.getName(displayExtras.isHlAway()));
 		return sb.toString();
 	}
 	
