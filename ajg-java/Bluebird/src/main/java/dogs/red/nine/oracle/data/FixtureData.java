@@ -1,21 +1,21 @@
 package dogs.red.nine.oracle.data;
 
-import dogs.red.nine.oracle.general.DisplayExtras;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import dogs.red.nine.oracle.general.DisplayExtras;
+
 public class FixtureData {
-	
+
 	private static final String DATA_SEPARATOR_CHAR = ",";
-	
+
 	private Division division;
 	private Date date;
-	private Team homeTeam;
-	private Team awayTeam;
-	
+	private String homeTeam;
+	private String awayTeam;
+
 
 	/**
 	 * @param division
@@ -23,8 +23,7 @@ public class FixtureData {
 	 * @param homeTeam
 	 * @param awayTeam
 	 */
-	public FixtureData(Division division, Date date, Team homeTeam,
-			Team awayTeam) {
+	public FixtureData(Division division, Date date, String homeTeam, String awayTeam) {
 		this.division = division;
 		this.date = date;
 		this.homeTeam = homeTeam;
@@ -36,7 +35,7 @@ public class FixtureData {
 
 	public FixtureData(String lineReadFromDataFile, String[] keyData) throws ParseException, NumberFormatException {
 		String[] matchFixtureElems = lineReadFromDataFile.split(DATA_SEPARATOR_CHAR,-1);
-		
+
 		if (keyData == null) {
 			throw new ParseException("match fixture parse problem : key data is null !!", 0);
 		}
@@ -44,29 +43,29 @@ public class FixtureData {
 		if (matchFixtureElems.length != keyData.length) {
 			throw new ParseException("match fixture mismatch : num key elements : " + keyData.length + " match fixture elems : " + matchFixtureElems.length, 0);
 		}
-		
+
 		int colNum=0;
 		for (String key : keyData) {
-			
+
 			switch (key) {
 
-			case "Div" : 
-				division = Division.fromString(matchFixtureElems[colNum]);
-				break;
-				
-			case "Date" : 
-				DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
-    			date = dateFormat.parse(matchFixtureElems[colNum]);
-				break;
+				case "Div" :
+					division = Division.fromString(matchFixtureElems[colNum]);
+					break;
 
-			case "HomeTeam" : 
-				homeTeam = new Team(matchFixtureElems[colNum]);
-				break;
+				case "Date" :
+					DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+					date = dateFormat.parse(matchFixtureElems[colNum]);
+					break;
 
-			case "AwayTeam" : 
-				awayTeam = new Team(matchFixtureElems[colNum]);
-				break;
-				
+				case "HomeTeam" :
+					homeTeam = matchFixtureElems[colNum];
+					break;
+
+				case "AwayTeam" :
+					awayTeam = matchFixtureElems[colNum];
+					break;
+
 				default:
 					//System.out.println("Unsupported column : " + matchResultElems[colNum]);
 					break;
@@ -89,7 +88,7 @@ public class FixtureData {
 
 
 
-	public Team getHomeTeam() {
+	public String getHomeTeam() {
 		return homeTeam;
 	}
 
@@ -107,29 +106,25 @@ public class FixtureData {
 
 
 
-	public void setHomeTeam(Team homeTeam) {
+	public void setHomeTeam(String homeTeam) {
 		this.homeTeam = homeTeam;
 	}
 
 
 
-	public void setAwayTeam(Team awayTeam) {
+	public void setAwayTeam(String awayTeam) {
 		this.awayTeam = awayTeam;
 	}
 
 
 
-	public Team getAwayTeam() {
+	public String getAwayTeam() {
 		return awayTeam;
 	}
 
 
-	public boolean hasTeam(final String teamName) {
-		return hasTeam(new Team(teamName));
-	}
 
-
-	private boolean hasTeam(Team team) {
+	private boolean hasTeam(String team) {
 		return (team.equals(homeTeam) || team.equals(awayTeam));
 	}
 
@@ -149,11 +144,11 @@ public class FixtureData {
 		sb.append(division + ": ");
 		return String.format("%-42s", sb.toString());
 	}
-	
+
 	public String fixturePrint(DisplayExtras displayExtras) {
 		StringBuilder sb = new StringBuilder(getDateAndDivFixed());
-		sb.append(homeTeam.getName(displayExtras.isHlHome()) + " v " + awayTeam.getName(displayExtras.isHlAway()));
+		sb.append(homeTeam + " v " + awayTeam);
 		return sb.toString();
 	}
-	
+
 }
