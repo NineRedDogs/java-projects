@@ -76,7 +76,6 @@ public class Gatherer {
 			Division.Holland_Eridivisie ,
 			Division.Belgium_Juliper_1 ,
 			Division.Portugal_Primera );
-
     
 	public static final boolean SHOW_DETAILED_STATS = false;
 
