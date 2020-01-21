@@ -1,38 +1,40 @@
 package dogs.red.nine.oracle.forecast;
 
+import dogs.red.nine.oracle.AppConstants;
 import dogs.red.nine.oracle.data.FixtureData;
-import dogs.red.nine.oracle.gatherer.Gatherer;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public abstract class ForecastType {
-    Set<FixtureData> fixtures = new TreeSet<FixtureData>();
+    private final List<FixtureData> forecastTips = new ArrayList<FixtureData>();
 
-    public abstract void process(FixtureData fd);
+    public ForecastType() {}
 
-    public boolean addPrediction(Date fixtureDate) {
-        if ((Gatherer.DEV_MODE) || ((Gatherer.DEV_MODE_USE_THIS_WEEKS_PLAYED_FIXTURES) )) {
-            return true;
-        } else if (Gatherer.ONLY_TODAYS_GAMES) {
+    protected abstract float calcForecastScore(FixtureData fd);
+    protected abstract float getForecastThreshold();
 
-            // get todays date
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-            try {
-                Date todayDate = dateFormatter.parse(dateFormatter.format(new Date() ));
-                return fixtureDate.equals(todayDate);
-            } catch (ParseException e) {
+    public void process(final List<FixtureData> forecastFixtures) {
+
+        // loop around all fixtures
+        // calculate a forecast score - save to ForecastData.forecastScore()
+        // if score is above threshold then
+        // add to sorted list (sort by BTTS score, i.e. ForecastData.forecastScore())
+
+        for (FixtureData fixData : forecastFixtures) {
+            float score = calcForecastScore(fixData);
+
+            if (score > getForecastThreshold()) {
+                FixtureData newEntry = fixData.clone();
+                forecastTips.add(newEntry);
             }
-            return true;
-        } else {
-            return true;
         }
+        forecastTips.sort(getForecastComparator());
     }
 
-    public Set<FixtureData> getFixtures() {
-        return fixtures;
+    public void sort(Comparator<FixtureData> sorter) {
+
+    }
+
+    public List<FixtureData> getTips() {
+        return forecastTips.subList(0, AppConstants.NUM_TIPS);
     }
 }
