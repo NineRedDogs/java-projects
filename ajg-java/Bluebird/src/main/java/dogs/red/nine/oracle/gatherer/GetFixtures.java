@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dogs.red.nine.oracle.AppConstants;
 import dogs.red.nine.oracle.data.Division;
 import dogs.red.nine.oracle.data.FixtureData;
 import org.apache.logging.log4j.LogManager;
@@ -46,11 +47,11 @@ public class GetFixtures {
 
 		URL url = null;
 
-		if (Gatherer.DEV_MODE) {
+		if (AppConstants.DEV_MODE) {
 			// in dev mode the fixtures will not be available - unless developing after friday 17:00 :)
 			// so read in a sample fixtures file
 //			url = Paths.get(Gatherer.SAMPLE_FIXTURE_DEV_MODE_FILE).toUri().toURL();
-			url = Gatherer.SAMPLE_FIXTURE_DEV_MODE_FILE.toURI().toURL();
+			url = AppConstants.SAMPLE_FIXTURE_DEV_MODE_FILE.toURI().toURL();
 			logger.debug("#################################################");
 			logger.debug("##### getfixtures : devMode #####################");
 			logger.debug("#################################################");

@@ -4,14 +4,33 @@ import dogs.red.nine.oracle.data.FixtureData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
+
 
 public class BTTS extends ForecastType {
 
     private static final Logger logger = LogManager.getLogger("BTTS");
 
+    public BTTS(List<FixtureData> forecastFixtures) {
+        super(forecastFixtures);
+    }
+
     @Override
     public void process(FixtureData fd) {
 
+        // loop around all fixtures
+           // calculate a BTTS score - save to ForecastData.forecastScore()
+           // if score is above threshold then
+              // add to BTTS sorted list (sort by BTTS score, i.e. ForecastData.forecastScore())
+
+
+        for (FixtureData fixData : getFixtures()) {
+
+        }
+
+        final int htGamesScoredIn = fd.getForecastData().getHtData().
+
+        /*
         final int MAGIC_THRESHOLD_HOME_TO_SCORE = 66;
         final int MAGIC_THRESHOLD_HOME_TO_CONCEDE = 66;
         final int MAGIC_THRESHOLD_AWAY_TO_SCORE = 66;
@@ -37,10 +56,12 @@ public class BTTS extends ForecastType {
                 fixtures.add(fbs);
             }
         }
+         */
     }
 
 
     public void display(int numFixturesToDisplay) {
+        /*
         int count=1;
         logger.info("---------------------------------------");
         logger.info("---   Both teams to score");
@@ -61,5 +82,7 @@ public class BTTS extends ForecastType {
             if (count++ >= numFixturesToDisplay) break;
         }
         logger.info("---------------------------------------");
+
+         */
     }
 }
