@@ -9,8 +9,6 @@ public class TeamForecastData {
         this.formData = formData;
     }
 
-    public int getBttsScore
-
     @Override
     public String toString() {
         return "TeamForecastData{" +

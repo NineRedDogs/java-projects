@@ -7,7 +7,7 @@ import java.util.Date;
 
 import dogs.red.nine.oracle.general.DisplayExtras;
 
-public class FixtureData {
+public class FixtureData implements Cloneable {
 
 	private static final String DATA_SEPARATOR_CHAR = ",";
 
@@ -74,6 +74,10 @@ public class FixtureData {
 			// move on to next column
 			colNum++;
 		}
+	}
+
+	public Object clone()throws CloneNotSupportedException{
+		return (FixtureData)super.clone();
 	}
 
 
