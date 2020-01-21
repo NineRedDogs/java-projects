@@ -10,6 +10,8 @@ import java.util.List;
 
 public class AppConstants {
 
+    public static final int NUM_TIPS = 10;
+
     private static final String DATA_DIR_NAME = "data";
 
     public static final File CWD = new File(System.getProperty("user.dir"));
@@ -34,21 +36,21 @@ public class AppConstants {
     public static final boolean USE_UK_LEAGUES = true;
     //public static final boolean USE_UK_LEAGUES = false;
 
-    private static final List<Division> EPL = Arrays.asList(
+    public static final List<Division> EPL = Arrays.asList(
             Division.England_Premier_League);
 
-    private static final List<Division> ENG_TOP2 = Arrays.asList(
+    public static final List<Division> ENG_TOP2 = Arrays.asList(
             Division.England_Premier_League,
             Division.England_Championship);
 
-    private static final List<Division> ENG_DIVISIONS = Arrays.asList(
+    public static final List<Division> ENG_DIVISIONS = Arrays.asList(
             Division.England_Premier_League,
             Division.England_Championship,
             Division.England_League_1,
             Division.England_League_2,
             Division.England_Conference);
 
-    private static final List<Division> UK_DIVISIONS = Arrays.asList(
+    public static final List<Division> UK_DIVISIONS = Arrays.asList(
             Division.England_Premier_League,
             Division.England_Championship,
             Division.England_League_1,
@@ -59,7 +61,7 @@ public class AppConstants {
             Division.Scotland_Div_1 ,
             Division.Scotland_Div_2);
 
-    private static final List<Division> EURO_DIVISIONS = Arrays.asList(
+    public static final List<Division> EURO_DIVISIONS = Arrays.asList(
             Division.Germany_Bundesliga_1 ,
             Division.Spain_La_Liga ,
             Division.Italy_Serie_A ,

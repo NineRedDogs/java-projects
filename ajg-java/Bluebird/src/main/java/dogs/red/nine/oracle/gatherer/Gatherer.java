@@ -1,20 +1,13 @@
 package dogs.red.nine.oracle.gatherer;
 
-import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
-import dogs.red.nine.oracle.data.FixtureData;
+import dogs.red.nine.oracle.AppConstants;
+import dogs.red.nine.oracle.data.*;
 import dogs.red.nine.oracle.data.tables.TableGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import dogs.red.nine.oracle.data.Division;
-import dogs.red.nine.oracle.data.Teams;
 
 
 public class Gatherer {
@@ -39,14 +32,14 @@ public class Gatherer {
 	public Gatherer() throws IOException {
 		super();
 
-		if (DEV_MODE) {
-			leaguesToProcess = EPL;
+		if (AppConstants.DEV_MODE) {
+			leaguesToProcess = AppConstants.EPL;
 			//leaguesToProcess = ENG_TOP2;
 			//leaguesToProcess = ENG_DIVISIONS;
-		} else if (USE_UK_LEAGUES) {
-			leaguesToProcess = UK_DIVISIONS;
+		} else if (AppConstants.USE_UK_LEAGUES) {
+			leaguesToProcess = AppConstants.UK_DIVISIONS;
 		} else {
-			leaguesToProcess = EURO_DIVISIONS;
+			leaguesToProcess = AppConstants.EURO_DIVISIONS;
 		}
 		gFixtures = new GetFixtures(getLeaguesToProcess());
 		fixtures = gFixtures.getFixtures();
@@ -59,8 +52,15 @@ public class Gatherer {
 		return leaguesToProcess;
 	}
 
-
 	public List<FixtureData> getFixtures() {
 		return fixtures;
+	}
+
+	public FixtureForecastData getFixtureData(FixtureData fixture) {
+		TeamForecastData htData = tableGenerator.getHomeFormData(fixture.getHomeTeam());
+		TeamForecastData atData = tableGenerator.getAwayFormData(fixture.getAwayTeam());
+		FixtureForecastData fData = new FixtureForecastData(htData, atData);
+
+		return fData;
 	}
 }
