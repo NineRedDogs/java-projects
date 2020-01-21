@@ -61,6 +61,7 @@ public class Oracle {
         generateForecastData();
 
         BTTS btts = new BTTS(forecastFixtures);
+        btts.process(forecastFixtures);
 
         String predictionsFor="All fixtures";
         if (AppConstants.DEV_MODE) {
