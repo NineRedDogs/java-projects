@@ -1,12 +1,13 @@
 package dogs.red.nine.oracle.general;
 
+import dogs.red.nine.oracle.AppConstants;
 import dogs.red.nine.oracle.data.Division;
 import dogs.red.nine.oracle.gatherer.Gatherer;
 
 public class ResultDataUrlUtils {
 
     private static final String RESULTS_WEBSITE = "http://www.football-data.co.uk/";
-    private static final String RESULTS_AREA = RESULTS_WEBSITE + "mmz4281/" + Gatherer.SEASON_TO_USE + "/";
+    private static final String RESULTS_AREA = RESULTS_WEBSITE + "mmz4281/" + AppConstants.SEASON_TO_USE + "/";
     
     public static String generateResultUrl(Division division) {
 

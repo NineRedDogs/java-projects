@@ -1,5 +1,6 @@
 package dogs.red.nine.oracle.gatherer;
 
+import dogs.red.nine.oracle.AppConstants;
 import dogs.red.nine.oracle.data.Division;
 import dogs.red.nine.oracle.data.MatchData;
 import dogs.red.nine.oracle.data.Teams;
@@ -23,7 +24,7 @@ public class GetResults {
 	private static final Logger logger = LogManager.getLogger("GetResults");
 
 	private static final String DATA_URLS_FILE_NAME = "dataUrls.txt";
-	private static final File FOOTBALL_DATA_URL_FILE = new File(Gatherer.DATA_DIR, DATA_URLS_FILE_NAME);
+	private static final File FOOTBALL_DATA_URL_FILE = new File(AppConstants.DATA_DIR, DATA_URLS_FILE_NAME);
 
 	private static final String DATA_FILE_COLUMN_KEY_LINE = "Div,";
 
@@ -65,7 +66,7 @@ public class GetResults {
 	private File getResultsDataFileFromRemote(final String datafileUrl) {
 
 		final String fname = FilenameUtils.getName(datafileUrl);
-		final File localFile = new File(Gatherer.DATA_DIR, fname);
+		final File localFile = new File(AppConstants.DATA_DIR, fname);
 
 		try {
 			logger.debug("getting results from data url : " + datafileUrl);
