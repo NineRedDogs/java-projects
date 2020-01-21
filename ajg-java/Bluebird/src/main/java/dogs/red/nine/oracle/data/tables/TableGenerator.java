@@ -2,6 +2,7 @@ package dogs.red.nine.oracle.data.tables;
 
 import dogs.red.nine.oracle.data.Division;
 import dogs.red.nine.oracle.data.MatchData;
+import dogs.red.nine.oracle.data.TeamForecastData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -121,5 +122,13 @@ public class TableGenerator {
     }
 
 
+    public TeamForecastData getHomeFormData(String homeTeam) {
+        final TableEntry teamData = formHomeTables.get(formHomeTables.lastKey()).getTeamData(homeTeam);
+        return new TeamForecastData(teamData);
+    }
 
+    public TeamForecastData getAwayFormData(String awayTeam) {
+        final TableEntry teamData = formAwayTables.get(formAwayTables.lastKey()).getTeamData(awayTeam);
+        return new TeamForecastData(teamData);
+    }
 }

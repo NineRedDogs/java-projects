@@ -15,6 +15,7 @@ public class FixtureData {
 	private Date date;
 	private String homeTeam;
 	private String awayTeam;
+	private FixtureForecastData forecastData;
 
 
 	/**
@@ -122,6 +123,12 @@ public class FixtureData {
 		return awayTeam;
 	}
 
+	public FixtureForecastData getForecastData() {
+		return forecastData;
+	}
+
+
+
 
 
 	private boolean hasTeam(String team) {
@@ -151,4 +158,7 @@ public class FixtureData {
 		return sb.toString();
 	}
 
+	public void setForecastData(FixtureForecastData fixtureData) {
+		this.forecastData = forecastData;
+	}
 }

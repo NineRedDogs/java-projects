@@ -40,6 +40,10 @@ public abstract class Table {
         return new ArrayList<String>(table.keySet()).indexOf(team) + 1;
     }
 
+    public TableEntry getTeamData(final String team) {
+        return table.get(team);
+    }
+
     public void displayTable(final String title) {
         logger.debug("Displaying table [" + tableName + "] - " + title);
         logger.debug(TableEntry.formattedHeaders);

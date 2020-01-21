@@ -28,7 +28,7 @@ dependencies {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'dogs.red.nine.oracle.gatherer.Gatherer'
+                'Main-Class': 'dogs.red.nine.oracle.Oracle'
         )
     }
     from {
