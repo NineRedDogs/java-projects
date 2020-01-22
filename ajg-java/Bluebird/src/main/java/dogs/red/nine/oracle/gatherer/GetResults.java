@@ -179,7 +179,7 @@ public class GetResults {
 						divisionTeams.get(division).add(match.getAwayTeam());
 
 						if (supportedDivisions.contains(match.getDivision())) {
-							// logger.debug("Match: " + match);
+							logger.debug("Div [" + division + "] -- Adding Match: " + match);
 							allMatches.get(division).add(match);
 						}
 					} catch (ParseException | NumberFormatException e) {

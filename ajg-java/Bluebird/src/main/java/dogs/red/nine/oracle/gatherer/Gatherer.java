@@ -33,9 +33,9 @@ public class Gatherer {
 		super();
 
 		if (AppConstants.DEV_MODE) {
-			leaguesToProcess = AppConstants.EPL;
-			//leaguesToProcess = ENG_TOP2;
-			//leaguesToProcess = ENG_DIVISIONS;
+			//leaguesToProcess = AppConstants.EPL;
+			leaguesToProcess = AppConstants.ENG_TOP2;
+			//leaguesToProcess = AppConstants.ENG_DIVISIONS;
 		} else if (AppConstants.USE_UK_LEAGUES) {
 			leaguesToProcess = AppConstants.UK_DIVISIONS;
 		} else {
@@ -56,9 +56,32 @@ public class Gatherer {
 		return fixtures;
 	}
 
+	private TeamForecastData getTeamForecastData(String teamName, boolean isHomeTeam) {
+		TeamForecastData teamForecastData = new TeamForecastData();
+		if (isHomeTeam) {
+			// 1a. add home form
+			teamForecastData.addTeamForecastData(TeamForecastData.FORM_VENUE, tableGenerator.getHomeFormData(teamName));
+		} else {
+			// 1b. add away form
+			teamForecastData.addTeamForecastData(TeamForecastData.FORM_VENUE, tableGenerator.getAwayFormData(teamName));
+		}
+
+		// 2. add general current form
+		teamForecastData.addTeamForecastData(TeamForecastData.FORM_GENERAL, tableGenerator.getFormData(teamName));
+
+		if (isHomeTeam) {
+			// 3a. add season home form
+			teamForecastData.addTeamForecastData(TeamForecastData.SEASON_VENUE, tableGenerator.getHomeSeasonData(teamName));
+		} else {
+			// 3b. add season away form
+			teamForecastData.addTeamForecastData(TeamForecastData.SEASON_VENUE, tableGenerator.getAwaySeasonData(teamName));
+		}
+		return teamForecastData;
+	}
+
 	public FixtureForecastData getFixtureData(FixtureData fixture) {
-		TeamForecastData htData = tableGenerator.getHomeFormData(fixture.getHomeTeam());
-		TeamForecastData atData = tableGenerator.getAwayFormData(fixture.getAwayTeam());
+		TeamForecastData htData = getTeamForecastData(fixture.getHomeTeam(), true);
+		TeamForecastData atData = getTeamForecastData(fixture.getAwayTeam(), false);
 		FixtureForecastData fData = new FixtureForecastData(htData, atData);
 
 		return fData;

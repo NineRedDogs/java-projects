@@ -14,8 +14,8 @@ public abstract class ForecastType {
 
     public ForecastType() {}
 
-    protected abstract float calcForecastScore(FixtureData fd);
-    protected abstract float getForecastThreshold();
+    protected abstract int calcForecastScore(FixtureData fd);
+    protected abstract int getForecastThreshold();
 
     public void process(final List<FixtureData> forecastFixtures) {
 
