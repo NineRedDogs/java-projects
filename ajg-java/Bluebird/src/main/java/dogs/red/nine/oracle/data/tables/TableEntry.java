@@ -298,4 +298,8 @@ public abstract class TableEntry implements Comparable<TableEntry> {
     private String formatFloat(float num) {
         return String.format("  %1.2f", num);
     }
+
+    public String fullString() {
+        return teamName + ":" + toString();
+    }
 }
