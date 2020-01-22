@@ -122,13 +122,30 @@ public class TableGenerator {
     }
 
 
-    public TeamForecastData getHomeFormData(String homeTeam) {
-        final TableEntry teamData = formHomeTables.get(formHomeTables.lastKey()).getTeamData(homeTeam);
-        return new TeamForecastData(teamData);
+    public TableEntry getHomeFormData(String homeTeam) {
+        return formHomeTables.get(formHomeTables.lastKey()).getTeamData(homeTeam);
     }
 
-    public TeamForecastData getAwayFormData(String awayTeam) {
-        final TableEntry teamData = formAwayTables.get(formAwayTables.lastKey()).getTeamData(awayTeam);
-        return new TeamForecastData(teamData);
+    public TableEntry getAwayFormData(String awayTeam) {
+        return formAwayTables.get(formAwayTables.lastKey()).getTeamData(awayTeam);
     }
+
+    public TableEntry getFormData(String team) {
+        return formTables.get(formTables.lastKey()).getTeamData(team);
+    }
+
+    public TableEntry getHomeSeasonData(String homeTeam) {
+        return fullHomeTables.get(fullHomeTables.lastKey()).getTeamData(homeTeam);
+    }
+
+    public TableEntry getAwaySeasonData(String awayTeam) {
+        return fullAwayTables.get(fullAwayTables.lastKey()).getTeamData(awayTeam);
+    }
+
+    public TableEntry getSeasonData(String team) {
+        return fullTables.get(fullTables.lastKey()).getTeamData(team);
+    }
+
+
+
 }

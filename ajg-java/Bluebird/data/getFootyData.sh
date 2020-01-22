@@ -1,46 +1,44 @@
 #!/bin/bash
 
-current_time=$(date "+%Y_%m_%d__%H_%M_%S")
-targetDir=/home/andrew/Dropbox/workspace/FootballRest/data/data_$current_time
-mkdir $targetDir
-cd $targetDir
+#current_time=$(date "+%Y_%m_%d__%H_%M_%S")
+#targetDir=/home/andrew/Dropbox/workspace/FootballRest/data/data_$current_time
+#mkdir $targetDir
+#cd $targetDir
 
 #eng
-wget http://www.football-data.co.uk/mmz4281/1516/E0.csv
-wget http://www.football-data.co.uk/mmz4281/1516/E1.csv
-wget http://www.football-data.co.uk/mmz4281/1516/E2.csv
-wget http://www.football-data.co.uk/mmz4281/1516/E3.csv
-wget http://www.football-data.co.uk/mmz4281/1516/EC.csv
+wget http://www.football-data.co.uk/mmz4281/1920/E0.csv
+wget http://www.football-data.co.uk/mmz4281/1920/E1.csv
+wget http://www.football-data.co.uk/mmz4281/1920/E2.csv
+wget http://www.football-data.co.uk/mmz4281/1920/E3.csv
+wget http://www.football-data.co.uk/mmz4281/1920/EC.csv
 
 # scot
-wget http://www.football-data.co.uk/mmz4281/1516/SC0.csv
-wget http://www.football-data.co.uk/mmz4281/1516/SC1.csv
-wget http://www.football-data.co.uk/mmz4281/1516/SC2.csv
-wget http://www.football-data.co.uk/mmz4281/1516/SC3.csv
+wget http://www.football-data.co.uk/mmz4281/1920/SC0.csv
+wget http://www.football-data.co.uk/mmz4281/1920/SC1.csv
+wget http://www.football-data.co.uk/mmz4281/1920/SC2.csv
+wget http://www.football-data.co.uk/mmz4281/1920/SC3.csv
 
 # ger
-wget http://www.football-data.co.uk/mmz4281/1516/D1.csv
+wget http://www.football-data.co.uk/mmz4281/1920/D1.csv
 
 # ita
-wget http://www.football-data.co.uk/mmz4281/1516/I1.csv
+wget http://www.football-data.co.uk/mmz4281/1920/I1.csv
 
 # spa
-wget http://www.football-data.co.uk/mmz4281/1516/SP1.csv
+wget http://www.football-data.co.uk/mmz4281/1920/SP1.csv
 
 # fra
-wget http://www.football-data.co.uk/mmz4281/1516/F1.csv
+wget http://www.football-data.co.uk/mmz4281/1920/F1.csv
 
 # ned
-wget http://www.football-data.co.uk/mmz4281/1516/N1.csv
+wget http://www.football-data.co.uk/mmz4281/1920/N1.csv
 
 # bel
-wget http://www.football-data.co.uk/mmz4281/1516/B1.csv
+wget http://www.football-data.co.uk/mmz4281/1920/B1.csv
 
 # por
-wget http://www.football-data.co.uk/mmz4281/1516/P1.csv
+wget http://www.football-data.co.uk/mmz4281/1920/P1.csv
 
-
-cat *.csv > allData.dat
 
 # get the current set of fixtures
 wget http://www.football-data.co.uk/fixtures.csv
