@@ -162,7 +162,7 @@ public class FixtureData implements Cloneable {
 		return sb.toString();
 	}
 
-	public void setForecastData(FixtureForecastData fixtureData) {
-		this.forecastData = forecastData;
+	public void setForecastData(FixtureForecastData fixtureForecastData) {
+		this.forecastData = fixtureForecastData;
 	}
 }
