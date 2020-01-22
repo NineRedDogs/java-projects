@@ -11,6 +11,7 @@ import java.util.List;
 public class AppConstants {
 
     public static final int NUM_TIPS = 10;
+    public static final boolean JUST_USE_VENUE_FORM = true;
 
     private static final String DATA_DIR_NAME = "data";
 
