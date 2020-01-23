@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import dogs.red.nine.oracle.forecast.FixtureForecastData;
 import dogs.red.nine.oracle.general.DisplayExtras;
 
 public class FixtureData implements Cloneable {
@@ -31,8 +32,7 @@ public class FixtureData implements Cloneable {
 		this.awayTeam = awayTeam;
 	}
 
-	public FixtureData() {
-	}
+	public FixtureData() {	}
 
 	public FixtureData(String lineReadFromDataFile, String[] keyData) throws ParseException, NumberFormatException {
 		String[] matchFixtureElems = lineReadFromDataFile.split(DATA_SEPARATOR_CHAR,-1);
@@ -81,64 +81,63 @@ public class FixtureData implements Cloneable {
 	}
 
 
+	/**
+	 * Getters/Setters ------------------------------------------
+	 * */
+
 	public Division getDivision() {
 		return division;
 	}
-
-
-
-	public Date getDate() {
-		return date;
-	}
-
-
-
-	public String getHomeTeam() {
-		return homeTeam;
-	}
-
-
 
 	public void setDivision(Division division) {
 		this.division = division;
 	}
 
-
+	public Date getDate() {
+		return date;
+	}
 
 	public void setDate(Date date) {
 		this.date = date;
 	}
 
-
+	public String getHomeTeam() {
+		return homeTeam;
+	}
 
 	public void setHomeTeam(String homeTeam) {
 		this.homeTeam = homeTeam;
 	}
 
-
+	public String getAwayTeam() {
+		return awayTeam;
+	}
 
 	public void setAwayTeam(String awayTeam) {
 		this.awayTeam = awayTeam;
-	}
-
-
-
-	public String getAwayTeam() {
-		return awayTeam;
 	}
 
 	public FixtureForecastData getForecastData() {
 		return forecastData;
 	}
 
+	public void setForecastData(FixtureForecastData fixtureForecastData) {
+		this.forecastData = fixtureForecastData;
+	}
 
-
+	/**
+	 * Local methods  ----------------------------
+	 */
 
 
 	private boolean hasTeam(String team) {
 		return (team.equals(homeTeam) || team.equals(awayTeam));
 	}
 
+
+	/**
+	 * Formatting/Output methods --------------------------------
+	 */
 
 	@Override
 	public String toString() {
@@ -162,7 +161,4 @@ public class FixtureData implements Cloneable {
 		return sb.toString();
 	}
 
-	public void setForecastData(FixtureForecastData fixtureForecastData) {
-		this.forecastData = fixtureForecastData;
-	}
 }
