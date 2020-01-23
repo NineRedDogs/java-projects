@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -75,6 +76,7 @@ public class AppConstants {
 
     public static final String SEASON_TO_USE = System.getProperty("oracle.season", "1920");
 
+    public final static SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
     private static final Logger logger = LogManager.getLogger("AppConstants");
 

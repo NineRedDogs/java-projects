@@ -1,5 +1,6 @@
-package dogs.red.nine.oracle.data;
+package dogs.red.nine.oracle.forecast;
 
+import dogs.red.nine.oracle.forecast.TeamForecastData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

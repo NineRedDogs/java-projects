@@ -1,4 +1,4 @@
-package dogs.red.nine.oracle.data;
+package dogs.red.nine.oracle.forecast;
 
 import dogs.red.nine.oracle.data.tables.TableEntry;
 
