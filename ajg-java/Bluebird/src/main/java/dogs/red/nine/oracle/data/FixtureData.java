@@ -141,7 +141,8 @@ public class FixtureData implements Cloneable {
 
 	@Override
 	public String toString() {
-		return division + " (" + new SimpleDateFormat("EEE d MMM").format(date) + ") " + homeTeam + " v " + awayTeam;
+		return division + " (" + new SimpleDateFormat("EEE d MMM").format(date) + ") " + homeTeam + " v "
+				+ awayTeam + "/n forecastData : " + forecastData;
 	}
 
 	public String fixturePrint() {
