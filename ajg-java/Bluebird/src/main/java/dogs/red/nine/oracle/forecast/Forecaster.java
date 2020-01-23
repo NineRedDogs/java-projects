@@ -26,6 +26,7 @@ public class Forecaster {
     public void forecast(List<FixtureData> fixtures) {
 
         generateForecastData(fixtures);
+        displayForecastData();
 
         BTTS btts = new BTTS();
         btts.process(forecastFixtures);
@@ -46,6 +47,13 @@ public class Forecaster {
         logger.info("\nShowing predictions for " + predictionsFor + "\n\n");
     }
 
+    private void displayForecastData() {
+        logger.debug("----Forecast data-----------------------------------------");
+        for (FixtureData fixture : forecastFixtures) {
+            logger.debug("-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -");
+            logger.debug(fixture);
+        }
+    }
 
 
     private void generateForecastData(List<FixtureData> fixtures)  {
