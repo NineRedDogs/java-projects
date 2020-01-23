@@ -1,7 +1,7 @@
 package dogs.red.nine.oracle.gatherer;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 import dogs.red.nine.oracle.AppConstants;
 import dogs.red.nine.oracle.data.*;
@@ -13,22 +13,17 @@ import org.apache.logging.log4j.Logger;
 public class Gatherer {
 	
 	private static final Logger logger = LogManager.getLogger("Gatherer");
-	
 
 	private final List<Division> leaguesToProcess;
 
-	private final TableGenerator tableGenerator = new TableGenerator();
-
-	private final GetFixtures gFixtures;
-	private final GetResults gResults;
+	private final TableGenerator tabGen = new TableGenerator();
 
 	private final List<FixtureData> fixtures;
-	private final Teams teams;
 
+	private final Map<Division, List<MatchData>> allMatches;
 
+	private final Map<Division, SortedSet<String>> listOfTeams = new HashMap<Division, SortedSet<String>>();
 
-	/**
-         */
 	public Gatherer() throws IOException {
 		super();
 
@@ -41,11 +36,20 @@ public class Gatherer {
 		} else {
 			leaguesToProcess = AppConstants.EURO_DIVISIONS;
 		}
-		gFixtures = new GetFixtures(getLeaguesToProcess());
+
+		/** go get the fixtures for the chosen divisions */
+		GetFixtures gFixtures = new GetFixtures(getLeaguesToProcess());
 		fixtures = gFixtures.getFixtures();
 
-		gResults = new GetResults(getLeaguesToProcess(), tableGenerator);
-		teams = gResults.getResultsFromDataUrls();
+		/** go get the results for the chosen divisions */
+		GetResults gResults = new GetResults(getLeaguesToProcess());
+		allMatches = gResults.getResultsFromDataUrls();
+
+		/** generate list of teams per division */
+		generateTeamLists();
+
+		// use results to generates the tables for each match day through the season
+		generateTables();
 	}
 
 	public List<Division> getLeaguesToProcess() {
@@ -56,34 +60,40 @@ public class Gatherer {
 		return fixtures;
 	}
 
-	private TeamForecastData getTeamForecastData(String teamName, boolean isHomeTeam) {
-		TeamForecastData teamForecastData = new TeamForecastData();
-		if (isHomeTeam) {
-			// 1a. add home form
-			teamForecastData.addTeamForecastData(TeamForecastData.FORM_VENUE, tableGenerator.getHomeFormData(teamName));
-		} else {
-			// 1b. add away form
-			teamForecastData.addTeamForecastData(TeamForecastData.FORM_VENUE, tableGenerator.getAwayFormData(teamName));
-		}
 
-		// 2. add general current form
-		teamForecastData.addTeamForecastData(TeamForecastData.FORM_GENERAL, tableGenerator.getFormData(teamName));
+	private void generateTeamLists() {
+		for (Division division : getLeaguesToProcess()) {
+			SortedSet divTeams = new TreeSet<String>();
 
-		if (isHomeTeam) {
-			// 3a. add season home form
-			teamForecastData.addTeamForecastData(TeamForecastData.SEASON_VENUE, tableGenerator.getHomeSeasonData(teamName));
-		} else {
-			// 3b. add season away form
-			teamForecastData.addTeamForecastData(TeamForecastData.SEASON_VENUE, tableGenerator.getAwaySeasonData(teamName));
+			for (MatchData match : allMatches.get(division)) {
+				divTeams.add(match.getHomeTeam());
+				divTeams.add(match.getAwayTeam());
+			}
+			listOfTeams.put(division, divTeams);
 		}
-		return teamForecastData;
+		//displayTeamLists();
 	}
 
-	public FixtureForecastData getFixtureData(FixtureData fixture) {
-		TeamForecastData htData = getTeamForecastData(fixture.getHomeTeam(), true);
-		TeamForecastData atData = getTeamForecastData(fixture.getAwayTeam(), false);
-		FixtureForecastData fData = new FixtureForecastData(htData, atData);
+	private void displayTeamLists() {
+		for (Division division : getLeaguesToProcess()) {
+			logger.debug("--------------------------------------------");
+			logger.debug("Teams for " + division);
 
-		return fData;
+			for (String team : listOfTeams.get(division)) {
+				logger.debug("   " + team);
+			}
+			logger.debug("  ");
+		}
+	}
+
+	private void generateTables() {
+		for (Division division : getLeaguesToProcess()) {
+			tabGen.generateTables(division, allMatches.get(division), listOfTeams.get(division));
+			//tabGen.displayCurrentTables();
+		}
+	}
+
+	public TableGenerator getTableGenerator() {
+		return tabGen;
 	}
 }

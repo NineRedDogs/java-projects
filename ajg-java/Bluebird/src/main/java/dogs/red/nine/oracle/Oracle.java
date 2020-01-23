@@ -1,7 +1,9 @@
 package dogs.red.nine.oracle;
 
 import dogs.red.nine.oracle.data.FixtureData;
+import dogs.red.nine.oracle.data.tables.TableGenerator;
 import dogs.red.nine.oracle.forecast.BTTS;
+import dogs.red.nine.oracle.forecast.Forecaster;
 import dogs.red.nine.oracle.gatherer.Gatherer;
 
 import java.io.IOException;
@@ -14,70 +16,30 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
-
-
 public class Oracle {
 
     private static final Logger logger = LogManager.getLogger("Oracle");
 
+    /** responsible for gathering data, e.g. getting latest results data and also grabbing the fixtures */
     private final Gatherer dataGatherer;
+
+    /** responsible for running the forecasting algorithms and identifying the tips. */
+    private final Forecaster forecaster;
+
+    /** subset of the full set of current fixtures, containing the ones 'chosen' by the predictor algorithms */
     private final List<FixtureData> forecastFixtures;
-    private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
 
     public Oracle() throws IOException {
-        this.dataGatherer = new Gatherer();
-        this.forecastFixtures = new ArrayList<FixtureData>();
+        dataGatherer = new Gatherer();
+        forecaster = new Forecaster(dataGatherer.getTableGenerator());
+        forecastFixtures = new ArrayList<FixtureData>();
     }
 
-    private void generateForecastData() throws ParseException {
-        // get todays date
-        Date todayDate = dateFormatter.parse(dateFormatter.format(new Date() ));
-
-        for (FixtureData fixture : dataGatherer.getFixtures()) {
-
-            boolean shouldWeUseThisFixture = (!fixture.getDate().before(todayDate));
-
-            logger.debug("Process ? " + shouldWeUseThisFixture + " - fixture : " + fixture );
-
-            // only check if fixture has not yet happened
-            if (AppConstants.DEV_MODE || AppConstants.DEV_MODE_USE_THIS_WEEKS_PLAYED_FIXTURES || shouldWeUseThisFixture) {
-
-                fixture.setForecastData(dataGatherer.getFixtureData(fixture));
-                forecastFixtures.add(fixture);
-
-//				Team homeTeam = teams.getTeam(fixture.getHomeTeam().getName());
-//				Team awayTeam = teams.getTeam(fixture.getAwayTeam().getName());
-
-                // both teams to score
-//				f.testBothTeamsToScore(fixture, homeTeam, awayTeam);
-            }
-        }
+    public void forecast() {
+        forecaster.forecast(dataGatherer.getFixtures());
     }
 
-    public void forecast() throws ParseException {
-
-        generateForecastData();
-
-        BTTS btts = new BTTS();
-        btts.process(forecastFixtures);
-
-        String predictionsFor="All fixtures";
-        if (AppConstants.DEV_MODE) {
-            predictionsFor="sample fixtures (DEV MODE enabled)";
-        } else if (AppConstants.DEV_MODE_USE_THIS_WEEKS_PLAYED_FIXTURES) {
-            predictionsFor="this weeks fixtures (DEV MODE)";
-        } else if (AppConstants.ONLY_TODAYS_GAMES) {
-
-            Date todayDate = dateFormatter.parse(dateFormatter.format(new Date() ));
-            dateFormatter.applyPattern("EEEE d MMM yyyy");
-            String myDate = dateFormatter.format(todayDate);
-
-            predictionsFor="fixtures played on " + myDate;
-        }
-        logger.info("\nShowing predictions for " + predictionsFor + "\n\n");
-    }
 
     public static void main(String[] args) throws IOException, ParseException {
         Oracle o = new Oracle();

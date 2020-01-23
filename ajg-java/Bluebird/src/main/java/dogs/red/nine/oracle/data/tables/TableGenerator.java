@@ -2,7 +2,6 @@ package dogs.red.nine.oracle.data.tables;
 
 import dogs.red.nine.oracle.data.Division;
 import dogs.red.nine.oracle.data.MatchData;
-import dogs.red.nine.oracle.data.TeamForecastData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,8 +57,6 @@ public class TableGenerator {
     }
 
     private void genFullSeasonTable(Division division, SortedSet<String> teams, List<MatchData> tableMatches, Date currDate) {
-        logger.debug("storing table for date : " + currDate);
-
         FullSeasonTable fullSeasonTable = new FullSeasonTable(division, teams);
         fullSeasonTable.generateTable(tableMatches);
         fullTables.put(currDate, fullSeasonTable);
@@ -102,8 +99,6 @@ public class TableGenerator {
     }
 
     private void genFormTable(Division division, SortedSet<String> teams, List<MatchData> tableMatches, Date currDate) {
-        logger.debug("storing table for date : " + currDate);
-
         CurrentFormTable currentFormTable = new CurrentFormTable(division, teams);
         currentFormTable.generateTable(tableMatches);
         formTables.put(currDate, currentFormTable);
