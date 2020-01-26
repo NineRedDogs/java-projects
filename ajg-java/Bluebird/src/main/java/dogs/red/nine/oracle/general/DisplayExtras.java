@@ -1,11 +1,17 @@
 package dogs.red.nine.oracle.general;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public enum DisplayExtras {
-	
+
 	PlainText("plain"),
 	HighlightHomeTeam("hlh"),
 	HighlightAwayTeam("hla");
-	  
+
+	private static final Logger logger = LogManager.getLogger("DisplayExtras");
+
+
 	private String deStr;
 	     
 	private DisplayExtras(final String deStr) {
@@ -37,5 +43,19 @@ public enum DisplayExtras {
 			}
 		}
 		return null;
+	}
+
+	public static String dumpStack(final String ctx) {
+		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+		String stackStr="";
+		int ix=0;
+		for (StackTraceElement stackItem : stack) {
+			stackStr += "____" + stackItem;
+			ix++;
+			if (ix > 20) {
+				break;
+			}
+		}
+		return new String (ctx + ": called from : " + stackStr);
 	}
 }

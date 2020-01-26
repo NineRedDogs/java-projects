@@ -5,7 +5,8 @@ import java.util.*;
 
 import dogs.red.nine.oracle.AppConstants;
 import dogs.red.nine.oracle.data.*;
-import dogs.red.nine.oracle.data.tables.TableGenerator;
+import dogs.red.nine.oracle.data.tables.DivisionTableManager;
+import dogs.red.nine.oracle.data.tables.TableManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,13 +17,12 @@ public class Gatherer {
 
 	private final List<Division> leaguesToProcess;
 
-	private final TableGenerator tabGen = new TableGenerator();
+	private final TableManager tabMgr;
 
 	private final List<FixtureData> fixtures;
 
 	private final Map<Division, List<MatchData>> allMatches;
 
-	private final Map<Division, SortedSet<String>> listOfTeams = new HashMap<Division, SortedSet<String>>();
 
 	public Gatherer() throws IOException {
 		super();
@@ -45,11 +45,9 @@ public class Gatherer {
 		GetResults gResults = new GetResults(getLeaguesToProcess());
 		allMatches = gResults.getResultsFromDataUrls();
 
-		/** generate list of teams per division */
-		generateTeamLists();
-
 		// use results to generates the tables for each match day through the season
-		generateTables();
+		tabMgr = new TableManager(getLeaguesToProcess());
+		tabMgr.generateTables(allMatches);
 	}
 
 	public List<Division> getLeaguesToProcess() {
@@ -60,40 +58,7 @@ public class Gatherer {
 		return fixtures;
 	}
 
-
-	private void generateTeamLists() {
-		for (Division division : getLeaguesToProcess()) {
-			SortedSet divTeams = new TreeSet<String>();
-
-			for (MatchData match : allMatches.get(division)) {
-				divTeams.add(match.getHomeTeam());
-				divTeams.add(match.getAwayTeam());
-			}
-			listOfTeams.put(division, divTeams);
-		}
-		//displayTeamLists();
-	}
-
-	private void displayTeamLists() {
-		for (Division division : getLeaguesToProcess()) {
-			logger.debug("--------------------------------------------");
-			logger.debug("Teams for " + division);
-
-			for (String team : listOfTeams.get(division)) {
-				logger.debug("   " + team);
-			}
-			logger.debug("  ");
-		}
-	}
-
-	private void generateTables() {
-		for (Division division : getLeaguesToProcess()) {
-			tabGen.generateTables(division, allMatches.get(division), listOfTeams.get(division));
-			//tabGen.displayCurrentTables();
-		}
-	}
-
-	public TableGenerator getTableGenerator() {
-		return tabGen;
+	public TableManager getTableManager() {
+		return tabMgr;
 	}
 }
