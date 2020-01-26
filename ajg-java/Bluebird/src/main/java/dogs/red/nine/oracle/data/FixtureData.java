@@ -5,12 +5,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import dogs.red.nine.oracle.AppConstants;
 import dogs.red.nine.oracle.forecast.FixtureForecastData;
 import dogs.red.nine.oracle.general.DisplayExtras;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class FixtureData implements Cloneable {
 
+	private static final Logger logger = LogManager.getLogger("FixtureData");
+
 	private static final String DATA_SEPARATOR_CHAR = ",";
+
 
 	private Division division;
 	private Date date;
@@ -141,8 +147,17 @@ public class FixtureData implements Cloneable {
 
 	@Override
 	public String toString() {
+		return asStringBasic() + "\n" + forecastData;
+	}
+
+	public String asStringBasic() {
 		return division + " (" + new SimpleDateFormat("EEE d MMM").format(date) + ") " + homeTeam + " v "
-				+ awayTeam + "/n forecastData : " + forecastData;
+				+ awayTeam;
+	}
+
+	public String asString(boolean justForecastScore) {
+		final String forecastString = (justForecastScore) ? forecastData.getForecastScoreAsString() : "\n" + forecastData.toString();
+		return asStringBasic() + " : " + forecastString;
 	}
 
 	public String fixturePrint() {

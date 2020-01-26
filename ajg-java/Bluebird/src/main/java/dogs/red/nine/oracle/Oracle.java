@@ -1,16 +1,12 @@
 package dogs.red.nine.oracle;
 
 import dogs.red.nine.oracle.data.FixtureData;
-import dogs.red.nine.oracle.data.tables.TableGenerator;
-import dogs.red.nine.oracle.forecast.BTTS;
 import dogs.red.nine.oracle.forecast.Forecaster;
 import dogs.red.nine.oracle.gatherer.Gatherer;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -32,7 +28,7 @@ public class Oracle {
 
     public Oracle() throws IOException {
         dataGatherer = new Gatherer();
-        forecaster = new Forecaster(dataGatherer.getTableGenerator());
+        forecaster = new Forecaster(dataGatherer.getTableManager());
         forecastFixtures = new ArrayList<FixtureData>();
     }
 
