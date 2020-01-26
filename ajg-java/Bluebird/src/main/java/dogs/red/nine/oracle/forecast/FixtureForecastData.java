@@ -1,6 +1,8 @@
 package dogs.red.nine.oracle.forecast;
 
+import dogs.red.nine.oracle.data.tables.TableEntry;
 import dogs.red.nine.oracle.forecast.TeamForecastData;
+import dogs.red.nine.oracle.general.DisplayExtras;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,8 +18,6 @@ public class FixtureForecastData {
         this.htData = htData;
         this.atData = atData;
         this.forecastScore = 0.0f;
-
-        logger.debug(this.toString());
     }
 
     public TeamForecastData getHtData() {
@@ -38,10 +38,14 @@ public class FixtureForecastData {
 
     @Override
     public String toString() {
-        return "FixtureForecastData{" +
-                "htData=" + htData +
-                ", atData=" + atData +
-                ", forecastScore=" + forecastScore +
-                '}';
+        return "----------------------------------------------------------------------------" +
+                "\nHome Team " + TableEntry.formattedHeadersNoNameSpacers + "\n" + htData +
+                "\nAway Team " + TableEntry.formattedHeadersNoNameSpacers + "\n" + atData +
+               "\n forecastScore: [" + forecastScore + "]\n" +
+                "----------------------------------------------------------------------------";
+    }
+
+    public String getForecastScoreAsString() {
+        return " [" + forecastScore + "]";
     }
 }
