@@ -6,7 +6,9 @@ import org.apache.logging.log4j.Logger;
 
 public abstract class TableEntry implements Comparable<TableEntry> {
 
-    public static String formattedHeaders = "                           P    W    D    L    F    A   GD  Pts  Mag Btts   HS  HSo   GS  GSo   CS  CSo    PtR  AvSc";
+    private static String spacersForTeamName = "                        ";
+    public static String formattedHeadersNoNameSpacers = "   P    W    D    L    F    A   GD  Pts  Mag Btts   HS  HSo   GS  GSo   CS  CSo    PtR    MgR  AvSc";
+    public static String formattedHeaders = spacersForTeamName + formattedHeadersNoNameSpacers;
     private final String teamName;
     private int gamesPlayed;
     private int gamesWon;
@@ -154,6 +156,14 @@ public abstract class TableEntry implements Comparable<TableEntry> {
         return magicNumber;
     }
 
+    public float getMagicRate() {
+        if (gamesPlayed == 0) {
+            return 0.0f;
+        } else {
+            return ((float)getMagicNumber() / gamesPlayed);
+        }
+    }
+
     public float getPointsRate() {
         if (gamesPlayed == 0) {
             return 0.0f;
@@ -289,6 +299,7 @@ public abstract class TableEntry implements Comparable<TableEntry> {
                 " " + formatInt(getCleanSheetsUs()) +
                 " " + formatInt(getCleanSheetsOppo()) +
                 " " + formatFloat(getPointsRate()) +
+                " " + formatFloat(getMagicRate()) +
                 " (" + getAvgeScoreFor() + ":" + getAvgeScoreAgainst() + ")";
     }
 
@@ -296,10 +307,13 @@ public abstract class TableEntry implements Comparable<TableEntry> {
         return String.format("%4s", num);
     }
     private String formatFloat(float num) {
-        return String.format("  %1.2f", num);
+        return String.format("  %2.2f", num);
+    }
+    private String formatTeamName(String name) {
+        return String.format("  %16s", name);
     }
 
     public String fullString() {
-        return teamName + ":" + toString();
+        return formatTeamName(teamName) + ":" + toString();
     }
 }
