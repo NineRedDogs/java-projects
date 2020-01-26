@@ -24,15 +24,13 @@ public class TeamForecastData {
     public String getFormDataAsString() {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<Integer, TableEntry> entry : teamData.entrySet()) {
-            sb.append("slot: " + entry.getKey() + " = " + entry.getValue() + "/n");
+            sb.append("slot [" + entry.getKey() + "] " + entry.getValue() + "\n");
         }
         return sb.toString();
     }
 
     @Override
     public String toString() {
-        return "TeamForecastData{" +
-                "teamData=" + getFormDataAsString() +
-                '}';
+        return getFormDataAsString();
     }
 }

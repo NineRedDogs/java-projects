@@ -12,8 +12,6 @@ public class BTTS extends ForecastType {
     private static final Logger logger = LogManager.getLogger("BTTS");
     private static final float HOME_SCORE_THRESHOLD = 1.0f;
     private static final float AWAY_SCORE_THRESHOLD = 1.0f;
-    private static final float FORM_GENERAL_MULTIPLIER = 0.66f;
-    private static final float SEASON_VENUE_MULTIPLIER = 0.5f;
     private static final int BTTS_THRESHOLD = 80;
 
     public BTTS() {
@@ -22,13 +20,8 @@ public class BTTS extends ForecastType {
 
     @Override
     protected int calcForecastScore(FixtureData fd) {
-        logger.debug("1-calcForecastScore called with fd : " + fd);
         TeamForecastData ht = fd.getForecastData().getHtData();
-        logger.debug("2-calcForecastScore called with fd : " + ht);
-
         TeamForecastData at = fd.getForecastData().getAtData();
-        logger.debug("3-calcForecastScore called with fd : " + at);
-
 
         int btts1 = getBtts(ht.getTeamForecastData(TeamForecastData.FORM_VENUE), at.getTeamForecastData(TeamForecastData.FORM_VENUE));
         int btts2 = getBtts(ht.getTeamForecastData(TeamForecastData.FORM_GENERAL), at.getTeamForecastData(TeamForecastData.FORM_GENERAL));
@@ -38,17 +31,15 @@ public class BTTS extends ForecastType {
 
         int bttsFinalScore = (AppConstants.JUST_USE_VENUE_FORM) ? btts1 : (btts1 + btts2a + btts3a);
 
-        logger.debug("BTTS *** " + bttsFinalScore + " ***");
-        // crude for now - need to add some weighting here
+        //logger.debug("BTTS *** " + bttsFinalScore + " ***");
         return bttsFinalScore;
     }
 
     private int getBtts(TableEntry homeTeam, TableEntry awayTeam) {
         int bttsForecast = 0;
-//        logger.debug("-----------------------------------------------------------------");
-//        logger.debug("BTTS:getBtts() called with :");
-        logger.debug("HT: " + homeTeam.fullString());
-        logger.debug("AT: " + awayTeam.fullString());
+
+        //logger.debug(homeTeam.fullString());
+        //logger.debug(awayTeam.fullString());
 
         // calc HT likelyhood score value - (GF/P + GA/P(opp)) / 2
         float htScoreRaw = (((float) homeTeam.getGoalsFor() / homeTeam.getGamesPlayed() +
@@ -60,8 +51,6 @@ public class BTTS extends ForecastType {
                           (float) homeTeam.getGoalsAgainst() / homeTeam.getGamesPlayed()) / 2);
         float atScore = (atScoreRaw > AWAY_SCORE_THRESHOLD) ? atScoreRaw : 0.0f;
 
-//        logger.debug("home-score : " + htScore);
-//        logger.debug("away-score : " + atScore);
 
         // calc btts based on btts history
         float bttsHistoric = ((((float) homeTeam.getBttsGames() / homeTeam.getGamesPlayed()) +
@@ -87,10 +76,5 @@ public class BTTS extends ForecastType {
         return bttsForecast;
     }
 
-
-    @Override
-    protected int getForecastThreshold() {
-        return BTTS_THRESHOLD;
-    }
 
 }

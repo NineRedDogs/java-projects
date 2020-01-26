@@ -8,9 +8,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-public class TableGenerator {
+public class DivisionTableManager {
 
-    private static final Logger logger = LogManager.getLogger("TableGenerator");
+    private static final Logger logger = LogManager.getLogger("DivisionTableManager");
     private final SortedMap<Date, Table> fullTables = new ConcurrentSkipListMap<Date, Table>();
     private final SortedMap<Date, Table> fullHomeTables = new ConcurrentSkipListMap<Date, Table>();
     private final SortedMap<Date, Table> fullAwayTables = new ConcurrentSkipListMap<Date, Table>();
