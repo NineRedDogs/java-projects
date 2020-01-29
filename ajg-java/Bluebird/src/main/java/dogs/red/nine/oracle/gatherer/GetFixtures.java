@@ -1,12 +1,12 @@
 package dogs.red.nine.oracle.gatherer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,7 @@ import java.util.List;
 import dogs.red.nine.oracle.AppConstants;
 import dogs.red.nine.oracle.data.Division;
 import dogs.red.nine.oracle.data.FixtureData;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -105,6 +106,23 @@ public class GetFixtures {
 			e.printStackTrace();
 		}
 		return allFixtures;
+	}
+
+	private File getFixturesFileFromRemote(final String datafileUrl) {
+
+		final String fname = FilenameUtils.getName(datafileUrl);
+		final File localFile = new File(AppConstants.DATA_DIR, fname);
+
+		try {
+			logger.debug("getting results from data url : " + datafileUrl);
+			InputStream in = new URL(datafileUrl).openStream();
+			Files.copy(in, Paths.get(localFile.toURI()), StandardCopyOption.REPLACE_EXISTING);
+			logger.debug("set up local file : " + fname);
+		} catch (Exception ex) {
+			logger.debug("using existing data file (if one exists), as couldnt get file [" + datafileUrl + "] ex: "
+					+ ex.getClass().getName() + ", " + ex.getLocalizedMessage());
+		}
+		return localFile;
 	}
 
 
