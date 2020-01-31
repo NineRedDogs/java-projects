@@ -1,0 +1,10 @@
+{
+  "actions": [
+      {
+          "say": "What clothes would you like to order?"
+      },
+      {
+          "listen": true
+      }
+  ]
+}
