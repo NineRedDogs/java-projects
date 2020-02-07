@@ -8,11 +8,23 @@ public class FullSeasonMeritTableEntry extends TableEntry {
 
     private static final Logger logger = LogManager.getLogger("FullSeasonMeritTableEntry");
 
+    private int meritScore;
+
+    public int getMeritScore() {
+        return meritScore;
+    }
+
+
     public FullSeasonMeritTableEntry(String teamName) {
         super(teamName);
     }
 
-    public void addResult(final MatchData result) {
+    @Override
+    public void addResult(MatchData result) {
+        addResult(result, 0);
+    }
+
+    public void addResult(final MatchData result, int theirMeritScore) {
         if (getTeamName().equalsIgnoreCase(result.getHomeTeam())) {
             // team is home team
             add(result.getHomeTeamScore(), result.getAwayTeamScore(), theirMeritScore);
@@ -58,6 +70,15 @@ public class FullSeasonMeritTableEntry extends TableEntry {
 
         incrementGoalsFor(ourScore);
         incrementGoalsAgainst(otherTeamScore);
+
+        incrementMeritScore();
+    }
+
+
+
+    @Override
+    public String toString() {
+        return super.toString() + " " + formatInt(getMeritScore());
     }
 
 

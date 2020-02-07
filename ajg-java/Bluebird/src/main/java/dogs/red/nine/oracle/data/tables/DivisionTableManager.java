@@ -71,6 +71,11 @@ public class DivisionTableManager {
         fullSeasonAwayTable.generateTable(tableMatches);
         fullAwayTables.put(currDate, fullSeasonAwayTable);
         //fullSeasonAwayTable.displayTable(currDate.toString());
+
+        FullSeasonMeritTable fullSeasonMeritTable = new FullSeasonMeritTable(division, teams);
+        fullSeasonMeritTable.generateTable(tableMatches);
+        fullTables.put(currDate, fullSeasonMeritTable);
+        fullSeasonMeritTable.displayTable(currDate.toString());
     }
 
 
