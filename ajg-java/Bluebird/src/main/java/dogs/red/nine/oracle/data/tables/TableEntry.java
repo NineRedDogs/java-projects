@@ -280,7 +280,7 @@ public abstract class TableEntry implements Comparable<TableEntry> {
     }
 
 
-    @Override
+        @Override
     public String toString() {
         return " " + formatInt(getGamesPlayed()) +
                 " " + formatInt(getGamesWon()) +
@@ -303,7 +303,7 @@ public abstract class TableEntry implements Comparable<TableEntry> {
                 " (" + getAvgeScoreFor() + ":" + getAvgeScoreAgainst() + ")";
     }
 
-    private String formatInt(int num) {
+    protected String formatInt(int num) {
         return String.format("%4s", num);
     }
     private String formatFloat(float num) {
@@ -316,4 +316,5 @@ public abstract class TableEntry implements Comparable<TableEntry> {
     public String fullString() {
         return formatTeamName(teamName) + ":" + toString();
     }
+
 }
