@@ -14,15 +14,17 @@ public class FullSeasonMeritTable extends Table {
     protected FullSeasonMeritTable(Division division, SortedSet<String> teams) {
         super("Full Table", division, teams);
         for (String team : teams) {
-            table.put(team, new FullSeasonTableEntry(team));
+            table.put(team, new FullSeasonMeritTableEntry(team));
         }
     }
 
     public void generateTable(List<MatchData> matches) {
 
         for (MatchData match : matches) {
-            table.get(match.getHomeTeam()).addResult(match);
-            table.get(match.getAwayTeam()).addResult(match);
+            int htMeritScore = ((FullSeasonMeritTableEntry) table.get(match.getHomeTeam())).getMeritScore();
+            int atMeritScore = ((FullSeasonMeritTableEntry) table.get(match.getAwayTeam())).getMeritScore();
+            ((FullSeasonMeritTableEntry) table.get(match.getHomeTeam())).addResult(match, atMeritScore);
+            ((FullSeasonMeritTableEntry) table.get(match.getAwayTeam())).addResult(match, htMeritScore);
         }
         table = sortTable();
     }
