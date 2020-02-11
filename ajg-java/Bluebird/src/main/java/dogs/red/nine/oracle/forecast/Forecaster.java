@@ -65,19 +65,19 @@ public class Forecaster {
         below2p5.displayTips("Below 2.5 goals tips");
 
         /**String predictionsFor="All fixtures";
-        if (AppConstants.DEV_MODE) {
-            predictionsFor="sample fixtures (DEV MODE enabled)";
-        } else if (AppConstants.DEV_MODE_USE_THIS_WEEKS_PLAYED_FIXTURES) {
-            predictionsFor="this weeks fixtures (DEV MODE)";
-        } else if (AppConstants.ONLY_TODAYS_GAMES) {
+         if (AppConstants.DEV_MODE) {
+         predictionsFor="sample fixtures (DEV MODE enabled)";
+         } else if (AppConstants.DEV_MODE_USE_THIS_WEEKS_PLAYED_FIXTURES) {
+         predictionsFor="this weeks fixtures (DEV MODE)";
+         } else if (AppConstants.ONLY_TODAYS_GAMES) {
 
-            final Date todayDate = getTodaysDate();
-            AppConstants.dateFormatter.applyPattern("EEEE d MMM yyyy");
-            String myDate = AppConstants.dateFormatter.format(todayDate);
+         final Date todayDate = getTodaysDate();
+         AppConstants.dateFormatter.applyPattern("EEEE d MMM yyyy");
+         String myDate = AppConstants.dateFormatter.format(todayDate);
 
-            predictionsFor="fixtures played on " + myDate;
-        }
-        logger.info("\nShowing predictions for " + predictionsFor + "\n\n");*/
+         predictionsFor="fixtures played on " + myDate;
+         }
+         logger.info("\nShowing predictions for " + predictionsFor + "\n\n");*/
     }
 
     private void displayForecastData() {
@@ -89,7 +89,7 @@ public class Forecaster {
     }
 
 
-    private void generateForecastData(List<FixtureData> fixtures)  {
+    private void generateForecastData(List<FixtureData> fixtures) {
         // get todays date
         final Date todayDate = getTodaysDate();
 
@@ -141,7 +141,7 @@ public class Forecaster {
     private Date getTodaysDate() {
         Date todayDate = null;
         try {
-            todayDate = AppConstants.dateFormatter.parse(AppConstants.dateFormatter.format(new Date() ));
+            todayDate = AppConstants.dateFormatter.parse(AppConstants.dateFormatter.format(new Date()));
         } catch (ParseException e) {
             logger.debug("Error formatting date, e:" + e.getLocalizedMessage());
         }

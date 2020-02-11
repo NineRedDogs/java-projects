@@ -50,9 +50,9 @@ public enum DisplayExtras {
 		String stackStr="";
 		int ix=0;
 		for (StackTraceElement stackItem : stack) {
-			stackStr += "____" + stackItem;
+			stackStr += "    " + stackItem + "\n";
 			ix++;
-			if (ix > 20) {
+			if (ix > 8) {
 				break;
 			}
 		}
