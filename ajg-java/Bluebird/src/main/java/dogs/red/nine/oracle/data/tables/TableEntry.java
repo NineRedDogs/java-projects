@@ -1,13 +1,16 @@
 package dogs.red.nine.oracle.data.tables;
 
 import dogs.red.nine.oracle.data.MatchData;
+import dogs.red.nine.oracle.general.DisplayExtras;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.text.DecimalFormat;
 
 public abstract class TableEntry implements Comparable<TableEntry> {
 
     private static String spacersForTeamName = "                        ";
-    public static String formattedHeadersNoNameSpacers = "   P    W    D    L    F    A   GD  Pts  Mag Btts   HS  HSo   GS  GSo   CS  CSo    PtR    MgR  AvSc";
+    public static String formattedHeadersNoNameSpacers = "   P  Pts    QLTY    W    D    L    F    A   GD  Mag Btts   HS  HSo   GS  GSo   CS  CSo    MerS    MerR     PtR     MgR  AvSc";
     public static String formattedHeaders = spacersForTeamName + formattedHeadersNoNameSpacers;
     private final String teamName;
     private int gamesPlayed;
@@ -24,6 +27,7 @@ public abstract class TableEntry implements Comparable<TableEntry> {
     private int gamesScoredUs;
     private int cleanSheetsUs;
     private int bttsGames;
+    private float meritScore;
 
     private static final Logger logger = LogManager.getLogger("TableEntry");
 
@@ -81,6 +85,10 @@ public abstract class TableEntry implements Comparable<TableEntry> {
 
     protected void incrementPoints(int points) {
         this.points += points;
+    }
+
+    protected void setMeritScore(float meritScore) {
+        this.meritScore = meritScore;
     }
 
     public String getTeamName() {
@@ -151,9 +159,17 @@ public abstract class TableEntry implements Comparable<TableEntry> {
         return bttsGames;
     }
 
+    public float getMeritScore() {
+        return meritScore;
+    }
+
     public int getMagicNumber() {
         int magicNumber = getGamesWon() + getGoalsFor() + getPoints() - getGamesLost() - getGoalsAgainst();
         return magicNumber;
+    }
+
+    public float getQualityRating() {
+        return ((getMagicRate() + getMeritRate()) / 2);
     }
 
     public float getMagicRate() {
@@ -171,6 +187,12 @@ public abstract class TableEntry implements Comparable<TableEntry> {
             return ((float)points / (gamesPlayed * 3));
         }
     }
+
+    public float getMeritRate() {
+        // if no games played, set a start merit of 1.0
+        return (getGamesPlayed() > 0 ? (getMeritScore() / getGamesPlayed()) : 0.0f);
+    }
+
     public int getAvgeScoreFor() { return (doDiv(goalsFor, gamesPlayed)); }
     public int getAvgeScoreAgainst() { return (doDiv(goalsAgainst, gamesPlayed)); }
 
@@ -184,10 +206,9 @@ public abstract class TableEntry implements Comparable<TableEntry> {
         return r;
     }
 
+    public abstract void addResult(final MatchData result, final TableEntry otherTeam);
 
-    public abstract void addResult(final MatchData result);
-
-    protected void add(int ourScore, int otherTeamScore) {
+    protected void add(int ourScore, int otherTeamScore, final TableEntry otherTeam) {
         incrementGamesPlayed();
         if (ourScore > otherTeamScore) {
             incrementGamesWon();
@@ -220,6 +241,28 @@ public abstract class TableEntry implements Comparable<TableEntry> {
 
         incrementGoalsFor(ourScore);
         incrementGoalsAgainst(otherTeamScore);
+
+        updateMeritScore(ourScore, otherTeamScore, otherTeam);
+    }
+
+    private void updateMeritScore(int ourScore, int otherTeamScore, final TableEntry otherTeam) {
+        float meritDiff = meritScore - otherTeam.getMeritScore();
+        float meritRateDiff = getMeritRate() - otherTeam.getMeritRate();
+        boolean playedBetterTeam = (getMeritRate()  < otherTeam.getMeritRate());
+
+        float addMeritScore = 0.0f;
+        if (ourScore > otherTeamScore) {
+            // win
+            addMeritScore = (3 + otherTeam.getMeritRate());
+        } else if (ourScore == otherTeamScore) {
+            // draw
+            addMeritScore = (1 + (otherTeam.getMeritRate()/2));
+        } else {
+            // loss
+            // no change
+        }
+
+        meritScore += addMeritScore;
     }
 
     protected void incrementHighScoreOppo() {
@@ -283,13 +326,14 @@ public abstract class TableEntry implements Comparable<TableEntry> {
         @Override
     public String toString() {
         return " " + formatInt(getGamesPlayed()) +
+                " " + formatInt(getPoints()) +
+                " " + formatFloat(getQualityRating()) +
                 " " + formatInt(getGamesWon()) +
                 " " + formatInt(getGamesDrawn()) +
                 " " + formatInt(getGamesLost()) +
                 " " + formatInt(getGoalsFor()) +
                 " " + formatInt(getGoalsAgainst()) +
                 " " + formatInt(getGoalDifference()) +
-                " " + formatInt(getPoints()) +
                 " " + formatInt(getMagicNumber()) +
                 " " + formatInt(getBttsGames()) +
                 " " + formatInt(getHighScoreUsGames()) +
@@ -298,6 +342,8 @@ public abstract class TableEntry implements Comparable<TableEntry> {
                 " " + formatInt(getGamesScoredOppo()) +
                 " " + formatInt(getCleanSheetsUs()) +
                 " " + formatInt(getCleanSheetsOppo()) +
+                " " + formatFloat(getMeritScore()) +
+                " " + formatFloat(getMeritRate()) +
                 " " + formatFloat(getPointsRate()) +
                 " " + formatFloat(getMagicRate()) +
                 " (" + getAvgeScoreFor() + ":" + getAvgeScoreAgainst() + ")";
@@ -307,7 +353,7 @@ public abstract class TableEntry implements Comparable<TableEntry> {
         return String.format("%4s", num);
     }
     private String formatFloat(float num) {
-        return String.format("  %2.2f", num);
+        return String.format(" %6.2f", num);
     }
     private String formatTeamName(String name) {
         return String.format("  %16s", name);
