@@ -47,4 +47,18 @@ public abstract class Table {
         logger.debug(TableEntry.formattedHeaders);
         table.forEach((key, value) -> logger.debug(" " + String.format("%-20s", key).replace(' ', '.') + "  " + value));
     }
+
+    public Map<String, TableEntry> getTable() {
+        return table;
+    }
+
+    protected void addEntry(String team, TableEntry tableEntry) {
+        table.put(team, tableEntry);
+    }
+
+
+
+    public TableEntry getEntry(final String teamName) {
+        return table.get(teamName);
+    }
 }

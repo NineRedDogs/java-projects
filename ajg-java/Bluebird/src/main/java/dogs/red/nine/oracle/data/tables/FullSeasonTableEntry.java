@@ -13,14 +13,14 @@ public class FullSeasonTableEntry extends TableEntry {
         super(teamName);
     }
 
-    public void addResult(final MatchData result) {
+    public void addResult(final MatchData result, final TableEntry otherTeam) {
         if (getTeamName().equalsIgnoreCase(result.getHomeTeam())) {
             // team is home team
-            add(result.getHomeTeamScore(), result.getAwayTeamScore());
+            add(result.getHomeTeamScore(), result.getAwayTeamScore(), otherTeam);
 
         } else if (getTeamName().equalsIgnoreCase(result.getAwayTeam())) {
             // team is away team
-            add(result.getAwayTeamScore(), result.getHomeTeamScore());
+            add(result.getAwayTeamScore(), result.getHomeTeamScore(), otherTeam);
         } else {
             logger.debug("current team not home OR away in given match !!!");
         }

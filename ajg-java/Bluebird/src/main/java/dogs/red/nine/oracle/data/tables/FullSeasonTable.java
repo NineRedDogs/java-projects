@@ -14,15 +14,15 @@ public class FullSeasonTable extends Table {
     protected FullSeasonTable(Division division, SortedSet<String> teams) {
         super("Full Table", division, teams);
         for (String team : teams) {
-            table.put(team, new FullSeasonTableEntry(team));
+            addEntry(team, new FullSeasonTableEntry(team));
         }
     }
 
     public void generateTable(List<MatchData> matches) {
 
         for (MatchData match : matches) {
-            table.get(match.getHomeTeam()).addResult(match);
-            table.get(match.getAwayTeam()).addResult(match);
+            getEntry(match.getHomeTeam()).addResult(match, getEntry(match.getAwayTeam()));
+            getEntry(match.getAwayTeam()).addResult(match, getEntry(match.getHomeTeam()));
         }
         table = sortTable();
     }
