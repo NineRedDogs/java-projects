@@ -1,5 +1,6 @@
 package dogs.red.nine.oracle.data.tables;
 
+import dogs.red.nine.oracle.AppConstants;
 import dogs.red.nine.oracle.data.Division;
 import dogs.red.nine.oracle.data.MatchData;
 import org.apache.logging.log4j.LogManager;
@@ -28,6 +29,7 @@ public class DivisionTableManager {
         fullTables.get(fullTables.lastKey()).displayTable("Current League Table");
         fullHomeTables.get(fullHomeTables.lastKey()).displayTable("Current Home League Table");
         fullAwayTables.get(fullAwayTables.lastKey()).displayTable("Current Away League Table");
+
         formTables.get(formTables.lastKey()).displayTable("Current Form Table");
         formHomeTables.get(formHomeTables.lastKey()).displayTable("Current Form Home Table");
         formAwayTables.get(formAwayTables.lastKey()).displayTable("Current Form Away Table");
@@ -62,22 +64,17 @@ public class DivisionTableManager {
         fullTables.put(currDate, fullSeasonTable);
         //fullSeasonTable.displayTable(currDate.toString());
 
-        FullSeasonHomeTable fullSeasonHomeTable = new FullSeasonHomeTable(division, teams);
+        FullSeasonHomeTable fullSeasonHomeTable = new FullSeasonHomeTable(division, teams, fullSeasonTable);
         fullSeasonHomeTable.generateTable(tableMatches);
         fullHomeTables.put(currDate, fullSeasonHomeTable);
         //fullSeasonHomeTable.displayTable(currDate.toString());
 
-        FullSeasonAwayTable fullSeasonAwayTable = new FullSeasonAwayTable(division, teams);
+        FullSeasonAwayTable fullSeasonAwayTable = new FullSeasonAwayTable(division, teams, fullSeasonTable);
         fullSeasonAwayTable.generateTable(tableMatches);
         fullAwayTables.put(currDate, fullSeasonAwayTable);
         //fullSeasonAwayTable.displayTable(currDate.toString());
 
-        FullSeasonMeritTable fullSeasonMeritTable = new FullSeasonMeritTable(division, teams);
-        fullSeasonMeritTable.generateTable(tableMatches);
-        fullTables.put(currDate, fullSeasonMeritTable);
-        fullSeasonMeritTable.displayTable(currDate.toString());
     }
-
 
 
     private void generateFormTables(Division division, List<MatchData> matchData, SortedSet<String> teams) {
@@ -109,16 +106,15 @@ public class DivisionTableManager {
         formTables.put(currDate, currentFormTable);
         //currentFormTable.displayTable(currDate.toString());
 
-        CurrentFormHomeTable currentFormHomeTable = new CurrentFormHomeTable(division, teams);
+        CurrentFormHomeTable currentFormHomeTable = new CurrentFormHomeTable(division, teams, currentFormTable);
         currentFormHomeTable.generateTable(tableMatches);
         formHomeTables.put(currDate, currentFormHomeTable);
         //currentFormHomeTable.displayTable(currDate.toString());
 
-        CurrentFormAwayTable currentFormAwayTable = new CurrentFormAwayTable(division, teams);
+        CurrentFormAwayTable currentFormAwayTable = new CurrentFormAwayTable(division, teams, currentFormTable);
         currentFormAwayTable.generateTable(tableMatches);
         formAwayTables.put(currDate, currentFormAwayTable);
         //currentFormAwayTable.displayTable(currDate.toString());
-
     }
 
 
@@ -145,7 +141,6 @@ public class DivisionTableManager {
     public TableEntry getSeasonData(String team) {
         return fullTables.get(fullTables.lastKey()).getTeamData(team);
     }
-
 
 
 }

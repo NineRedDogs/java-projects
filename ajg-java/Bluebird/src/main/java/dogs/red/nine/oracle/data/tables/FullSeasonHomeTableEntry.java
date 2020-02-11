@@ -13,10 +13,10 @@ public class FullSeasonHomeTableEntry extends TableEntry {
         super(teamName);
     }
 
-    public void addResult(final MatchData result) {
+    public void addResult(final MatchData result, final TableEntry otherTeam) {
         if (getTeamName().equalsIgnoreCase(result.getHomeTeam())) {
             // team is home team
-            add(result.getHomeTeamScore(), result.getAwayTeamScore());
+            add(result.getHomeTeamScore(), result.getAwayTeamScore(), otherTeam);
 
         } else {
             logger.debug("current team not home in given match !!!");
