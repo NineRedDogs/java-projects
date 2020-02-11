@@ -13,10 +13,10 @@ public class CurrentFormAwayTableEntry extends TableEntry {
         super(teamName);
     }
 
-    public void addResult(final MatchData result) {
+    public void addResult(final MatchData result, final TableEntry otherTeam) {
         if (getTeamName().equalsIgnoreCase(result.getAwayTeam())) {
             // team is away team
-            add(result.getAwayTeamScore(), result.getHomeTeamScore());
+            add(result.getAwayTeamScore(), result.getHomeTeamScore(), otherTeam);
         } else {
             logger.debug("current team not away in given match !!!");
         }
