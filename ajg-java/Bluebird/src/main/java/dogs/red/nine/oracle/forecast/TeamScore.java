@@ -38,12 +38,11 @@ public abstract class TeamScore extends ForecastType {
                           (float) team2.getGoalsAgainst() / team2.getGamesPlayed()) / 2);
         //logger.debug("Team Score : " + t1ScoreRaw);
 
-        // calc toWin based on magic number
-        float magicDiff = ((((float) team1.getMagicNumber() / team1.getGamesPlayed()) -
-                       ((float) team2.getMagicNumber() / team2.getGamesPlayed())) / 2);
-        //logger.debug(("magicDiff: " + magicDiff));
+        // calc toWin based on quality number
+        float qualityDiff = (team1.getQualityRating() - team2.getQualityRating());
+        //logger.debug(("qualityDiff: " + qualityDiff));
 
-        hiScoreForecast = Math.round((t1ScoreRaw + magicDiff) * 100);
+        hiScoreForecast = Math.round((t1ScoreRaw + qualityDiff) * 100);
         //logger.debug("hiScore : " + hiScoreForecast);
 
         return hiScoreForecast;
