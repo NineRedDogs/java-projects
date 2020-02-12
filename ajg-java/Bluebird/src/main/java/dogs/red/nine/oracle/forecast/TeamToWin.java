@@ -47,13 +47,11 @@ public abstract class TeamToWin extends ForecastType {
         float diff = t1ScoreRaw - t2ScoreRaw;
         //logger.debug("Score diff : " + diff);
 
+        // calc toWin based on quality number
+        float qualityDiff = (team1.getQualityRating() - team2.getQualityRating());
+        //logger.debug(("qualityDiff: " + qualityDiff));
 
-        // calc toWin based on magic number
-        float magicDiff = ((((float) team1.getMagicNumber() / team1.getGamesPlayed()) -
-                       ((float) team2.getMagicNumber() / team2.getGamesPlayed())) / 2);
-        //logger.debug(("magicDiff: " + magicDiff));
-
-        toWinForecast = Math.round((diff + magicDiff) * 100);
+        toWinForecast = Math.round((diff + qualityDiff) * 100);
         //logger.debug("toWin score : " + toWinForecast);
 
         return toWinForecast;

@@ -23,6 +23,9 @@ public class HomeWin extends TeamToWin {
         return getToWinScore(ht, at);
     }
 
-
+    @Override
+    protected boolean isHotTip(FixtureData tip) {
+        return (tip.getForecastData().getForecastScore() > AppConstants.HOT_TIP_THRESHOLD_HOME_WIN);
+    }
 
 }

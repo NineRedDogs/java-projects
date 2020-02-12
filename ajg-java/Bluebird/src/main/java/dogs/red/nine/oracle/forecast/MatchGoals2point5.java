@@ -39,28 +39,37 @@ public abstract class MatchGoals2point5 extends ForecastType {
     private int getMatchScore(TableEntry team1, TableEntry team2) {
         int matchScoreForecast = 0;
 
-        //logger.debug(team1.fullString());
-        //logger.debug(team2.fullString());
+//        logger.debug(team1.fullString());
+//        logger.debug(team2.fullString());
 
         // calc team1 likelihood score value - (GF/P + GA/P(opp)) / 2
         float t1ScoreRaw = (((float) team1.getGoalsFor() / team1.getGamesPlayed() +
                           (float) team2.getGoalsAgainst() / team2.getGamesPlayed()) / 2);
-        //logger.debug("Team1 Score : " + t1ScoreRaw);
+        float t1ScoreWithQuality = (t1ScoreRaw * (team1.getMeritRate() - team2.getMeritRate()));
+//        logger.debug("Team1 Score : " + t1ScoreRaw);
+//        logger.debug("Team1 Score (with Qual) : " + t1ScoreWithQuality);
+        if (t1ScoreWithQuality < 0) {
+            t1ScoreWithQuality = 0.0f;
+//            logger.debug("Team1 Score (with Qual) neg so setting to : " + t1ScoreWithQuality);
+        }
 
         // calc team2 likelihood score value - (GF/P + GA/P(opp)) / 2
         float t2ScoreRaw = (((float) team2.getGoalsFor() / team2.getGamesPlayed() +
                 (float) team1.getGoalsAgainst() / team1.getGamesPlayed()) / 2);
-        //logger.debug("Team2 Score : " + t2ScoreRaw);
+        float t2ScoreWithQuality = (t2ScoreRaw * (team2.getMeritRate() - team1.getMeritRate()));
+//        logger.debug("Team2 Score : " + t2ScoreRaw);
+//        logger.debug("Team2 Score (with Qual) : " + t2ScoreWithQuality);
+        if (t2ScoreWithQuality < 0) {
+            t2ScoreWithQuality = 0.0f;
+//            logger.debug("Team2 Score (with Qual) neg so setting to : " + t2ScoreWithQuality);
+        }
 
-        // calc toWin based on magic number
-        float magic = ((((float) team1.getMagicNumber() / team1.getGamesPlayed()) +
-                       ((float) team2.getMagicNumber() / team2.getGamesPlayed())) / 2);
-        //logger.debug(("magic: " + magic));
-
-        matchScoreForecast = Math.round((t1ScoreRaw + t2ScoreRaw + magic) * 100);
-        //logger.debug("hiScore : " + matchScoreForecast);
+        matchScoreForecast = Math.round((t1ScoreRaw + t2ScoreRaw) * 100);
+//        logger.debug("hiScore : " + matchScoreForecast);
 
         return matchScoreForecast;
     }
+
+
 
 }
