@@ -77,9 +77,16 @@ public abstract class ForecastType {
     public void displayTips(final String desc) {
         logger.debug(desc);
         for (FixtureData tip : getTips()) {
-            logger.debug("   " + tip.asString(true));
+            if (isHotTip(tip)) {
+                logger.debug("   " + tip.asString(true));
+            }
         }
     }
+
+    //protected abstract float getHotTipThreshold();
+
+    protected abstract boolean isHotTip(FixtureData tip);
+
 
     class SortByHighForecastScore implements Comparator<FixtureData>
     {

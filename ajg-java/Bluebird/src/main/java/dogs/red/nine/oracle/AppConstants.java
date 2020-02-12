@@ -13,6 +13,15 @@ public class AppConstants {
 
     public static final int NUM_TIPS = 10;
     public static final boolean JUST_USE_VENUE_FORM = false;
+    public static final float HOT_TIP_THRESHOLD_MATCH_BELOW_2P5 = 50.0f;
+    public static final float HOT_TIP_THRESHOLD_MATCH_ABOVE_2P5 = 100.0f;
+    public static final float HOT_TIP_THRESHOLD_HOME_WIN = 800.0f;
+    public static final float HOT_TIP_THRESHOLD_HOME_LOW_SCORE = 50.0f;
+    public static final float HOT_TIP_THRESHOLD_HOME_HIGH_SCORE = 100.0f;
+    public static final float HOT_TIP_THRESHOLD_BTTS = 100.0f;
+    public static final float HOT_TIP_THRESHOLD_AWAY_WIN = 400.0f;
+    public static final float HOT_TIP_THRESHOLD_AWAY_LOW_SCORE = 50.0f;
+    public static final float HOT_TIP_THRESHOLD_AWAY_HIGH_SCORE = 100.0f;
 
     private static final String DATA_DIR_NAME = "data";
 
@@ -21,7 +30,7 @@ public class AppConstants {
 
 
     // set this to use a local sample fixture file, instead of trying to retrieve from remote site
-    public static final boolean DEV_MODE = true;
+    public static final boolean DEV_MODE = false;
     public static final File SAMPLE_FIXTURE_DEV_MODE_FILE=new File(DATA_DIR, "sample_fixtures_used_for_dev_mode.csv");
 
     // use this flag to use this weeks fixtures that have already been played, useful if hanging around for Friday in order to get some useful runs....

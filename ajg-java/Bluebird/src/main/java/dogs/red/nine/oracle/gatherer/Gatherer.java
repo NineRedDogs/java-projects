@@ -29,8 +29,8 @@ public class Gatherer {
 
 		if (AppConstants.DEV_MODE) {
 			//leaguesToProcess = AppConstants.EPL;
-			leaguesToProcess = AppConstants.ENG_TOP2;
-			//leaguesToProcess = AppConstants.ENG_DIVISIONS;
+			//leaguesToProcess = AppConstants.ENG_TOP2;
+			leaguesToProcess = AppConstants.ENG_DIVISIONS;
 		} else if (AppConstants.USE_UK_LEAGUES) {
 			leaguesToProcess = AppConstants.UK_DIVISIONS;
 		} else {
