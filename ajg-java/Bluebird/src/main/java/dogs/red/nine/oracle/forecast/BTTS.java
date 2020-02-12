@@ -10,8 +10,8 @@ import org.apache.logging.log4j.Logger;
 public class BTTS extends ForecastType {
 
     private static final Logger logger = LogManager.getLogger("BTTS");
-    private static final float HOME_SCORE_THRESHOLD = 1.0f;
-    private static final float AWAY_SCORE_THRESHOLD = 1.0f;
+    private static final float HOME_SCORE_THRESHOLD = 0.3f;
+    private static final float AWAY_SCORE_THRESHOLD = 0.5f;
     private static final int BTTS_THRESHOLD = 80;
 
     public BTTS() {
@@ -37,19 +37,31 @@ public class BTTS extends ForecastType {
 
     private int getBtts(TableEntry homeTeam, TableEntry awayTeam) {
         int bttsForecast = 0;
+        // even if ht is worse than away team, give a bump to allow worse teams to score in btts calcs
+        final float HT_Q_DIFF_OFFSET = 1.75f;
+        // even if at is worse than home team, give a bump to allow worse teams to score in btts calcs
+        final float AT_Q_DIFF_OFFSET = 1.00f;
 
-        //logger.debug(homeTeam.fullString());
-        //logger.debug(awayTeam.fullString());
+//        logger.debug(homeTeam.fullString());
+//        logger.debug(awayTeam.fullString());
 
         // calc HT likelyhood score value - (GF/P + GA/P(opp)) / 2
         float htScoreRaw = (((float) homeTeam.getGoalsFor() / homeTeam.getGamesPlayed() +
                           (float) awayTeam.getGoalsAgainst() / awayTeam.getGamesPlayed()) / 2);
-        float htScore = (htScoreRaw > HOME_SCORE_THRESHOLD) ? htScoreRaw : 0.0f;
+        float htQdiff = ((homeTeam.getQualityRating() - awayTeam.getQualityRating()) + HT_Q_DIFF_OFFSET);
+        float htQ = (htScoreRaw + htQdiff);
+        float htScore = (htQ > 0.0f) ? htQ : 0.0f;
+//        float htScore = (htx > HOME_SCORE_THRESHOLD) ? htx : 0.0f;
+//        logger.debug("HT: raw:" + htScoreRaw + " htQDiff: " + htQdiff + " htQ: " + htQ + " ht: " + htScore);
 
         // calc AT likelyhood score value - (GF/P + GA/P(opp)) / 2
         float atScoreRaw = (((float) awayTeam.getGoalsFor() / awayTeam.getGamesPlayed() +
                           (float) homeTeam.getGoalsAgainst() / homeTeam.getGamesPlayed()) / 2);
-        float atScore = (atScoreRaw > AWAY_SCORE_THRESHOLD) ? atScoreRaw : 0.0f;
+        float atQdiff = ((awayTeam.getQualityRating() - homeTeam.getQualityRating()) + AT_Q_DIFF_OFFSET);
+        float atQ = (atScoreRaw + atQdiff);
+        float atScore = (atQ > 0.0f) ? atQ : 0.0f;
+//        float atScore = (atx > AWAY_SCORE_THRESHOLD) ? atx : 0.0f;
+//        logger.debug("AT: raw:" + atScoreRaw + " atQDiff: " + atQdiff + " atQ: " + atQ + " at: " + atScore);
 
 
         // calc btts based on btts history
@@ -75,6 +87,12 @@ public class BTTS extends ForecastType {
 
         return bttsForecast;
     }
+
+    @Override
+    protected boolean isHotTip(FixtureData tip) {
+        return (tip.getForecastData().getForecastScore() > AppConstants.HOT_TIP_THRESHOLD_BTTS);
+    }
+
 
 
 }
