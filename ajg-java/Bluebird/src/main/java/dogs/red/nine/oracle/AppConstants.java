@@ -30,7 +30,7 @@ public class AppConstants {
 
 
     // set this to use a local sample fixture file, instead of trying to retrieve from remote site
-    public static final boolean DEV_MODE = false;
+    public static final boolean DEV_MODE = true;
     public static final File SAMPLE_FIXTURE_DEV_MODE_FILE=new File(DATA_DIR, "sample_fixtures_used_for_dev_mode.csv");
 
     // use this flag to use this weeks fixtures that have already been played, useful if hanging around for Friday in order to get some useful runs....
@@ -40,8 +40,8 @@ public class AppConstants {
 
 
     /** Set this to only list predictions for todays games */
-    public static final boolean ONLY_TODAYS_GAMES = true;
-    //public static final boolean ONLY_TODAYS_GAMES = false;
+    //public static final boolean ONLY_TODAYS_GAMES = true;
+    public static final boolean ONLY_TODAYS_GAMES = false;
 
     /** Set to true if use UK divisions, false to use EURO leagues */
     public static final boolean USE_UK_LEAGUES = true;
