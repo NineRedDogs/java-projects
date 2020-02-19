@@ -8,6 +8,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AppConstants {
 
@@ -30,7 +32,7 @@ public class AppConstants {
 
 
     // set this to use a local sample fixture file, instead of trying to retrieve from remote site
-    public static final boolean DEV_MODE = true;
+    public static final boolean DEV_MODE = false;
     public static final File SAMPLE_FIXTURE_DEV_MODE_FILE=new File(DATA_DIR, "sample_fixtures_used_for_dev_mode.csv");
 
     // use this flag to use this weeks fixtures that have already been played, useful if hanging around for Friday in order to get some useful runs....
@@ -42,6 +44,9 @@ public class AppConstants {
     /** Set this to only list predictions for todays games */
     //public static final boolean ONLY_TODAYS_GAMES = true;
     public static final boolean ONLY_TODAYS_GAMES = false;
+
+    /** Set to true if use ALL divisions*/
+    public static final boolean USE_ALL_LEAGUES = true;
 
     /** Set to true if use UK divisions, false to use EURO leagues */
     public static final boolean USE_UK_LEAGUES = true;
@@ -61,16 +66,15 @@ public class AppConstants {
             Division.England_League_2,
             Division.England_Conference);
 
-    public static final List<Division> UK_DIVISIONS = Arrays.asList(
-            Division.England_Premier_League,
-            Division.England_Championship,
-            Division.England_League_1,
-            Division.England_League_2,
-            Division.England_Conference,
+    public static final List<Division> SCOT_DIVISIONS = Arrays.asList(
             Division.Scotland_Premier_League ,
             Division.Scotland_Championship ,
             Division.Scotland_Div_1 ,
             Division.Scotland_Div_2);
+
+    public static final List<Division> UK_DIVISIONS = Stream.of(ENG_DIVISIONS, SCOT_DIVISIONS)
+            .flatMap(x -> x.stream())
+            .collect(Collectors.toList());
 
     public static final List<Division> EURO_DIVISIONS = Arrays.asList(
             Division.Germany_Bundesliga_1 ,
@@ -81,9 +85,13 @@ public class AppConstants {
             Division.Belgium_Juliper_1 ,
             Division.Portugal_Primera );
 
+    public static final List<Division> ALL_DIVISIONS = Stream.of(UK_DIVISIONS, EURO_DIVISIONS)
+            .flatMap(x -> x.stream())
+            .collect(Collectors.toList());
+
     public static final boolean SHOW_DETAILED_STATS = false;
 
-    public static final String SEASON_TO_USE = System.getProperty("oracle.season", "1920");
+    public static final String SEASON_TO_USE = System.getProperty("bluebird.season", "1920");
 
     public final static SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
