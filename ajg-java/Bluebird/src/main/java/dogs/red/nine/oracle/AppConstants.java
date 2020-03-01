@@ -15,7 +15,7 @@ public class AppConstants {
 
     public static final int NUM_TIPS = 10;
     public static final boolean JUST_USE_VENUE_FORM = false;
-    public static final float HOT_TIP_THRESHOLD_MATCH_BELOW_2P5 = 50.0f;
+    public static final float HOT_TIP_THRESHOLD_MATCH_BELOW_2P5 = 500.0f;
     public static final float HOT_TIP_THRESHOLD_MATCH_ABOVE_2P5 = 100.0f;
     public static final float HOT_TIP_THRESHOLD_HOME_WIN = 800.0f;
     public static final float HOT_TIP_THRESHOLD_HOME_LOW_SCORE = 50.0f;
@@ -42,15 +42,15 @@ public class AppConstants {
 
 
     /** Set this to only list predictions for todays games */
-    //public static final boolean ONLY_TODAYS_GAMES = true;
-    public static final boolean ONLY_TODAYS_GAMES = false;
+    public static final boolean ONLY_TODAYS_GAMES = true;
+    //public static final boolean ONLY_TODAYS_GAMES = false;
 
     /** Set to true if use ALL divisions*/
     public static final boolean USE_ALL_LEAGUES = true;
 
     /** Set to true if use UK divisions, false to use EURO leagues */
-    public static final boolean USE_UK_LEAGUES = true;
-    //public static final boolean USE_UK_LEAGUES = false;
+    //public static final boolean USE_UK_LEAGUES = true;
+    public static final boolean USE_UK_LEAGUES = false;
 
     public static final List<Division> EPL = Arrays.asList(
             Division.England_Premier_League);
