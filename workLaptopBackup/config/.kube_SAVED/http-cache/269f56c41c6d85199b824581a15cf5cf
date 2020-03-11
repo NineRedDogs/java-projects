@@ -1,0 +1,7 @@
+HTTP/2.0 200 OK
+Content-Length: 292
+Audit-Id: aa5b0b6a-61ed-4b1e-b2da-5bb52dad18f4
+Content-Type: application/json
+Date: Fri, 23 Aug 2019 13:24:25 GMT
+
+{"kind":"APIResourceList","apiVersion":"v1","groupVersion":"metrics.k8s.io/v1beta1","resources":[{"name":"nodes","singularName":"","namespaced":false,"kind":"NodeMetrics","verbs":["get","list"]},{"name":"pods","singularName":"","namespaced":true,"kind":"PodMetrics","verbs":["get","list"]}]}
