@@ -1,0 +1,14 @@
+Surname, Postcode, DOB
+Surname, DOB, Reg No
+Surname, Postcode, Reg No
+DOB, Postcode, Reg No
+First name, DOB, Postcode
+First name, DOB, Reg No
+First name, Surname, Reg No
+First name, Surname, DOB, abi code
+First name, Surname, DOB, PC Town
+Email, YOB
+Email, Reg No
+DLN
+ALF ID
+Device ID

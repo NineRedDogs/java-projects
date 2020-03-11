@@ -1,0 +1,231 @@
+
+
+project management 
+   - 1 PM + ??? (CTO ??)
+   - define product
+      - clear up major decisions to allow devs to make productive start, e.g.
+         - New Brand/Use Existing 
+         - HH/Motor
+         - GW/other
+         - Standard/Innovate
+   - continuous refinement of business goals - discuss with Business/SMEs
+   - continuous feed back into devs
+   - define plan - phased roll-out (simple BAU slice, add functionality, etc)
+   - 11fs/jobs to be done
+      - depends on decision to innovate
+      - if innovate:
+         - start engagement early
+         - j2bd exercise to help define policy ????
+         - ??
+
+
+
+ux
+   - 1 UX 
+   - work with PM team to define:
+       - branding
+          - logos
+          - color palletes/etc
+          - brand 'feel' ??
+       - wireframe 
+          - quote
+          - policy/mta
+          - claim
+          - renew
+
+
+dev
+    build-on vs start-new
+       - need a period of analysis of build-on options
+          - build-on
+             - assume platform will provide - PC/BC + claims
+             - identify platforms (max 2/3)
+             - define thin-slice goals, e.g. 
+                   - time-box: 2 weeks per platform, 
+                   - resourcing: 2/4 devs per platform, 
+                   - goals: 
+                      - define policy product
+                      - create 1 simple quote-flow
+                      - create policy(s)
+                      - billing - set up simple payment plan
+                      - payment - if possible, hook up a (test) payment gateway + call out to it, or stub to simulate using admiral PGW
+                      - make MTA/re-price
+                      - view policy
+                      - claims - define a simple self-service work-flow, add at least one integration
+                      - make claim - call out to integration
+                      - renew policy
+             - for each:
+                - negotiate sandbox, 
+                - play with apis - identify whats missing
+                - modify workflows - no-code ? code/script ? 
+                - configuration
+                - integrations
+                - logging
+                - data
+                - scaling story
+                - upgrade/roll-back plans
+
+   start-new
+      - period of build-on analysis will help clarify responsibilities/requirements of platform
+      - slice approach (as build-on)
+      - start with policy ??
+      - 
+  
+
+======================================================
+
+if choose Amazon, then need to :
+  focus on HH
+  policy ?
+  pricing ? 
+  claims ?
+  clear up amazon billing/payment strategy 
+  - what impact on billing/payment 
+
+
+
+if choose billing then need to :
+  payment gateway affected,
+  GL integration will be affected
+
+if choose claims then need to :
+   identify interfaces with claims and address them (policy ? billing ?  payments ?)
+   idenitfy buy/build
+   if buy, what platforms ? 11:fs investigation ?
+   set up testbed/sandbox - have a play ...
+   create new autonomous pricing/rating domain - link with policy
+
+
+if choose policy then need to :
+   identify interfaces with policy and address them
+   pricing next ... 
+   create new autonomous pricing/rating domain - link with policy
+
+
+if choose pricing/rating then need to :
+   unpick ratabase from existing stack,
+   design autonomous pricing domain
+   radar-live considerations
+
+
+if choose slice then need to :
+   start with policy
+   identify interfaces with policy and address them
+   pricing next ... 
+   create new autonomous pricing/rating domain - link with policy
+   move on to claims,
+   identify claims interfaces within platform, then address them
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+if choose to migrate from policy 
+
+
+constraints on how we get to end state - e.g. billing -> Mi ...
+
+
+
+=====================================================================================
+
+
+1. Policy 
+      Policy (replace)
+         - Portal (rewrite)
+      Quote:
+         hook up middleware/rest layer to interface with new policy
+      Claims:
+         a) if product data confined to policy domain
+            Claims (large scale updates) > unlikely Vectus will take on this work > Claims (replace)
+         b) if claims continues to retain product data
+            Claims (small scale updates) > possible 
+      Pricing:
+         a) existing Pricing-aaS (finish off this work)
+         b) use existing as is (no work, architecturaly undesirable)
+      Billing:
+         - minor work to hook into new policy
+      Payment:
+         - little or no work
+      Docs:
+         - work to hook i/c mail into new policy
+      Fraud:
+         - little or no work
+      MI:
+         - Sia ETL work to pull new policy data to same model as existing in order to run reports
+      Complaints:
+         - update integration to pull policy data
+      GL:
+         - little or no work
+
+      
+2. Claims
+      Policy
+         a) product data confined to policy domain
+            - policy rewrite  -   or 
+            - use existing policy and a new adaptor/sub-domain to house product data not currently in GW-PC
+         b) product data also exists in claims
+            - little work 
+      Quote:
+         no work
+      Claims: replace (build/buy ?)
+      Pricing:
+         no work
+      Billing:
+         - little or no work
+      Payment:
+         - work to add new claims as a source
+      Docs:
+         - new templates required
+         - work to hook i/c mail into new claims,  
+      Fraud:
+         - little or no work
+      MI:
+         - Sia ETL work to pull new claims data to same model as existing in order to run reports
+      Complaints:
+         - update integration to pull claims data
+      GL:
+         - update to pull claims payment data
+
+      
+      
+3. Pricing -
+      Policy
+         - major work to integrate with new pricing
+      Quote:
+         - little or no work
+      Claims:
+         - little or no work
+      Pricing (Replace)
+      Billing:
+         - little or no work (e.g. move APR data from pricing to billing ?)
+      Payment:
+         - little or no work
+      Docs:
+         - little or no work
+      Fraud:
+         - little or no work
+      MI:
+         - little or no work
+      Complaints:
+         - little or no work
+      GL:
+         - little or no work
+
+
+
+
+ 
+   
+
+       

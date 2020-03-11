@@ -1,0 +1,102 @@
+[[cypher-values]]
+= Values and types
+
+Cypher provides first class support for a number of data types.
+
+These fall into several categories which will be described in detail in the following subsections:
+
+* Property types
+* Structural types
+* Composite types
+
+[[property-types]]
+== Property types
+
+* [*] Can be returned from Cypher queries
+* [*] Can be used as <<cypher-parameters, parameters>>
+* [*] Can be stored as properties
+* [*] Can be constructed with <<cypher-expressions, Cypher literals>>
+
+Property types comprise:
+
+* Number, an abstract type, which has the subtypes _Integer_ and _Float_
+* String
+* Boolean
+* The spatial type _Point_
+* Temporal types: _Date_, _Time_, _LocalTime_, _DateTime_, _LocalDateTime_ and _Duration_
+
+The adjective _numeric_, when used in the context of describing  Cypher functions or expressions, indicates that any type of Number applies (Integer or Float).
+
+Homogeneous lists of simple types can also be stored as properties, although lists in general (see <<composite-types, Composite types>>) cannot be stored.
+
+Cypher also provides pass-through support for byte arrays, which can be stored as property values.
+Byte arrays are _not_ considered a first class data type by Cypher, so do not have a literal representation.
+
+
+[[property-types-sip-note]]
+.Sorting of special characters
+[NOTE]
+--
+Strings that contain characters that do not belong to the https://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane[_Basic Multilingual Plane_] (_BMP_) can have inconsistent or non-deterministic ordering in Neo4j.
+BMP is a subset of all characters defined in Unicode.
+Expressed simply, it contains all common characters from all common languages.
+
+The most significant characters _not_ in BMP are those belonging to the https://en.wikipedia.org/wiki/Plane_(Unicode)#Supplementary_Multilingual_Plane[_Supplementary Multilingual Plane_] or the https://en.wikipedia.org/wiki/Plane_(Unicode)#Supplementary_Ideographic_Plane[_Supplementary Ideographic Plane_].
+Examples are:
+
+* Historic scripts and symbols and notation used within certain fields such as: Egyptian hieroglyphs, modern musical notation, mathematical alphanumerics.
+* Emojis and other pictographic sets.
+* Game symbols for playing cards, Mah Jongg, and dominoes.
+* CJK Ideograph that were not included in earlier character encoding standards. 
+--
+
+
+[[structural-types]]
+== Structural types
+
+* [*] Can be returned from Cypher queries
+* [ ] Cannot be used as <<cypher-parameters, parameters>>
+* [ ] Cannot be stored as properties
+* [ ] Cannot be constructed with <<cypher-expressions, Cypher literals>>
+
+Structural types comprise:
+
+* Nodes, comprising:
+   ** Id
+   ** Label(s)
+   ** Map (of properties)
+* Relationships, comprising:
+   ** Id
+   ** Type
+   ** Map (of properties)
+   ** Id of the start and end nodes
+* Paths
+   ** An alternating sequence of nodes and relationships
+
+NOTE: Nodes, relationships, and paths are returned as a result of pattern matching.
+
+NOTE: Labels are not values but are a form of pattern syntax.
+
+
+[[composite-types]]
+== Composite types
+
+* [*] Can be returned from Cypher queries
+* [*] Can be used as <<cypher-parameters, parameters>>
+* [ ] Cannot be stored as properties
+* [*] Can be constructed with <<cypher-expressions, Cypher literals>>
+
+Composite types comprise:
+
+* *Lists* are heterogeneous, ordered collections of values, each of which has any property, structural or composite type.
+* *Maps* are heterogeneous, unordered collections of (key, value) pairs, where:
+   ** the key is a String
+   ** the value has any property, structural or composite type
+
+NOTE: Composite values can also contain `null`.
+
+'''
+
+Special care must be taken when using `null` (see <<cypher-working-with-null>>).
+
+

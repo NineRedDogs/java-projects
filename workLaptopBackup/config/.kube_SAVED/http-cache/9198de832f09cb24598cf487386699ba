@@ -1,0 +1,7 @@
+HTTP/2.0 200 OK
+Content-Length: 466
+Audit-Id: eb76f77a-0e00-4da3-b959-88225c85e1b9
+Content-Type: application/json
+Date: Fri, 23 Aug 2019 13:24:25 GMT
+
+{"kind":"APIResourceList","apiVersion":"v1","groupVersion":"storage.k8s.io/v1beta1","resources":[{"name":"storageclasses","singularName":"","namespaced":false,"kind":"StorageClass","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["sc"]},{"name":"volumeattachments","singularName":"","namespaced":false,"kind":"VolumeAttachment","verbs":["create","delete","deletecollection","get","list","patch","update","watch"]}]}

@@ -1,0 +1,210 @@
+partnerships:
+
+
+notes from SME chat:
+
+Notes from chat with Phil Bell from P&I.
+
+P&I have 15 developers in IT.
+The types of partnerships is varied
+
+Rating as a service - e.g. Admiral on a panel as an underwriter - cheapest price from the panel is returned as the only quote to the customer
+
+Claims as a service
+Multiple partnership opportunities have been lost due to technical challenges that couldnt be overcome.
+Starling Bank - required an API to expose the start and end date of a policy
+VW - couldn't deliver on time
+Difficulty arise across the entire tech stack
+Claims - a constant source of business loss.
+We cannot provide claims as a service
+Some partners want to be responsible for FNOL and then Admiral do the rest This isn't currently possible with Vectus
+Ratabase
+Partners typically want to reduce question set. Ratabase will fallover without some data.
+
+Guidewire
+Projects typically want to change the product model
+Any change to the product model effects all brands.
+The impact of changing the product model is unpredictable and time consuming.
+They will typically only consider adding fields to the product model.
+P&I will typically resist changes to the product model which can then reduce the value of the trial/partnership.
+Partnerships are typically modelled in GW as a new brand:
+GW tries to merge a persons under an account - this means preferences are merged - Lloyds wanted marketing preferences not to cross brands.
+GW won’t allow to renew with a different brand. With the AA partnership we wanted to renew to the Admiral brand (from the initial term with AA). As this was not possible is meant a loss of that business.
+Payments
+Payment Gateway is integrated closely with smartpay and couldn't support worldpay
+We take payments as Admiral (i.e. Admiral will show up on their bank transaction history). This happens even when acting on behalf of a partner.
+Integration with different payments methods, apple pay, google pay, paypal, amazon pay is hard
+Datawarehousing and SAS reporting
+Current reporting and MI does not
+Document Management
+Migration of customer data from a partner to our systems is very difficult
+Problems also caused by organisation bottlenecks.
+There is a single group responsible for producing document templates.
+P&I have developed their own Rating-As-A-Service
+Observations
+The current tech stack/solution is an implementation of a specific insurance product. The current solution was built to embody that product, it was not built to provide a platform that supports multi-products/multi-tenancy. This is true of the solution as a whole and its constituent subsystems. Building a platform that supports mult-tenancy, different product definitions, data segregation, compute guarantees etc has to be done from the ground up. P&I simply dont have the tools needed to satify their use cases.
+
+
+
+
+------------
+
+from whitebaord sessions
+
+General
+-------
+If we use Saas then can we re-expose the APIs to partners.  How much value/difference do we need to add?
+
+Claims
+-------
+Automakers may want to send car repairs to their service centres
+
+Billing & Payment
+-------
+Partner may want to take care of billing/payment. This would only work if our billing model is simple.
+Would they need APIs?
+Would need to surface events, e.g. non-payment
+Could they impact the choice of billing/payment provider
+
+Different partners may require different pricing models
+
+Different "names on the bill"
+
+Uncertain if we can start with GW BC?
+Support the partnership models? could a pertner need subscription/usage based billing ???
+
+
+Pricing & Risk
+-------
+We can expect different partnerships may need result in different data being available
+We will need to react quickly to removed data items or new/different data items.
+How quickly can we evolve pricing algorithms?
+Different pricing models per partner?
+As well as different data we may need different models (e.g. different risk tolerances, target markets) per partner
+Some partners may bundle free insurance with their product.
+How does the commercial relationship work for this when our costs vary? Is it us or them absorbing that risk?
+
+Different pricing models per partner
+Partner may leverage their brand to charge more than our standard model would suggest, e.g. Mercedes Benz may believe their brand, and the premium customer service that may come with it, would justify a higher price
+
+
+Policy Mgmt
+-------
+Desire to allow partners to provide their own product definition(s) which means the underlying policy platform must support multiple product definitions.
+
+Partners likely to require data segregation. But *may* want to use admiral data ????
+
+As stated above (see Partnerships), multiple product definitions will be needed. This means policies may require variations in the following areas:
+
+Coverages (+conditions)
+Coverables
+Excess (+conditions)
+Target Market Segment (e.g. we or partner may choose to restrict to over-25s)
+Ancillaries (optional/mandatory)
+Geographical/Usage restrictions (e.g. commute)
+Subscription billing model support
+
+Provide API for partner integrations
+
+
+Quote
+-------
+Partners may provide the UX of the quote flow, using APIs from us
+The quote process could well be different for each partner:
+Question set
+PArtner-supplied data
+Enrichments
+Ancillaries
+
+Enrichments on top of the data we collect direct from the customer
+Given the collected data will be varying by partner we expect we will need to be innovative about new data sources
+
+
+MI
+-------
+
+
+Complaints
+-------
+
+
+#########################################################################
+
+One of the major goals for any new piece of work will be to ensure we are able to provide solutions for partners. This involves being able to provide a full insurance solution as well as being able to provide access to some of the internal elements as individual services, e.g. Claims-as-a-Service, Rating-as-a-Service.
+
+General
+
+The current tech stack/solution is an implementation of a specific insurance product. it was not built to provide a platform that supports multi-products/multi-tenancy. This is true of the solution as a whole and its constituent subsystems. 
+
+Designing a platform that supports mult-tenancy, different product definitions, data segregation, compute guarantees etc has to be done from the ground up, and by employing that approach we'd be in a much better place to satisfy the use cases of new partners.
+
+Partners may require to use their own internal components (e.g. Policy), so we need to make sure our solution is flexible enough to support interaction with elements outside our infrastructure.
+
+
+Policy management
+
+Partnerships are typically modelled in GW-PC as a new brand.
+
+Partners typically want to change the core product model.  Based on the experience of P&I, the impact of changing the existing product model is unpredictable and time consuming.
+As a consequence, P&I will typically resist changes to the product model, which can then reduce the value of the trial/partnership.
+
+With the current policy system (GW-PC) there are implications when adding new data items to an existing product, i.e. any additional items will be present across all brands, simply left blank for the brands with no interest in that data item. However, this means that the data footprint for a policy grows for every addition. Consequently, removal of data items is feared, as there is a concern that the data item is used by one of the other brands, and so there's a general reluctance to clean up redundant elements of the product.
+
+
+Claims
+
+Partners are likely to want Admiral to provide Claims-as-a-Service type offerings (including FNOL-aaS). However, this is not achievable with the current claims solution (i.e. Vectus), and as such we would need to develop a solution that would make this possible.
+
+Partners are also likely to mandate that self-service claims can be achieved. This cannot be delivered with Vectus.
+
+Customisation of the claims process will be an important part of the customer journey for any partnership. e.g It proved impossible to use a particular font for Ford with the current system. Another key customisation a partner may request will be to provide their own lists of approved repairers/suppliers.
+
+
+Quote
+
+An integral part of a Partners requirements may be to provide their own UX of the quote flow, using APIs we'd define.
+
+
+Pricing
+
+Different partners may require different pricing models, e.g. a partner defines the dataset needed (and this may change regularly), we'd need to ensure each partner's dataset can be ingested by our rating system and produce competitive prices (even with reduced data).
+
+  - 
+
+Payments
+A partner may want to take care of billing/payment themselves or they may choose to integrate into the core payment system. We'd need to ensure the solution is capable of supporting both scenarios.  
+
+If a partner adopts their own payment solution, they would need to surface events down-stream to us e.g. non-payment may lead to policy cancellation.
+
+A partner may want to support usage-based or subscription pricing, we'd need to ensure the solution is capable of such payment models.
+
+Partners may mandate use of a particular payment stream/gateway. Currently, Payment Gateway is integrated closely with smartpay and couldn't support worldpay. Other examples include apple pay, google pay, paypal, amazon pay.
+
+A partner may choose to define what identity/brand should appear in any bank transactions.
+
+
+
+Data
+   Partners likely to require data segregation. This may fall into one of two categories:
+      - only allow partner authorised agents to deal with their cases
+      - Partner data to be physically located on a different system to other brands
+   Partners may mandate that we provide APIs to allow them to access their data, e.g. Starling required access to start/end date of policy.
+   GW-PC tries to merge a person under an account (including customer preferences) even across brands. Lloyds didn't want marketing preferences of their customers to be merged with other brands.
+
+
+
+
+Lost partners
+   Starling - as we did not provide an API where you could retrieve start/end date
+   O2/Verex - Vectus could not integrate with another policy system 
+   Sainsburys/Trov - limitations of our claims system
+   GW won’t allow to renew with a different brand. With the AA partnership we wanted to renew to the Admiral brand (from the initial term with AA). As this was not possible is meant a loss of that business.
+
+
+
+
+-------
+
+
+
+

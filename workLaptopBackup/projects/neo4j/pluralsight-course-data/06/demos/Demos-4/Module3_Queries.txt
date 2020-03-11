@@ -1,0 +1,95 @@
+MATCH
+(:Actor{name:'Matt Smith'}) –[:PLAYED]->(c:Character)
+RETURN c
+
+MATCH
+(:Actor{name:'Matt Smith'}) –[:PLAYED]->(c:Character)
+RETURN c.name AS name
+
+MATCH (actors:Actor)-[:REGENERATED_TO]-> (others)
+RETURN actors.name, others.name
+
+MATCH (:Character{name:'Doctor'})<-[:ENEMY_OF]-(:Character)-[:COMES_FROM]->(p:Planet) 
+RETURN p.name as Planet, count(p) AS Count
+
+MATCH (:Actor{name:'Matt Smith'}) -[:APPEARED_IN]-> (ep:Episode) <-[:APPEARED_IN]- (:Character{name:'Amy Pond'}), 
+(ep) <-[:APPEARED_IN]-(enemies:Character) <-[:ENEMY_OF]-(:Character{name:'Doctor'})  
+RETURN ep AS Episode, collect(enemies.name) AS Enemies;
+
+MATCH
+(:Actor{name:'Matt Smith'}) –[:PLAYED]->(c:Character)
+RETURN c
+
+MATCH
+(a:Actor) –[:PLAYED]->(c:Character)
+WHERE a.name = 'Matt Smith'
+RETURN c
+
+MATCH
+(a:Actor) –[:PLAYED]->(c:Character)
+WHERE a.name = 'Matt Smith'
+RETURN c
+ORDER BY c.name
+
+MATCH
+(:Actor{name:'Matt Smith'}) –[:PLAYED]->(c:Character)
+RETURN c
+LIMIT 10
+SKIP 5
+
+MATCH (a:Actor) 
+RETURN a.name
+UNION
+MATCH (c:Character)
+RETURN c.name
+
+MATCH
+(a:Actor)
+WITH a.name AS name, count(a) AS count
+ORDER BY name
+WHERE count > 10
+RETURN name
+
+MATCH
+(a:Actor)
+WHERE EXISTS ((a)-[:PLAYED]->())
+RETURN a.name
+
+MATCH
+p = (:Actor)-[:PLAYED]->(:Character)
+RETURN LENGTH(p)
+
+MATCH
+p = (:Actor)-[:PLAYED]->(:Character)
+RETURN NODES(p)
+
+MATCH
+(:Episode)-[:PREVIOUS]-(e:Episode)
+RETURN e
+
+MATCH
+(:Episode)-->(e:Episode)
+RETURN e
+
+MATCH
+(:Actor)-[]->()-[]->(p:Planet)
+RETURN p
+
+MATCH
+(:Actor)-[*2]->(p:Planet)
+RETURN p
+
+MATCH
+(c:Character)-[:COMPANION_OF*1..2]-(:Character)
+RETURN c
+
+MATCH (earth:Planet { name:"Earth" }),
+(gallifrey:Planet { name:"Gallifrey" }),
+p = SHORTESTPATH((earth)-[*..15]-(gallifrey))
+RETURN p
+
+MATCH (a:Character) 
+OPTIONAL MATCH 
+(a)-[r:COMES_FROM]->() 
+RETURN r
+

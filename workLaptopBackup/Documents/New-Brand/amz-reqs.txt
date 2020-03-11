@@ -1,0 +1,43 @@
+Amazon Requirements
+Amazon are planning an Household insurance service. This service will be similar to the price comparison websites. However, there are two major differences with Amazon's service:
+
+They will only use a small panel of the leading insurance providers in the UK.
+Amazon will own the payment journey using AmazonPay
+Based on the success of this service, Amazon may choose to extend this service to cover Motor within 12 months.
+
+Amazon will present a simple data collection page to the customer, where a limited data set will be gathered and further enriched with data they already have for that customer. Amazon will then pass the same data set to each of the insurance companies on the panel to provide quotes.
+
+It is anticipated that Amazon will expect a series of quotes from each insurer. The range of quotes returned will be vary, dependent on the presence/absence of certain key points. This approach allows Amazon the ability to present a set of toggles on their quote results page. The customer may then tune their policy and see immediate quote updates without the need to get the insurers to re-quote.
+
+The customer will then select their preferred quote, Amazon will take the payment using AmazonPay and send a notification (along with an updated data set) through to the chosen insurer.
+
+The insurance company will then create the policy and cover will begin. Note, the insurer will not hold any customer payment details at this point.
+
+We'd need to confirm if Amazon would then direct the customer to Admiral via a deep-link in order to view the policy details.
+
+
+Mid-Term Adjustments
+As described above, Amazon would own the payment journey for new policies. However, after policy creation, any modifications will be agreed between the customer and the insurer directly. In many cases, mid-term adjustments (MTA) result in a change of the cost of the policy. In these situations, the insurer would need access to the customer's payment details, or at the very least inform Amazon of the change, so they can revise any ongoing billing payments.
+
+Renewals
+When the policy cover is due to end, both Amazon and the insurer will send the customer a renewal reminder. If the customer chooses to renew directly with the insurer, then it's likely that the insurer will need customer payment details (unless an MTA/claim has been made).
+
+However, the customer may prefer to re-evaluate the prices offered by the Amazon service. In which case they would essentially repeat the process where the policy was created, with some of the data collected could be pre-populated based on data already provided.
+
+It's possible that should the current insurer's renewal quote be higher than a competitor's, Amazon may provide a mechanism to allow the customer to give the current insurer the option to price match. This is in-keeping with the fundamental Amazon policy of providing their customers with the best service possible.
+
+It's likely that each insurer may have to provide some sort of kickback to Amazon for each renewal, although we'd need to confirm how this might be achieved.
+
+We'd need to assess the data set provided by Amazon, to determine if this gives us the opportunity to make best use of our pricing model. i.e. the reduced data we get (compared with the current quote data set) may not allow us to deliver the most competitive quote.
+
+Also, Amazon are likely to change their question set frequently, we'd need to ensure that our Policy/Pricing solutions are capable of handling such changes in a timely manner.
+
+Claims
+For day 0, Vectus may be able to service the claims needs for Amazon policies. This is because the product we understand Amazon require is very similar to what we have today, However, as is expected, the product starts to change, Vectus will no longer be a viable option. Therefore it makes sense to begin with an suitable alternative to avoid switching mid-course.
+
+Connected Homes
+Given Amazon's lead role in providing smart devices (Amazon Echo, Ring, etc) around the home, as well as their ability to sell a wide range of Home security/IoT devices, then it follows that there may be a movement to link up insurers/manufacturers/retails/suppliers to ensure homes are protected as much as possible. This approach may have a big impact on the types of cover offered in the future.
+
+Being part of Amazon's insurance story at the outset will provide Admiral critical insight into how the market is likely to develop into a digital future.
+
+Note that the impact of connected homes/devices to Household insurance can also be projected to Motor cover and connected cars when the time comes to consider motor.

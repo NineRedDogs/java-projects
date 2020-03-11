@@ -1,0 +1,27 @@
+[[query-transactions]]
+= Transactions
+
+Any query that updates the graph will run in a transaction.
+An updating query will always either fully succeed, or not succeed at all.
+
+Cypher will either create a new transaction or run inside an existing one:
+
+* If no transaction exists in the running context Cypher will create one and commit it once the query finishes.
+* In case there already exists a transaction in the running context, the query will run inside it, and nothing will be persisted to disk until that transaction is successfully committed.
+
+This can be used to have multiple queries be committed as a single transaction:
+
+. Open a transaction,
+. Run multiple updating Cypher queries.
+. Commit all of them in one go.
+
+Note that a query will hold the changes in memory until the whole query has finished executing.
+A large query will consequently use large amounts of memory.
+For memory configuration in Neo4j, see the <<operations-manual#memory-configuration, Neo4j Operations Manual>>.
+
+For using transactions with a Neo4j driver, see the <<driver-manual#driver-sessions-transactions, Neo4j Driver manual>>.
+For using transactions over the HTTP API, see the <<http-api#http-api, HTTP API documentation>>.
+
+When writing procedures or using Neo4j embedded, remember that all iterators returned from an execution result should be either fully exhausted or closed.
+This ensures that the resources bound to them are properly released.
+
