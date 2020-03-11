@@ -1,0 +1,46 @@
+Beta by Crashlytics - 
+
+allows roll out of beta versions to your testers ASAP
+
+when a new build is available - testers will see in-app notifications 
+
+can have same testers for your work projects as personal projects
+
+single dashboard to help deliver build, tester and dev info in one simple place
+
+can track testers progress via the dashboard
+
+device and OS aware, so users running incompatible devices and OS versions will not be informed of builds they cannot use.
+
+issues experienced by users are highlighted via the crash reporting system to help define your builds stability
+
+can monitor app performance staring with beta all way through to App/Playstore distribution
+
+from the beta dashboard, you can dive straight into crash issues 
+
+crash data will highlight the top issues (e.g. class/line# combinations - ordered by number of crashes), so you can attack the pressing issues quickly
+
+beta fully integrated with IDE plugins (Xcode, Android Studio, eclipse, intelliJ)
+
+from ide, you can invite testers and distribute builds
+
+plugin navigation: build app > invite testers > add release notes > watch dashboard come alive!!
+
+can search for testers and create groups, can then roll out builds to specific groups - from IDE or dashboard
+
+
+
+Crashlytics 
+
+#1 performance SDK on both android and ios
+
+provides deep and actionable insights (e.g. exact line of code crashed on)
+
+as well as crash reporting, an extra click enables real-time analytics to help understand whats happening with your app
+
+
+-----------------------
+
+Fabric
+
+

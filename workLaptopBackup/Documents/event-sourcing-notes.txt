@@ -1,0 +1,54 @@
+before starting:
+1. speak to domain experts even if somain is simple
+2. start with events, not UI (as this will lead to a CRUD approach)
+
+Events:
+
+- past tense : noun_verb
+- avoid the slip into CRUD-land, think about the verbs first, nouns later.
+- rarely will the verb be a CRUD verb, instead they may be : Ordered, Opened, Added
+- so example (in a cafe context):
+   - TabOpened
+   - DrinksOrdered
+   - FoodOrdered
+   - DrinksCancelled
+   - FoodCancelled
+   - DrinksServed
+   - FoodPrepared
+   - FoodServed
+   - TabClosed
+
+Commands:
+- commands are things that indicate requests to our domain
+- examples:
+   - OpenTab
+   - PlaceOrder
+   - AmendOrder
+   - MarkDrinksServed
+   - MarkFoodPrepared
+   - MarkFoodServed
+   - CloseTab
+
+Exceptions:
+- things that can cause a command to be refused
+- examples:
+   - CannotCancelServedItem
+   - TabHasUnservedItems
+   - MustPayEnough
+
+
+Aggregates:
+- Each aggregate has its own stream of events
+- When every event is taken together, will provide a view to the current state
+- Aggregates are isolated from other aggregates
+- Decisions whether to accept a command made solely on the command and the past events for that aggregate.
+- An aggregate is either:
+   - single object - doesnt reference any others
+   - an isolated graph of objects, where one object designated as root, and the outside world knows only of the root object.
+- Demanding as forces us to identify *and* segregate business concepts.
+
+
+TIP: starting from the events and commands, then trying to group them based on invariants (business rules you need to uphold), is a good strategy.
+
+
+

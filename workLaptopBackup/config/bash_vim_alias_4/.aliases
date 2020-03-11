@@ -1,0 +1,128 @@
+#
+# andy aliases file
+#
+# ---------------------
+#
+alias a="alias"
+alias so="source"
+alias ls='ls --color=always'
+alias term="DISPLAY=:0 terminator &"
+
+alias k='kubectl -n sca-auth'
+#
+# following one is used when I want a bit of clearance on the console - helps in conjunction with grep's to present search results
+alias s="echo; echo; echo; echo; echo; echo; echo"
+#
+alias vim="gvim"
+alias cls="clear"
+alias so="source"
+#alias eclipse="/opt/eclipse/eclipse"
+#
+a ssh="ssh -X"
+#
+#a decompile="java -jar ~/utils/cfr_0_123.jar"
+#
+alias dl="cls; cd ~/Downloads; ll -rt"
+#alias sipp="cls; cd ~/Downloads/sipp/sipp-3.3; echo; echo; cat ag-commands.txt; echo; echo"
+#alias twag='xterm -geometry 170x10+0+750 -bg black -fg cyan -font 9x15 -e "java -jar /home/agrahame/workspace/agtwitter/agTwitter.jar | grep \"^(\""'
+#
+# mount the shared raid data area on the hp server
+#a data="sudo mount bluebird:/data /alldata"
+a data="sshfs andrew@bluebird:/data /alldata"
+#a video="sudo mount bluebird:/home/andrew/videos /videos"
+
+alias ll="ls -la"
+
+# simple little bash timer scripts - run t1, then do something, then run t2 - gives an elapsed time
+alias t1="/home/agrahame/scripts/t1.sh"
+alias t2="/home/agrahame/scripts/t2.sh"
+
+
+#alias agb="/home/agrahame/scripts/ag-build.sh"
+#alias eagb="gvim /home/agrahame/scripts/ag-build.sh"
+#alias j7="source /home/agrahame/scripts/set-up-java-alternative-apps.sh 7"
+#alias j8="source /home/agrahame/scripts/set-up-java-alternative-apps.sh 8"
+
+##
+#
+##
+#
+alias sb="source /home/agrahame/scripts/sandbox.sh"
+alias sby="source /home/agrahame/scripts/sandbox.sh yest"
+alias sbl="source /home/agrahame/scripts/sandbox.sh lwd"
+# open up a new sandbox edit session
+alias note="source /home/agrahame/scripts/sandbox.sh today notes"
+##
+
+##
+#
+# short cuts to code areas
+#
+##
+#
+#
+#
+
+function ba2 {
+   t1
+   cd /home/agrahame/projects/src;
+   ./buildall
+   if [ $? -ne 0 ]; then
+
+      echo " ********************* "
+      echo " ***************************************************************************** "
+      echo " ****************************        ^^^^^^^^^^^^              *************** "
+      echo " ******  ANT build failure - look at above output for failure  *************** "
+      echo " ***************************************************************************** "
+      echo " ********************* "
+   fi
+   cd -
+   t2
+}
+
+#
+# searching for stuff in code
+# ---------------------
+#export currBranch="/home/agrahame/projects/src"
+#export currBranch=""
+#a fj="find \"$currBranch\" -name \"*.java\" -type f | xargs grep "
+#a fbx="find \"$currBranch\" -maxdepth 3 -name build.xml | xargs grep "
+#a fnt="find \"$currBranch\" -name \"*.java\" -not -path \"*/src/test/*\" "
+#a fnj="find \"$currBranch\" -name \"*.java\" -not -path \"*/src/java/*\" "
+#a fnjt="find \"$currBranch\" -name \"*.java\" "
+#
+# ---------------------
+# remote logins
+# ---------------------
+
+#
+# Departments Console Pages Server - engtest66
+# ------------------------------------------------
+#a black='\E[30;47m'
+#a red='\E[31;47m'
+#a green='\E[32;47m'
+#a yellow='\E[33;47m'
+#a blue='\E[34;47m'
+#a magenta='\E[35;47m'
+#a cyan='\E[36;47m'
+#a white='\E[37;47m'
+
+#alias cpWarning="echo -e $yellow '*******************'; echo -e 'Are You sure ? This is the department Console Pages machine '; echo '************************'"
+#
+#
+# Amazon cloud drive commands
+#
+#
+#a acd_sync="acd_cli sync"
+#a acd_usage="acd_cli usage"
+#a acd_ls="acd_cli ls /"
+#a acd_mnt="acd_cli mount $HOME/amazon_cloud_drive"
+#a acd_unmnt="acd_cli umount $HOME/amazon_cloud_drive"
+#
+#
+# added after joining Admiral
+a agit="echo; echo \"grahama2\"; cat /home/agrahame/dev/git-repos/2fa; echo; echo"
+a dev="cd /home/agrahame/dev/git-repos/ARD-WHITESANDS; echo; pwd; echo"
+a proj="cd /home/agrahame/dev/git-repos/ARD-WHITESANDS/backend/microservice-fnol"
+
+a uc="/home/agrahame/scripts/update-ctnr.sh"

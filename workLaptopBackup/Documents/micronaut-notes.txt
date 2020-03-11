@@ -1,0 +1,4 @@
+1. create case-server project
+
+       $ mn create-app case-server --features kafka --build maven
+

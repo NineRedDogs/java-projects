@@ -1,0 +1,7 @@
+HTTP/2.0 200 OK
+Content-Length: 519
+Audit-Id: 853bdafd-654b-42e5-8aa9-ded6afc387b7
+Content-Type: application/json
+Date: Fri, 23 Aug 2019 13:24:25 GMT
+
+{"kind":"APIResourceList","apiVersion":"v1","groupVersion":"admissionregistration.k8s.io/v1beta1","resources":[{"name":"mutatingwebhookconfigurations","singularName":"","namespaced":false,"kind":"MutatingWebhookConfiguration","verbs":["create","delete","deletecollection","get","list","patch","update","watch"]},{"name":"validatingwebhookconfigurations","singularName":"","namespaced":false,"kind":"ValidatingWebhookConfiguration","verbs":["create","delete","deletecollection","get","list","patch","update","watch"]}]}

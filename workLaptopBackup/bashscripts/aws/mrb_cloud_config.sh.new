@@ -1,0 +1,839 @@
+#/bin/bash
+#
+#  Script to deal with tuning a Dialogic MRB node on first boot in 
+#  a cloud environment
+#
+
+. $(dirname $0)/cloud_config_functions.sh
+
+function usage()
+{
+	printf "\n%s\n" "Standalone MRB:"
+	printf "%s: [OPTIONS] \n" "$(basename $0)"
+	printf "\n%s\n" "Primary MRB:"
+	printf "%s: [OPTIONS] <SIGNALLING_VIP_ADDRESS>\n" "$(basename $0)"
+	printf "\n%s\n" "Backup MRB:"
+	printf "%s: [OPTIONS] <SIGNALLING_VIP_ADDRESS> <PRIMARY_SIGNALLING_ADDRESS> <PRIMARY_PRIVATE_ADDRESS>\n\n" "$(basename $0)"
+	common_usage
+	printf "%s\n" "-r, --role standalone|primary|backup"
+	printf "%-20s%s\n" ""                  "Configure the MRB in the specified role"
+	printf "%-20s%s\n" ""                  "standalone:  Single non-HA MRB"
+	printf "%-20s%s\n" ""                  "primary:     1st MRB in a HA pair, SIGNALLING_VIP_ADDRESS must be supplied"
+	printf "%-20s%s\n" ""                  "backup:      2nd MRB in a HA pair, SIGNALLING_VIP_ADDRESS, "
+	printf "%-20s%s\n" ""                  "             PRIMARY_SIGNALLING_ADDRESS and PRIMARY_PRIVATE_ADDRESS must be supplied"
+        printf "%-20s%s\n" ""                  "The default is for standalone configuration"
+        printf "%-20s%s\n" ""                  "This option allows you to force the role without relying on positional parameters"
+	printf "%s\n" "-x, --external-loadbalancer"
+	printf "%-20s%s\n" ""                  "Set the MRB to use an external loadbalancer address to control the VIP"
+	printf "%-20s%s\n" ""                  "with this parameter set, the MRB will not manage the VIP Address"
+        printf "%-20s%s\n" ""                  "The default for HA MRB pairs is to not use an external loadbalancer"
+        printf "%-20s%s\n" ""                  "This parameter is ignored for a Standalone MRB"
+	printf "%s\n" "--rtp-proxy"
+	printf "%-20s%s\n" ""                  "Set the MRB to enable rtpProxy functionality (Defaults to false)"
+	printf "%-20s%s\n" ""                  "The MRB will also require a Media VIP Address to be configured"
+	printf "%-20s%s\n" ""                  "for rtpProxy functionality"
+	printf "%s\n" "--sip-port"
+	printf "%-20s%s\n" ""                  "The SIP Port that the MRB will listen on for signalling traffic"
+	printf "%-20s%s\n" ""                  "In a HA Pair both MRBs must be listening on the same SIP Port"
+	printf "%-20s%s\n" ""                  "Default: 5070"
+	printf "%s\n" "--media-vip"
+	printf "%-20s%s\n" ""                  "The floating IP address that will be assigned to the media interface"
+	printf "%-20s%s\n" ""                  "and presented to the network on the Active MRB of the pair"
+	printf "%-20s%s\n" ""                  "Must be provided to configure the MRB in Standalone or Backup role"
+	printf "%-20s%s\n" ""                  "if rtpProxy functionality is enabled"
+	printf "%s\n" "--nat <public-ip>|ec2"
+	printf "%-20s%s\n" ""                  "Configure the MRB with an external NAT address"
+	printf "%-20s%s\n" ""                  "argument will either be <public-ip>, the public IP the NAT is using"
+	printf "%-20s%s\n" ""                  "the special value \"ec2\" that indicates that the metadata service"
+	printf "%-20s%s\n" ""                  "typical in AWS installs will be used to set the public IP address"
+	printf "%-20s%s\n" ""                  "Without this option the MRB is not configured for NAT"
+	printf "%s\n" "--emp"
+	printf "%-20s%s\n" ""                  "The Adaptor service for Dialogic EMP will be enabled and started"
+	printf "%-20s%s\n" ""                  "Default is to not start the Adaptor"
+	printf "%s\n" "--no-emp"
+	printf "%-20s%s\n" ""                  "The Adaptor service for Dialogic EMP will *NOT* be enabled and started"
+	printf "%-20s%s\n" ""                  "Default is to not start the Adaptor"
+	printf "\n%-30s%s\n" "SIGNALLING_VIP_ADDRESS" 
+	printf "%-30s%s\n" ""                  "The Floating IP address that wll be assigned to the signalling interface"
+	printf "%-30s%s\n" ""                  "and presented to the network on the Active MRB of the pair"
+	printf "%-30s%s\n" ""                  "Must be provided to configure the MRB in the Priary and Backup roles"
+	printf "\n%-30s%s\n" "PRIMARY_SIGNALLING_ADDRESS" 
+	printf "%-30s%s\n" ""                  "The Signalling IP address  of the Primary MRB in the pair"
+	printf "%-30s%s\n" ""                  "used to configure the HA pairing"
+	printf "%-30s%s\n" ""                  "Must be provided to configure the MRB in the Backup role"
+	printf "\n%-30s%s\n" "PRIMARY_PRIVATE_ADDRESS" 
+	printf "%-30s%s\n" ""                  "The Private IP address of the Primary MRB in the pair"
+	printf "%-30s%s\n" ""                  "used to configure the pairing and share configuration."
+	printf "%-30s%s\n" ""                  "Must be provided to configure the MRB in the Backup role"
+	printf "%-30s%s\n\n" ""                ""
+	
+	common_vars
+	printf "\t%-30s%s\n" "ROLE"                          "Equivelant to the -r or --role positional parameter"
+	printf "\t%-30s%s\n" ""                              "Set value to \"standalone\", \"primary\" or \"backup\""
+	printf "\t%-30s%s\n" "SIGNALLING_VIP_ADDRESS"        "Equivelant to the 1st positional parameter"
+	printf "\t%-30s%s\n" "PRIMARY_SIGNALLING_ADDRESS"    "Equivelant to the 2nd positional parameter"
+	printf "\t%-30s%s\n" "PRIMARY_PRIVATE_ADDRESS"       "Equivelant to the 3rd positional parameter"
+	printf "\t%-30s%s\n" "SIP_PORT"                      "Equivelant to --sip-port"
+	printf "\t%-30s%s\n" "NAT_IP_ADDRESS"                "Equivelant to --nat"
+	printf "\t%-30s%s\n" "MEDIA_VIP_ADDRESS"             "Equivelant to --media-vip options"
+	printf "\t%-30s%s\n" "EXTERNAL_LOAD_BALANCER"        "Equivelent to -x or --external-loadbalancer option"
+	printf "\t%-30s%s\n" ""                              "Set value to \"true\" or \"false\""
+	printf "\t%-30s%s\n" "ENABLE_RTP_PROXY"              "Equivelent to --rtp-proxy"
+	printf "\t%-30s%s\n" ""                              "Set value to \"true\" or \"false\""
+	printf "\t%-30s%s\n" "ENABLE_EMP_ADAPTOR"            "Equivelant to --emp and --no-emp"
+	printf "\t%-30s%s\n" ""                              "Set value to \"true\" or \"false\""
+}
+
+function update_hosts()
+{
+    newname=$1
+    echo "Adding "$newname " to /etc/hosts"
+    cp /etc/hosts /tmp/hosts
+    awk -v hostname=$newname '\
+    { 
+    	if ($1 ~ /^127|^::1/) { 
+            out=$1" "hostname" "
+            for(i=2;i<=NF;i++) {
+                out=out" "$i
+            } 
+            print out
+        } else 
+            print $0
+    }' /tmp/hosts > /etc/hosts
+}
+
+
+#
+# Sets the Core MRB configuration
+#
+function set_mrb_core_config()
+{
+    TEMP_FILE="$(mktemp --tmpdir mrb_config.XXXXXXXXX)"
+
+    echo "Setting VIP address \"${SIGNALLING_VIP_ADDRESS}\" and  External Load Balancer Flag \"${EXTERNAL_LOAD_BALANCER}\" VIP Interface Name \"${VIP_INTERFACE_NAME}\""
+    if [[ "${ENABLE_RTP_PROXY}" == "true" && -n "${MEDIA_VIP_ADDRESS}" ]]
+    then
+    	echo "Setting Media VIP address \"${MEDIA_VIP_ADDRESS}\" and Media VIP Interface Name \"${MEDIA_VIP_INTERFACE_NAME}\""
+    fi
+    if [ -n "$NAT_IP_ADDRESS" ]
+    then
+    	echo "Setting External NAT Address \"${NAT_IP_ADDRESS}\""
+    fi
+    
+    node > "$TEMP_FILE" <<_SCRIPT_ && cp "$TEMP_FILE" "$MRB_CONFIG"
+    
+    // Load the config file
+    var fs = require('fs');
+    var myConfig = JSON.parse(fs.readFileSync('$MRB_CONFIG', 'utf8'));
+    
+    // Make modifications
+    myConfig["mrb-config"]["network"]["external-loadbalancer"] = "${EXTERNAL_LOAD_BALANCER}";
+    if ("$NAT_IP_ADDRESS".length > 0) { 
+    	myConfig["mrb-config"]["network"]["external-nat-address"] = "${NAT_IP_ADDRESS}";
+    }
+    myConfig["mrb-config"]["network"]["traffic-vip"]["vip-address"] = "${SIGNALLING_VIP_ADDRESS}";
+    myConfig["mrb-config"]["network"]["traffic-vip"]["interface-name"] = "${VIP_INTERFACE_NAME}";
+    if ("${ENABLE_RTP_PROXY}" === "true" && "${MEDIA_VIP_ADDRESS}".length > 0) {
+    	    // TODO: Multiple media vips - interface assignement
+    	    var mediaVips = [{
+    	    			"vip-address": "${MEDIA_VIP_ADDRESS}",
+    	    			"interface-name": "${MEDIA_VIP_INTERFACE_NAME}"
+    	    		}];
+	    myConfig["mrb-config"]["network"]["media-vips"] = mediaVips;
+    }
+    myConfig["mrb-config"]["network"]["vip-traffic-port"] = $SIP_PORT
+    
+    myConfig["mrb-config"]["locations"]["locations"]["1"]["name"] = "Default"
+    delete myConfig["mrb-config"]["locations"]["locations"]["2"]
+    
+    // Output pretty printed JSON out
+    console.log(JSON.stringify(myConfig, null, 2));
+_SCRIPT_
+   
+    ret=$?
+    rm "$TEMP_FILE"
+    return $ret
+
+}
+
+
+# 
+# Adds the MRB Node configuration
+#
+function add_mrb_primary_config()
+{
+    if [[ "$#" -ne 4 ]] 
+    then
+    	echo "add_mrb_primary_config() not enough args 4 needed, $# found." >&2
+    	return 1
+    fi
+    
+    TEMP_FILE="$(mktemp --tmpdir mrb_config.XXXXXXXXX)"
+    
+    if [[ "$4" == "true" ]]
+    then
+    	THIS_MRB_MODE="Master"
+    	PAIRED_MRB_MODE="Slave"
+    else
+    	THIS_MRB_MODE="Slave"
+    	PAIRED_MRB_MODE="Master"
+    fi
+    
+    echo "Adding Primary Node"
+    node > "$TEMP_FILE" <<_SCRIPT_ &&     cp "$TEMP_FILE" "$MRB_CONFIG"
+    
+    // Load the config file
+    var fs = require('fs');
+    var myConfig = JSON.parse(fs.readFileSync('$MRB_CONFIG', 'utf8'));
+    
+    // Make modifications
+    var mrbCluster = {
+			"mrb-nodes": {
+                            "$PAIRED_MRB_ID": {
+                                "id": "$PAIRED_MRB_ID",
+                                "name": "$2:$SIP_PORT",
+                                "mode": "$PAIRED_MRB_MODE",
+                                "sip-address": {
+                                    "user-name": "",
+                                    "host-name": "$2",
+                                    "port": $SIP_PORT
+                                },
+                                "listen-on-tls-flag": false,
+                                "tls-port": 5061,
+                                "jmx-address": {
+                                    "user-name": "",
+                                    "host-name": "$3",
+                                    "port": 5100
+                                },
+                                "paired-mrb-id": "$THIS_MRB_ID"
+                            },
+                            "$THIS_MRB_ID": {
+                                "id": "$THIS_MRB_ID",
+                                "name": "$1:$SIP_PORT",
+                                "mode": "$THIS_MRB_MODE",
+                                "sip-address": {
+                                    "user-name": "",
+                                    "host-name": "$1",
+                                    "port": $SIP_PORT
+                                },
+                                "listen-on-tls-flag": false,
+                                "tls-port": 5061,
+                                "jmx-address": {
+                                    "user-name": "",
+                                    "host-name": "$PRIVATE_ADDRESS",
+                                    "port": 5100
+                                },
+                                "paired-mrb-id": "$PAIRED_MRB_ID"
+                            }
+                        }
+                    };
+    myConfig["mrb-config"]["mrb-cluster"] = mrbCluster;
+    
+    // Output pretty printed JSON out
+    console.log(JSON.stringify(myConfig, null, 2));
+_SCRIPT_
+
+    ret=$?
+    rm "$TEMP_FILE"
+    return $ret
+
+}
+
+#
+# Adds the MRB Node Configuration
+#
+function add_mrb_standalone_config()
+{
+    TEMP_FILE="$(mktemp --tmpdir mrb_config.XXXXXXXXX)"
+
+    echo "Adding Primary Node"
+    node > "$TEMP_FILE" <<_SCRIPT_ && cp "$TEMP_FILE" "$MRB_CONFIG"
+    
+    // Load the config file
+    var fs = require('fs');
+    var myConfig = JSON.parse(fs.readFileSync('$MRB_CONFIG', 'utf8'));
+    
+    // Make modifications
+    var mrbCluster = {
+			"mrb-nodes": {
+                            "$THIS_MRB_ID": {
+                                "id": "$THIS_MRB_ID",
+                                "name": "$1:$SIP_PORT",
+                                "mode": "Master",
+                                "sip-address": {
+                                    "user-name": "",
+                                    "host-name": "$1",
+                                    "port": $SIP_PORT
+                                },
+                                "listen-on-tls-flag": false,
+                                "tls-port": 5061,
+                                "jmx-address": {
+                                    "user-name": "",
+                                    "host-name": "$2",
+                                    "port": 5100
+                                },
+                                "paired-mrb-id": ""
+                            }
+                        }
+                    };
+    myConfig["mrb-config"]["mrb-cluster"] = mrbCluster;
+    
+    // Output pretty printed JSON out
+    console.log(JSON.stringify(myConfig, null, 2));
+_SCRIPT_
+
+    ret=$?
+    rm "$TEMP_FILE"
+    return $ret
+}
+
+
+#
+# Sets the MRB ID
+#
+function set_mrb_id()
+{
+
+    TEMP_FILE="$(mktemp --tmpdir mrb_config.XXXXXXXXX)"
+
+    echo "Adding Node ID"
+    node > "$TEMP_FILE" <<_SCRIPT_ && cp "$TEMP_FILE" "$MRB_CONFIG"
+    
+    // Load the config file
+    var fs = require('fs');
+    var myConfig = JSON.parse(fs.readFileSync('$MRB_CONFIG', 'utf8'));
+    
+    // Make modifications
+    myConfig["node-id"] = "${1}";
+    
+    // Output pretty printed JSON out
+    console.log(JSON.stringify(myConfig, null, 2));
+_SCRIPT_
+
+    ret=$?
+    rm "$TEMP_FILE"
+    return $ret
+
+}
+
+
+function display_config_file
+{
+     echo "Config File Content"
+     cat "$MRB_CONFIG"
+}
+
+######
+# Start of Main script logic
+######
+EXTERNAL_LOAD_BALANCER="${EXTERNAL_LOAD_BALANCER:-false}"
+ENABLE_RTP_PROXY="${ENABLE_RTP_PROXY:-false}"
+ENABLE_EMP_ADAPTOR="${ENABLE_EMP_ADAPTOR:-false}"
+SIP_PORT="${SIP_PORT:-5070}"
+
+TEMP=`getopt -o ${COMMON_SHORT_OPTS}xr: --long ${COMMON_LONG_OPTS},external-loadbalancer,rtp-proxy,media-vip:,role:,emp,no-emp,nat:,sip-port: -n $(basename $0) -- "$@"`
+
+if [ $? != 0 ] ; then usage >&2 ; exit 1 ; fi
+
+eval set -- "$TEMP"
+
+while true; do
+	if process_common_args "$@"
+	then
+		shift $shift_count
+		continue
+	fi
+	case "$1" in
+		-x|--external-loadbalancer)	EXTERNAL_LOAD_BALANCER="true"
+						shift;;
+		-r|--role)			ROLE="$2"
+						shift 2;;
+		--rtp-proxy)			ENABLE_RTP_PROXY="true"
+						shift;;
+		--media-vip)          		MEDIA_VIP_ADDRESS=$2; shift 2 ;;
+		--nat)			        NAT_IP_ADDRESS="$2"
+					        shift 2;;
+		--emp)				ENABLE_EMP_ADAPTOR="true"
+						shift;;
+		--no-emp)			ENABLE_EMP_ADAPTOR="false"
+						shift;;
+                --sip-port)			SIP_PORT=$2
+                				shift 2;;
+                --) 				shift ; break ;;
+                *) 			fail "Internal error!" ; exit 1 ;;
+        esac
+done
+
+process_environment
+
+INSTALL_DIR=/opt/mrb
+MRB_CONFIG=${INSTALL_DIR}/config/nst-mrb-config.json
+SCRIPT_DIR=${INSTALL_DIR}/scripts
+
+validate_common_args
+
+if [ $# -ge 1 ]
+then
+	SIGNALLING_VIP_ADDRESS=$1
+	if ! validate_ip "${SIGNALLING_VIP_ADDRESS}"
+	then
+		fail "Signalling VIP IP Address \"${SIGNALLING_VIP_ADDRESS}\" is not a valid IP address"
+		exit 1
+	fi
+fi
+
+if [ $# -ge 2 ]
+then
+	PRIMARY_SIGNALLING_ADDRESS=$2
+	if ! validate_ip "${PRIMARY_SIGNALLING_ADDRESS}"
+	then
+		fail "Primary MRB Signalling IP Address \"${PRIMARY_SIGNALLING_ADDRESS}\" is not a valid IP address"
+		exit 1
+	fi
+fi
+
+if [ $# -ge 3 ]
+then
+	PRIMARY_PRIVATE_ADDRESS=$3
+	if ! validate_ip "${PRIMARY_PRIVATE_ADDRESS}"
+	then
+		fail "Primary MRB Private IP Address \"${PRIMARY_PRIVATE_ADDRESS}\" is not a valid IP address"
+		exit 1
+	fi
+fi
+
+if [[ -n "$ROLE" ]]
+then
+	case "$ROLE" in
+		standalone)			:;;
+		primary)			if [[ -z "$SIGNALLING_VIP_ADDRESS" ]] 
+						then
+							fail "SIGNALLING_VIP_ADDRESS must be set in \"primary\" role"
+							exit 1
+						fi;;
+		backup)				if [[ -z "$SIGNALLING_VIP_ADDRESS" || -z "$PRIMARY_SIGNALLING_ADDRESS" || -z "$PRIMARY_PRIVATE_ADDRESS" ]] 
+						then
+							fail "SIGNALLING_VIP_ADDRESS, PRIMARY_SIGNALLING_ADDRESS and PRIMARY_PRIVATE_ADDRESS must be set in \"backup\" role"
+							exit 1
+						fi;;
+		*)				fail "MRB Role \"${ROLE}\" is not valid. Set value to \"standalone\", \"primary\" or \"backup\""
+						exit 1;;
+	esac
+else
+	if [ -z "$SIGNALLING_VIP_ADDRESS" -a -z "$PRIMARY_SIGNALLING_ADDRESS" -a -z "$PRIMARY_PRIVATE_ADDRESS" ]
+	then 
+	    ROLE="standalone"
+	elif [ -n "$SIGNALLING_VIP_ADDRESS" -a -z "$PRIMARY_SIGNALLING_ADDRESS" -a -z "$PRIMARY_PRIVATE_ADDRESS" ]
+	then
+	    ROLE="primary"
+	elif [ -n "$SIGNALLING_VIP_ADDRESS" -a -n "$PRIMARY_SIGNALLING_ADDRESS" -a -n "$PRIMARY_PRIVATE_ADDRESS" ]
+	then
+	    ROLE="backup"
+	else
+	    fail "Not enough parameters"
+	    exit 1
+	fi
+fi
+
+if [[ "$EXTERNAL_LOAD_BALANCER" != "true" && "$EXTERNAL_LOAD_BALANCER" != "false" ]]
+then
+	fail "Value of EXTERNAL_LOAD_BALANCER value must be set \"true\" or \"false\""
+	exit 1
+fi
+
+if [[ "$ENABLE_RTP_PROXY" != "true" && "$ENABLE_RTP_PROXY" != "false" ]]
+then
+	fail "Value of ENABLE_RTP_PROXY value must be set \"true\" or \"false\""
+	exit 1
+fi
+
+if [ -n "${MEDIA_VIP_ADDRESS}" ]
+then
+	if ! validate_ip "${MEDIA_VIP_ADDRESS}"
+	then
+		fail "Media VIP Address \"${MEDIA_VIP_ADDRESS}\" is not a valid IP address"
+		exit 1
+	fi
+fi
+
+if [[ "$ENABLE_EMP_ADAPTOR" != "true" && "$ENABLE_EMP_ADAPTOR" != "false" ]]
+then
+	fail "Value of ENABLE_EMP_ADAPTOR value must be set \"true\" or \"false\""
+	exit 1
+fi
+
+if [ -n "$NAT_IP_ADDRESS" ]
+then
+	if [[ "$NAT_IP_ADDRESS" == "ec2" ]]
+	then
+		if ! NAT_IP_ADDRESS="$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)"
+		then
+			fail "Failed to retreive public EC2 IPv4 address from the metadata service"
+			exit 3
+		fi
+	fi
+	if ! validate_ip "$NAT_IP_ADDRESS" 
+	then
+		fail "Invalid NAT_IP_ADDRESS \"$NAT_IP_ADDRESS\""
+		exit 2
+	fi
+fi
+
+if [[ -z "$SIP_PORT" ]]
+then
+	fail "A SIP Port must be specified."
+	exit 3
+elif [[ ! "$SIP_PORT" =~ ^[0-9]+$ ]]
+then
+        # TODO  Range check?
+	fail "Sip Port (${SIP_PORT}) must be an integer."
+	exit 3
+fi
+
+
+echo "-----------------------------------------------------------"
+echo "Dialogic Powermedia MRB Script"
+
+# ensure hostname and /etc/hostname are in sync
+[ -f /etc/hostname ] && hostname $(cat /etc/hostname)
+
+
+#
+# extract the VM's IP address
+#
+
+VIP_INTERFACE_NAME="$signalling_if"
+
+# TODO: Multiple media vips - interface assignement
+MEDIA_VIP_INTERFACE_NAME="$media_if"
+
+# if VIP address NOT supplied then default to SIGNALLING_IP
+if [[ "$ROLE" == "standalone" ]]
+then 
+    # we are being configured as a standalone
+    # Single MRB
+    MODE="Single MRB"
+    SIGNALLING_VIP_ADDRESS=${SIGNALLING_VIP_ADDRESS:=$SIGNALLING_ADDRESS}
+    EXTERNAL_LOAD_BALANCER="true"
+    THIS_MRB_ID=1
+    PAIRED_MRB_ID=""
+elif [[ "$ROLE" == "primary" ]]
+then
+    ## in a Primary Backup Pairing
+    MODE="MRB Primary Configuration"
+    if [ "$EXTERNAL_LOAD_BALANCER" != "true" ]
+    then
+    	EXTERNAL_LOAD_BALANCER="false"
+    fi
+    THIS_MRB_ID=1
+    PAIRED_MRB_ID=2
+elif [[ "$ROLE" == "backup" ]]
+then
+    ## Backup in a Primary Backup Pairing
+    MODE="MRB Backup Configuration"
+    if [ "$EXTERNAL_LOAD_BALANCER" != "true" ]
+    then
+    	EXTERNAL_LOAD_BALANCER="false"
+    fi
+    THIS_MRB_ID=2
+    PAIRED_MRB_ID=1
+fi
+
+
+echo "-----------------------------------------------------------"
+echo "Configuration Mode                      = $MODE"
+echo "Hostname                                = $(hostname)"
+print_common_vars
+echo "External Load Balancer Flag             = $EXTERNAL_LOAD_BALANCER"
+echo "NAT IP Address                          = $NAT_IP_ADDRESS"
+echo "RTP Proxy Enabled Flag                  = $ENABLE_RTP_PROXY"
+echo "SIP Port                                = $SIP_PORT"
+echo "The Signaling VIP address of the MRB    = $SIGNALLING_VIP_ADDRESS"
+if [ -n "$MEDIA_VIP_ADDRESS" ]
+then
+	echo "The Media VIP address of the MRB        = $MEDIA_VIP_ADDRESS"; 
+else
+	echo "The Media VIP address of the MRB        = Not Set"; 
+fi
+
+if [ -n "$PRIMARY_SIGNALLING_ADDRESS" ]
+then
+    echo "The IP address of the paired MRB        = $PRIMARY_SIGNALLING_ADDRESS"
+    echo "The JMX IP address of the paired MRB    = $PRIMARY_PRIVATE_ADDRESS"
+else
+    echo "The IP address of the paired MRB        = Not Set"; 
+fi
+echo "This MRB ID                             = $THIS_MRB_ID"
+echo "Paired MRB ID                           = $PAIRED_MRB_ID"
+echo "VIP Interface Name                      = ${VIP_INTERFACE_NAME}"
+echo "Role                                    = $ROLE"
+echo "-----------------------------------------------------------"
+
+if [[ ("$ROLE" == "standalone" || "$ROLE" == "backup") && "$ENABLE_RTP_PROXY" == "true" ]]
+then
+	echo "WARNING: RTP Proxy is enabled and not Media VIP set"
+fi
+
+
+# update the host file with short and FQ host names
+if [ -f "/etc/hosts-empty" ]
+then
+    cp /etc/hosts-empty /etc/hosts
+fi
+update_hosts $(hostname)
+update_hosts $(hostname -s)
+
+
+echo "Updating VIP Manager properties file /etc/sysconfig/nst-vip-manager.properties"
+if [ -f "/etc/sysconfig/nst-vip-manager.properties" ]
+then 
+    sed -i -e "s/jgroupsBindAddress=.*/jgroupsBindAddress=${PRIVATE_ADDRESS}/g" \
+           /etc/sysconfig/nst-vip-manager.properties
+else
+    echo "/etc/sysconfig/nst-vip-manager.properties File NOT Found"
+fi
+
+# WORKAROUND  Disable Admin UI non-VIP traffic redirecting - 
+# https://jira.dialogic.com:8443/browse/XMS-7660
+#
+# ************************Remove when resolved*********************
+# Create the config file (jetty stopped to quickly for it to have 
+# been created in the install.)
+# Disable the admin-vip-redirect
+# *****************************************************************
+echo "Updating nst-mrb-web-admin-config.xml to workaround XMS-7660"
+jetty_dir=$(ls -d /opt/mrb/jetty-distribution-*)
+cat > $jetty_dir/nst-mrb-web-admin-config.xml << _EOF_
+<nst-mrb xmlns="urn:ietf:params:xml:ns:nst" version="1.0">
+    <config>
+        <detailed-logging>false</detailed-logging>
+        <MRB_WEB_ADMIN>
+            <mrb_jmx_hostname>localhost:5100</mrb_jmx_hostname>
+            <disable-admin-vip-redirect>true</disable-admin-vip-redirect>
+        </MRB_WEB_ADMIN>
+    </config>
+</nst-mrb>
+_EOF_
+
+echo "Updating MRB Config JSON file $MRB_CONFIG"
+do_wait="false"
+mkdir -p /var/lock/dialogic
+
+if [ -f "$MRB_CONFIG" ]
+then
+
+    # If we are a Backup then set the Node address of the Primary
+    if [ "$ROLE" == "backup" ]
+    then
+        if ! set_mrb_core_config
+	    then
+		fail "Failed to update core config"
+		exit 2
+	fi
+        if ! add_mrb_primary_config $SIGNALLING_ADDRESS $PRIMARY_SIGNALLING_ADDRESS $PRIMARY_PRIVATE_ADDRESS "true"
+        then
+        	fail "Failed to add Primary MRB Config for Backup"
+        	exit 2
+        fi
+        
+        #
+        # Use the import of configuration to control the config sharing to, and restarting of the Primary node
+        # This should remove the need to monitor the config update on the Primary and issue a restart
+        #
+        # Having a .import file in the config directory at start-up will trigger this behaviour
+        mv "$MRB_CONFIG" "${MRB_CONFIG}.import"
+        MRB_CONFIG="${MRB_CONFIG}.import"
+        
+        # Update VIP manager properties with the pairing node
+        echo "tcpJgroupsNodeHosts=\"${PRIVATE_ADDRESS}[7800],${PRIMARY_PRIVATE_ADDRESS}[7800]\"" >> /etc/sysconfig/nst-vip-manager.properties
+
+        
+    # If we have been supplied with a VIP address and we do NOT have a Paired
+    # MRB address then we are going to be the primary member of a paired deployment. 
+    # See workaround below
+    elif [ "$ROLE" == "primary" ]
+    then
+    	# Work around for MRB not activating VIP management unless
+    	# a paired MRB is found in config.
+    	# we add 192.0.2.10 - this is from the documentation address block
+    	# defined in rfc5737 so we should never find it!
+    	#if ! add_mrb_primary_config $SIGNALLING_ADDRESS 192.0.2.10 192.0.2.10 "false"
+    	#then
+    	#	fail "Failed to add Primary MRB Config for Primary"
+    	#	exit 2
+    	#fi
+	# 
+	# A work around is required to restart the Primary MRB after the 
+	# back up has started and shared initial config.  This allows us to
+	# configure JGroups to use TCP rather than multicast discovery
+	# Which is required in AWS - but used for all platforms to avoid
+	# issues.
+	
+	## Update to import process - as the target of the import it is recommended to start with a minimal (no VIPs) MRB without a config file....
+	if ! add_mrb_standalone_config $SIGNALLING_ADDRESS $PRIVATE_ADDRESS
+	then
+		fail "Failed to add Standalone MRB Config"
+		exit 2
+	fi
+	
+	cat > /opt/dialogic/mrb_pairing_monitor << _EOF_
+#!/bin/bash
+. $(dirname $0)/cloud_config_functions.sh
+
+CONFIG_FILE="${MRB_CONFIG}"
+
+while true    
+do
+   
+   if [[ -r \$CONFIG_FILE ]]
+   then
+        if [[ -z "\$LTIME" ]]
+        then
+            ### Set initial time of file
+            LTIME=\$(stat -c %Z \$CONFIG_FILE)
+        else
+	    ATIME=\$(stat -c %Z \$CONFIG_FILE)
+        fi
+   fi
+
+   if [[ "\$ATIME" != "\$LTIME" ]]
+   then    
+       [ -n "\$ATIME" ] && LTIME=\$ATIME
+       paired_IP="\$(node <<__SCRIPT__
+       var fs = require('fs');
+       var myConfig = JSON.parse(fs.readFileSync('\$CONFIG_FILE', 'utf8'));
+       var myId = myConfig["node-id"];
+       if (myConfig["mrb-config"]["mrb-cluster"]["mrb-nodes"][myId]["paired-mrb-id"]) {
+       	  var myPairedID = myConfig["mrb-config"]["mrb-cluster"]["mrb-nodes"][myId]["paired-mrb-id"];
+       	  console.log(myConfig["mrb-config"]["mrb-cluster"]["mrb-nodes"][myPairedID]["jmx-address"]["host-name"]);
+       }
+__SCRIPT__
+		)"
+       if [[ -n "\$paired_IP" ]]
+       then
+		# Update VIP manager properties with the pairing node information and restart
+		stop_service nst-vip-manager
+		
+		echo "tcpJgroupsNodeHosts=\"${PRIVATE_ADDRESS}[7800],\${paired_IP}[7800]\"" >> /etc/sysconfig/nst-vip-manager.properties
+		
+		start_service nst-vip-manager
+		
+		exit $?
+       fi
+   fi
+   sleep 5
+done
+_EOF_
+
+	chown mrb:mrb /opt/dialogic/mrb_pairing_monitor
+	chmod 755 /opt/dialogic/mrb_pairing_monitor
+	flock /var/lock/dialogic/mrb_pairing_monitor.lck /opt/dialogic/mrb_pairing_monitor &
+	if [[ $? -ne 0 ]]
+	then
+		fail "Failed to run pairing monitor"
+	fi
+	do_wait="true"
+    else
+    	# We are standalone - make sure we setup our MRB on the SIGNALLING_ADDRESS
+        if ! set_mrb_core_config
+	    then
+		fail "Failed to update core config"
+		exit 2
+	fi
+    	if ! add_mrb_standalone_config $SIGNALLING_ADDRESS $PRIVATE_ADDRESS
+    	then
+    		fail "Failed to add Standalone MRB Config"
+    		exit 2
+    	fi
+    fi 
+
+    if [ -r "$MRB_CONFIG" ] # Retest - Primary now deleted config file...
+    then
+	    if ! set_mrb_id $THIS_MRB_ID
+	    then
+		fail "Failed to set MRB ID"
+		exit 2
+	    fi
+
+	    display_config_file
+    fi
+else
+    echo "$MRB_CONFIG File NOT Found"
+fi
+
+if [ -f /etc/sysconfig/mrb.properties ]
+then
+	echo "Changing mrb properties to use ${PRIVATE_ADDRESS} for JMX"
+	echo "And rtpProxy support to $ENABLE_RTP_PROXY"
+	sed -i -e "s/^jmxHostname=.*/jmxHostname=${PRIVATE_ADDRESS}/g" \
+               -e "s/rtpProxyEnabled=.*/rtpProxyEnabled=${ENABLE_RTP_PROXY}/g" \
+		/etc/sysconfig/mrb.properties
+	
+	echo "MRB Properties File:"
+	cat /etc/sysconfig/mrb.properties
+fi
+
+if [ -f /etc/sysconfig/nst-vip-manager.properties ]
+then
+	echo "VIP Manager Properties File:"
+	cat /etc/sysconfig/nst-vip-manager.properties
+fi
+
+# Limit Admin UI to the Management interface
+# Listening on more than one (but not all) will require multiple connectors in jetty.xml (e.g. Management + VIP interfaces)
+#JETTY_DISTRIBUTION="$(ls -d /opt/mrb/jetty-distribution-*)"
+#if [ -d "$JETTY_DISTRIBUTION" ]
+#then
+#	if [ -f "$JETTY_DISTRIBUTION/start.ini" ]
+#	then
+#		cp "$JETTY_DISTRIBUTION/start.ini" "$JETTY_DISTRIBUTION/start.ini.bak"
+#		# Insert before the first non-comment line in the start.ini file
+#		awk -v management_address="$MANAGEMENT_ADDRESS" \
+#		'
+#		    BEGIN      {comment=0; matched=0}
+#		    /^#/       {comment=1} 
+#		    /^[^#]|^$/ {
+#		    	if (comment == 1 && matched == 0) { 
+#		    		print "jetty.host=" management_address
+#		    		matched=1 
+#		    	}
+#		    } 
+#		    {print}
+#		' "$JETTY_DISTRIBUTION/start.ini.bak" > "$JETTY_DISTRIBUTION/start.ini"
+#	fi
+#fi
+
+
+echo "Enabling services"
+enable_service nst-vip-manager
+enable_service mrb
+enable_service jetty
+[[ "$ENABLE_EMP_ADAPTOR" == "true" ]] && enable_service dialogic.cct_mrb_adaptor
+
+[[ "$ENABLE_EMP_ADAPTOR" == "true" ]] && { start_service dialogic.cct_mrb_adaptor; echo "EMP adaptor service started."; }
+start_service nst-vip-manager
+echo "VIP Manager service started."
+start_service mrb
+echo "MRB service started."
+start_service jetty
+echo "Jetty sevice started."
+
+# Wait here for the service restarts to have completed
+echo "Waiting for MRB Services..."
+if [[ "$do_wait" == "true" ]]
+then
+	if ! flock --wait $WAIT_TIME /var/lock/dialogic/mrb_pairing_monitor.lck "true"
+	then
+		fail "Timed out waiting for MRB Service Restart"
+		stop_service nst-vip-manager
+		echo "VIP Manager service stopped."
+		stop_service mrb
+		echo "MRB service stopped."
+		stop_service jetty
+		echo "Jetty sevice stopped."
+		[[ "$ENABLE_EMP_ADAPTOR" == "true" ]] && { stop_service dialogic.cct_mrb_adaptor; echo "EMP adaptor service stopped."; }
+		exit 3
+	fi
+fi
+
+$notify_script SUCCESS

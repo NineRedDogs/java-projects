@@ -1,0 +1,105 @@
+exported data set to csv file
+
+remove whitespace:
+
+   $ sed -i.bak -E 's/(^|,)[[:blank:]]+/\1/g; s/[[:blank:]]+(,|$)/\1/g' aid-data.csv
+
+then to get rid of trailing spaces in the policy type field
+
+   $ sed -i 's/\s*$//g' aid-data.csv
+
+add uuid to each row:
+
+created bash script : assign-uuid.sh
+
+	----------------
+	#!/bin/bash
+
+	# Count the number of lines in the input file
+	lines=$(wc -l < "$1")
+
+	# Generate unique ids and store them in a temporary file
+	uids=$(tempfile)
+	for i in `seq 1 $lines`; do uuidgen -t; done > "$uids"
+
+	# Insert the unique ids at the end of each line of the input file
+	paste --delimiter "," "$1" "$uids"
+
+	# Remove the temporary file
+	rm "$uids"
+	----------------
+
+execute script to generate uuids:
+
+   $  ./assign-uuid.sh aid-data.csv > aid-data-with-uids.csv
+
+small edit to rename the uuid in the headers row (i.e. first row in csv file), create new column name "uuid"
+
+>>>
+>>> csv file is now ready to be imported
+
+######################################################
+
+
+made the following config changes to my neo4j DB (click manage > settings)
+
+   - commented out : 
+      #dbms.directories.import=import
+   - uncommented : 
+      dbms.security.allow_csv_import_from_file_urls=true
+
+applied & restarted
+
+open Neo4j Browser for your DB
+
+
+   (1) read in csv using : 
+
+       > load csv with headers from
+"file:///C:/Users/agrahame/dev/sandbox/neo4j/admiral-id/aid-data-with-uids.csv" as row return row;
+
+   (2) read in csv and create a record for each:
+
+       > load csv with headers from
+"file:///C:/Users/agrahame/dev/sandbox/neo4j/admiral-id/aid-data-with-uids.csv" as row create (:PolicyRecord{id:row.uuid,policyType:row.PolType,firstName:row.Forename,lastName:row.Surname,dob:row.DOB,phoneNum:row.mobile,postcode:row.Postcode,email:row.eMail});
+
+   (3) delete all records 
+
+       > match(n) detach delete n
+
+
+   (4) the following creates nodes for person, area, policy, email,phone and creates links between them
+
+	> load csv with headers from "file:///C:/Users/agrahame/dev/sandbox/neo4j/admiral-id/aid-data-with-uids.csv" as row 
+	merge (policy:Policy{type:row.PolType})
+	merge (area:Area{district:left(row.Postcode, 4)})
+	merge (dob:Dob{bday:row.DOB})
+	merge (person:Person{name:toLower(row.Forename + " " + row.Surname)})
+	merge (person)-[:HAS]->(policy)
+	merge (person)-[:RESIDES{postcode:row.Postcode}]->(area)
+	merge (person)-[:BORN_ON]->(dob)
+	with person,row where row.mobile is not null 
+	   merge (mobile:Phone{phoneNumber:row.mobile})
+	   create (person)-[:VIA_PHONE]->(mobile)
+	with person,row where row.eMail is not null
+	   merge (email:Email{emailAddress:row.eMail})
+	   create (person)-[:VIA_EMAIL]->(email);
+
+
+(5) The following displays all Person nodes with more than 1 DoB
+
+     > match (p:Person)-[dob:BORN_ON]->(d:Dob) with p, count(d) as dobs where dobs > 1 return p
+
+(6) Return all people with more than one policy type
+
+     > match (p:Person)-[has:HAS]->(pol:Policy) with p, count(pol) as polCnt where polCnt > 1 return p
+
+(7) Return all people with more than one postcode
+
+    > match (p:Person)-[r:RESIDES]->(a:Area) with p, count(a) as areaCnt where areaCnt > 1 return p
+
+(8) Return all people where more than 1 person share the same birthday
+
+
+
+

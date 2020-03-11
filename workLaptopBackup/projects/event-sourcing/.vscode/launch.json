@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug (Launch) - Current File",
+            "request": "launch",
+            "mainClass": "${file}",
+            "args": [
+				"-ccfc",
+				"1927"
+			]
+        },
+       
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - App",
+            "request": "launch",
+            "mainClass": "agrahame.App",
+            "projectName": "event-sourcing"
+        }
+    ]
+}
