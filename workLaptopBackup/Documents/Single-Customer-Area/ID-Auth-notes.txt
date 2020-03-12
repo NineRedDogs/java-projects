@@ -1,0 +1,406 @@
+iwelcome - 
+
+https://developers.iwelcome.com/foundation/getting-started/what-is-idaas/
+
+IDaaS (Identity as a Service) :
+   - is an authentication service built by a 3rd party.
+   - allows organisations to manage ID for consumers, employees & customers in a flexible way on a cloud platform.
+   - provides orgs with advanced IAM features without the need to manage the underlying infrastructure/policies/etc
+
+iWelcome delivers IDaaS with a broad set of features, advanced authentication & delegation mgmt
+
+
+Types of IDaaS:
+
+   - Consumers (CIAM)
+   - Business partners (B2B IAM)
+   - Employees (B2E IAM)
+
+
+CIAM
+   - aquisition & onboarding
+
+--------------------
+
+Admiral & iWelcome
+
+   - Admiral leverages iWelcome's OAuth 2.0 implementation for auth which conforms to OpenID Connect (OIDC)
+   - OIDC is an identiy layer built on top of the OAuth 2.0 protocol.
+
+   - Authentication of the user involves obtaining an ID token (via a standard OAuth 2.0 call flow)
+   - ID tokens are a standardised feature of OIDC
+
+   - iWelcome is the source for all consumer identity data needed for authentication.
+   - iWelcome creates ONE identity for each registered person, and stores a number of attributes per identity.
+      - e.g. id/username, account state, email addrs, password, GW contact IDs, etc
+
+
+Authentication
+   - Auth is delegated to iWelcome.
+   - Auth is based on username (email for admiral) and password.
+   - The Admiral portal :
+      - directly asks users for their email/pw -> DOES NOT redirect to iWelcome
+      - sends these credentials to iWelcome via RESTful token API.
+      - If the creds are correct *and* auth is successful, the client is issued :
+         - an ACCESS TOKEN (and a *refresh token*)
+            - access tokens are valid for 1 HOUR, refresh tokens are valid for 30 days *apparently the portal doesnt use the refresh token (Owain) *
+         - an ID TOKEN
+            - ID token is a JWT that is a cryptographically signed b64 encoded JSON object containing name:value pairs
+         - The tokens are passed by the back end to the client/browser, where
+            - the browser stores the tokens as a cookie, which are then passed to the backend for each new request
+            - the backend verifies the tokens for each request, by invoking iWelcome to validate
+            - tokens are revoked on logout  
+   - 
+
+
+------------------------------
+
+iwelcome - supported auth grant flows :
+
+iWelcome does NOT support the token exchange grant (specified in OAuth 2.0) 
+
+authorization code grant
+   - this is the most common grant
+   - users click on a 'sign in' button, then redirected from the website to the auth server (iWelcome)
+   - may auth using :
+      - un/pw 
+      - 2FA or
+      - social login
+   - when authenticated, iWelcome provides the client with an authorization code
+   - the client captures this code and exchanges it for an access token (plus optional refresh token)
+
+
+Implicit Grant Flow
+   - similar to auth code grant, but the client receives an access token instead of an auth code.
+   - access tokens are passed in the URL fragment.
+   - URL fragments are not passed to the client, but are instead captured by the browser.
+   - tokens granted via this flow cannot be refreshed without user interaction.
+   - NO refresh tokens are provided with this flow.
+
+   - this flow is aimed at clients that cannot keep client creds secret.
+
+Resource Owner Password Credentials Grant
+   - here users's creds are gathered directly (i.e. not redirected to iWelcome) and sent along with client's own credentials to iWelcome
+   - if creds are correct, the client is issued an access token (plus optional refresh tokan)
+      **Assume this is the approach taken by the OLP team ????**
+
+
+
+Client Credentials grant
+   - allows a client to request an access token based only on client authentication, so only applicable for confidential clients
+   - useful for machine-2-machine auth
+
+
+Refresh Access Token flow
+   - enables OAuth clients to obtain a new Access Token using a refresh token (obtained in a previous flow - NOTE not implicit grant flow)
+
+========================================================
+
+
+      iWelcome
+
+OpenID Connect (authentication)
+    
+OAuth 2.0   (authorization)
+
+
+
+OAuth
+-----
+OAuth is an authorization protocol framework that can be used to achieve SSO.
+OAuth describes patterns for granting authorization but *DOES NOT* define how to perform authentication.
+
+
+   OAuth process:
+      - The app using OAuth constructs a request for permissions to a 3rd party system (Usually an Identity Provider (IdP))
+      - The IdP handles the authentication process and returns an Access Token representing success
+      - The IdP may mandate other factors (e.g. SMS/Email) - but this is outside the scope of OAuth
+      - The contents and structure of the Access Token are undefined by default, which means IdP's willbuild incompatible systems. 
+
+OpenID Connect (OIDC) attempts to address these problems.
+
+OIDC is an OAuth extension which adds and strictly defines an ID token for returning user information.
+
+   OIDC:
+      - A user logs in with the IdP, it can retrun fiuelds that our apps can expect to handle.
+      - OIDC is a special simplified case of OAuth (not a replacement)
+
+Downsides :
+   - Vulnerable to security attacks, 'inherently insecure'
+   - even if implement fully to the OAuth framework, will not guarantee a secure solution
+   - the RFC still has holes in it, that are in the process of being addressed
+  
+
+
+
+============================================
+
+why do we need auth code *and* access token ?
+
+back channel (highly secure channel) - e.g. server to server - https/rest call over ssl
+front channel (less secure channel)
+
+
+authorisation code returned as a query paarameter in the url coming back from the authorization server
+
+The exchange of the auth code for the access token is carried out on a back-end channel, i.e. over a secure link between the app's back-end server and the remote authorization server - i.e. *NOT* by the browser
+usually a HTTP POST containing the auth code along with a secret key (that only the server knows) i.e. if someone got hold of the auth code, they wouldn't be able to get an access token - this is why it's done 
+on the backplane (i.e. on a system we can trust), so the secret key doesnt end up in the browser where it could be copied. And without the secret key, a snoooper won't be able to convert the auth code to an access code.
+
+the access token is typically considered to be a sensitive data item, so any activity using the access token is usually done by the back end server, e.g. use access token to retrieve contacts from google for a given user.
+
+So any activity between our app and the remote resource server will be done between our back end server and that resource server, i.e. the access code will not be seen by the browser.
+
+This means we need to arrange a key/secret set up before hand with the remote auth server.
+
+1. register your app with the remote auth server, e.g. create a client with google, this gives us 2 things: a clientId and a clientSecret, this identifies our app with the authorization server (in this case google's auth server).
+
+Get authorization code
+-----------------------
+2. The clientId is then pass in the initial HTTP request, i.e. when the user clicks the 'connect with google' button
+3. See useful tool at 'oauthdebugger.com' - which is a tool that allows you to provide the various details (redirect-uri, client-id, scop, state, response type (i.e. the auth flow, code/hybrid/implicit) and test a call to 
+   your auth server. In the first step you can get your authorization code (returned as a query param in the URL call 'code') and the flow is redirected to the redirect-url provided by the app.
+4a. If the user did not consent to the option to allow your app to access the specified google data (or there was a credentials fail when logging in at google), then the response URL would contain query params indicating 
+    an error (along with a description).
+4b. If the user provided the correct creds *and* provided consent to allow the app to gain access to google data, then the repsonse URL would contain query params representing the authorization code and the state.
+
+Get access code
+-----------------
+
+5. When your app has an authorization code, it can then be exchanged for an access token, this is done by sending a POST request, containining the following query params:
+      - code (auth code)
+      - client_id
+      - client_secret
+      - grant_type (e.g. 'authorizzation_code')
+6a. If successful, the client recieves a response containing json with the following params:
+      - access_token
+      - expires_in (time value in seconds)
+      - token_type (e.g. 'Bearer')   
+
+
+Use access code
+----------------
+7. Your client app can now use this access code to retrieve the useful info its been after
+8. A GET message is sent to the remote resource server (e.g. google contacts) containing the access token (** DONE BY YOUR APP's BACK END **)
+9. The remote resource server will validate the access token (check its valid, not expired and has the right scope for the action being requested, i.e. if after contacts, have they got the right access for that)
+10. The client can continue to make requests using this token (while the expiry/scope are still valid)
+
+
+Summary
+-------
+So in summary, get the browser to do what its good at, i.e. interact with the user, i.e. show screens, present login panels, get username/password, etc.
+then all the sensitive back-and-forth exchanges can occur on a more secure channel between our app's back end and any remote resources. This means any tokens are being passed from servers (i.e. not insecure browsers) 
+that we have control over and therefore trust.
+
+
+
+
+
+OAuth grant types
+------------------
+
+- Authorization Code (front & back channel)
+   - described above
+- Implicit (front channel only) - for scenarios where there is NO back channel
+   - here the browser gets the access token straight away, without using an auth code as a first step.
+   - e.g. a pure javascript/angular/react app, a static single-page app
+- Resource owner password credentials (back channel only)
+    - not a common or recommended approach, sometimes used as an adaptor for an older solution
+    - does not involve the user's browser at all
+    - backend server posting messages to the authorization server
+    - I've got these credentials, give me an access token right away
+- Client credentials (back channel only)
+    - machine-to-machine comms
+    - does not involve the user's browser at all
+    - backend server posting messages to the authorization server
+    - I've got these credentials, give me an access token right away
+
+
+Implicit Flow
+---------------
+
+ - our app is a single page Angular app (no backend), with a 'connect with Google' button on it
+   - when the connect with google button is pressed, a request is sent to the authorization server containing:
+      - Redirect URI - where to redirect after logging in to (and providing consent) to the auth server
+      - Response type: token ** indicates we want an access token instead of an authorization code, i.e. implicit flow ***
+      - Scope: profile contacts - type of access we want, i.e. access to profile and contacts
+
+assuming that creds are correct, the access token is returned to the call-back uri browser page, and can then be used to access data from the resource server with subsequent GET commands from the web-app.
+
+implicit flow makes sense for a single page app, but it is less secure than auth-code, as the access code is presented to the browser, which means it can then be copied and used if hacked. this is less likely 
+if all the access token activity is confined to back-end channels (as it is with auth-code flow).
+
+Implicit flow - 
+   - This is where the authorization server returns an access code (and/or an ID token if an OIDC implementation) directly back to the client.
+   - This is not as secure as the Authorization code flow, but supports JavaScript single-page applications that need to directly recieve tokens.
+
+
+
+
+
+----------
+
+Authentication vs Authorization
+=================================
+
+identity use cases (pre-2014)
+
+all used OAuth 2.0
+
+   - Simple login (authentication)
+   - Single sign-on (across sites) (authentication)
+   - Mobile app login (authentication)
+   - Delegated authorization  (authorization)
+
+OAuth **not designed** to be used for authentication.
+
+Do not use OAuth for authentication:
+   - there's no standard way of getting the user's information
+       - it only really cares if the current user has access to a resource, doesnt really care who you are, i.e. not really who the current user is
+       - all the social login providers used OAuth to authorize users, but built their own mechanisms to get user data, i.e. the stuff thats missing from oauth
+   - every implementation is slightly different
+   - no common set of scopes
+
+
+The solution: 
+ 
+   :
+   : OpenID Connect
+   :
+   :  OAuth  2.0
+   : 
+   :     HTTP
+   :
+
+Where OpenId Connect is designed to deliver authentication - leaving OAuth 2.0 to manage authorization.
+
+OIDC is a small layer extension on top of OAuth 2.0 that addresses authentication.
+
+
+What OIDC adds:
+
+   - ID token
+      - has extra info about the user
+      - ID token is a JWT, i.e. is encoded as a JWT. Paste into a standard web utility to decode to plain text
+      - consists of 3 parts : Header, Payload (aka Claims) & Signature
+   - UserInfo endpoint for getting more user information
+      - if the data in the ID token isnt enough, use this mechanism
+   - Standard set of scopes
+   - Standardized implementation
+
+Here the ID token is returned along with the access token
+Our app can then inspect the ID token for useful user info, e.g. post a message saying 'Hello Andy'
+If the amount of data provided in the ID token is not enough, then our app can then make a call to the user info endpoint (using the access token) to request any extra data.
+
+See oidcdebugger.com for a test tool
+
+NOTE: That OIDC also supports implicit flow, in that the response type provided in the original request is not 'code' but is now 'id_token', which means the Authorization server returns the ID token instead of an auth code.
+
+
+
+identity use cases (NOW)
+
+   - Simple login [OIDC] (authentication)
+   - Single sign-on (across sites) [OIDC] (authentication)
+   - Mobile app login [OIDC] (authentication)
+   - Delegated authorization [OAUTH 2.0] (authorization)
+
+
+
+Use OAuth 2.0 for:
+   - Granting Access to your API
+   - Getting access to user data in other systems
+   [Authorization]
+
+Use OIDC for:
+   - Logging the user in
+   - Making your accounts available in other systems
+   [Authentication]
+
+
+
+----------------------
+
+Which grant flow should i use ?
+
+1. Web app with a server backend
+    - code flow: app arranges login with auth server, where auth server establishes a session for this user, our app drops in a session id cookie, and this session hooks up with auth server session.
+                 access & ID tokens returned to web app
+
+2. Native mobile app
+    - code flow + PKCE: app arranges login with auth server, access & ID tokens returned to web app
+                        tokens stored in protected device storage
+                        use the ID token to know who the user is
+                        attach access token to outgoing API requests
+
+3. SPA (single page app) with API backend
+    - implicit flow: web app logs in and receives ID token and access token
+                     tokens stored locally within JavaScript - take care to protect these tokens
+                     use the ID token to know who the user is
+                     attach access token to outgoing API requests
+
+
+4. Microservices and APIs
+    - client credentials flow
+
+
+------------------
+
+Single sign on with 3rd party services - can use OIDC to communictae with your auth server, which in turn may support a SAML channel with 3rd party sites.
+means the web app only really has t worry about communicating over OIDC to its auth server.
+
+------------------
+
+Single Page Apps - Security
+-----------------------------
+
+Token bindings
+--------------
+The ability to protect tokens stored in the browser is crucial. Token binding attempts to resolve this. There are OAuth2.0/OIDC extensions that help deliver this feature.
+
+The basics of Token binding are to tie a token to a sepcific browser/TLS connection. RFC-8471 describes how the token binding protocol allows client/server apps to create long-lived, uniquely 
+identifiable TLS bindings **spanning multiple TLS sessions and connections**. Apps are then enabled to cryptographically bind security tokens to the TLS layer, thus preventing token export and
+replay attacks. 
+
+To protect privacy, the token binding identifiersare only conveyed over TLS and can be reset by the user at any time. If this protocol is used to tie a token to a specific connection, then the 
+token cannot then be used in any other connection.
+
+But, as google have decided not to implement token binding int heir browsers, this is not a useful solution.
+
+
+
+Session based authentication vs token based authenticatiom
+------------------------------------------------------------
+
+An aim to avoid using access tokens in the browser, is an approach to be aspired to if possible.
+
+Session based Auth (Stateful)
+-------------------------------
+Any apps that are served from the same domain as the API should avoid using OAuth altogether and simply use session authentication (cookies) to communicate with the API. Here, cookies stored in the 
+users browser are used to verify their identity after log-in.
+Here, the server does most of the heavy lifting, in as much as after the client has authenticated with their creds they receive a session-id (cookie). This session-id is then associated with every 
+subsequent outgoing request. This session-id is synonymous with a user, so can be used to restrict/allow certain operations, and be used to track a users activity on a given domain.
+
+
+Token based Auth (Stateless)
+-----------------
+As with session based, creds are provided by user and validated and exchanged for a token. This token is then attached to every subsequent request (usually as an auth header [Bearer {JWT}], but can be 
+passed in body of a POST or as a query param). Token based authentication uses JWTs (sent with every request) which makes the flow stateless
+
+
+
+
+
+
+
+PKCE
+
+developer.okta.com
+
+encode/encrypt JWTs ?
+  
+
+
+
+
+

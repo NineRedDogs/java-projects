@@ -1,0 +1,345 @@
+export interface Entity {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface Case extends Entity {
+  type: string;
+  cases: CaseAssociation[];
+}
+
+export interface IncidentCase extends Case {
+  occurredAt: string;
+  product: ProductEnum;
+  location: Location;
+  policyHolderAtFault: AtFaultEnum;
+  contacts: Contact[];
+  notes: Note[];
+}
+
+export interface CarIncidentCase extends IncidentCase {
+  policy: CarPolicySummary;
+  category: CarIncidentCategoryEnum;
+  recoveryRequired: boolean;
+  recoveryLocation: Location;
+  seriousInjury: boolean;
+  crimeReference?: string;
+  emergencyServices: EmergencyServiceEnum[];
+  collisionCause: CollisionCauseEnum;
+  collisionType: CollisionTypeEnum;
+  collisionObjectType?: CollisionObjectEnum;
+  journeyReason: JourneyReasonEnum;
+}
+export interface HouseIncidentCase extends IncidentCase {
+  policy: HousePolicySummary;
+  category: HouseIncidentCategoryEnum;
+  houseSecured: boolean;
+}
+export interface ClaimCase extends Case {
+  contacts: Contact[];
+  assessment: LossAssessmentEnum;
+}
+export interface CarClaimCase extends ClaimCase {
+  losses: CarLossEnum[];
+  vehicle?: Vehicle;
+  drivable?: boolean;
+  passengerCount?: number;
+  speedRange?: SpeedRangeEnum;
+  damages?: VehicleDamage[];
+}
+
+export interface HouseClaimCase extends ClaimCase {
+  losses: HouseLossEnum[];
+}
+
+export interface CaseAssociation extends Entity {
+  type: CaseAssociationTypeEnum;
+  description: string;
+  caseId: string;
+}
+
+export interface PolicySummary extends Entity {
+  policyNumber: string;
+  startsOn: string;
+  endsOn: string;
+  noClaimsBonus: number;
+  policyHolders: Contact[];
+}
+
+export interface CarPolicySummary extends PolicySummary {
+  vehicles: Vehicle[];
+  cover: CarCoverEnum;
+}
+
+export interface HousePolicySummary extends PolicySummary {
+  cover: HouseCoverEnum;
+}
+
+export interface Vehicle extends Entity {
+  make: string;
+  model: string;
+  color: string;
+  modifications: string[];
+  registration: string;
+}
+
+export interface VehicleDamage extends Entity {
+  location: DamageLocationEnum;
+  extent: DamageExtentEnum;
+  description: string;
+}
+
+export interface Location extends Entity {
+  description: string;
+  line1: string;
+  line2: string;
+  town: string;
+  county: string;
+  country: string;
+  postcode: string;
+}
+
+export interface Contact extends Entity {
+  type: ContactTypeEnum[];
+  firstName: string;
+  lastName: string;
+  email: string;
+  phones: Phone[];
+}
+
+export interface Phone extends Entity {
+  number: string;
+  types: PhoneTypeEnum[];
+}
+
+export interface Note extends Entity {
+  text: string;
+  type: NoteTypeEnum;
+}
+
+export interface Activity extends Entity {
+  caseId: string;
+  name: string;
+  data: string;
+  text: string;
+  owner: string;
+}
+
+export interface Agent extends Entity {
+  firstName: string;
+  lastName: string;
+  email: string;
+  passwordHash: string;
+}
+
+export interface AgentGroup extends Entity {
+  name: string;
+  agents: Agent[];
+}
+
+export interface Interaction extends Entity {
+  contactId: string;
+  caseId: string;
+  medium: InteractionMediumEnum;
+  verification: InteractionVerificationEnum;
+}
+
+export interface AgentInteraction extends Interaction {
+  agentId: string;
+}
+
+export interface ServiceInteraction extends Interaction {
+  serviceName: string;
+}
+
+export interface Error extends Entity {
+  code: number;
+  message: string;
+}
+
+export enum SpeedRangeEnum {
+  '0_TO_5' = '0_TO_5',
+  '5_TO_9' = '5_TO_9',
+  '10_TO_19' = '10_TO_19',
+  '30_TO_39' = '30_TO_39',
+  '40_PLUS' = '40_PLUS'
+}
+
+export enum DamageLocationEnum {
+  'FRONT_PASSENGER_SIDE' = 'FRONT_PASSENGER_SIDE',
+  'FRONT_DRIVER_SIDE' = 'FRONT_DRIVER_SIDE',
+  'REAR_PASSENGER_SIDE' = 'REAR_PASSENGER_SIDE',
+  'REAR_DRIVER_SIDE' = 'REAR_DRIVER_SIDE',
+  'PASSENGER_SIDE' = 'PASSENGER_SIDE',
+  'DRIVER_SIDE' = 'DRIVER_SIDE',
+  'FRONT' = 'FRONT',
+  'REAR' = 'REAR',
+  'ROOF' = 'ROOF',
+  'UNDER_SIDE' = 'UNDER_SIDE'
+}
+
+export enum DamageExtentEnum {
+  'SUPERFICIAL' = 'SUPERFICIAL',
+  'MINOR' = 'MINOR',
+  'MAJOR' = 'MAJOR'
+}
+
+export enum CarLossEnum {
+  'VEHICLE' = 'VEHICLE',
+  'PROPERTY' = 'PROPERTY',
+  'PERSONAL_INJURY' = 'PERSONAL_INJURY'
+}
+
+export enum HouseLossEnum {
+  'BUILDING' = 'BUILDING',
+  'CONTENTS' = 'CONTENTS'
+}
+
+export enum LossAssessmentEnum {
+  'TOTAL_LOSS' = 'TOTAL_LOSS',
+  'MAJOR_LOSS' = 'MAJOR_LOSS',
+  'MINOR_LOSS' = 'MINOR_LOSS'
+}
+
+export enum CarIncidentCategoryEnum {
+  'WINDSCREEN' = 'WINDSCREEN',
+  'COLLISION' = 'COLLISION',
+  'MALICIOUS_DAMAGE' = 'MALICIOUS_DAMAGE',
+  'FIRE' = 'FIRE',
+  'THEFT' = 'THEFT',
+  'FLOOD' = 'FLOOD',
+  'OTHER' = 'OTHER'
+}
+
+export enum CarCoverEnum {
+  'COMPREHENSIVE' = 'COMPREHENSIVE',
+  'THIRD_PARTY' = 'THIRD_PARTY',
+  'THIRD_PARTY_FIRE_AND_THEFT' = 'THIRD_PARTY_FIRE_AND_THEFT'
+}
+
+export enum HouseIncidentCategoryEnum {
+  'MALICIOUS_DAMAGE' = 'MALICIOUS_DAMAGE',
+  'FIRE' = 'FIRE',
+  'THEFT' = 'THEFT',
+  'FLOOD' = 'FLOOD',
+  'OTHER' = 'OTHER'
+}
+
+export enum HouseCoverEnum {
+  'BUILDINGS' = 'BUILDINGS',
+  'CONTENTS' = 'CONTENTS',
+  'BUILDINGS_AND_CONTENTS' = 'BUILDINGS_AND_CONTENTS'
+}
+
+export enum EmergencyServiceEnum {
+  'POLICE' = 'POLICE',
+  'AMBULANCE' = 'AMBULANCE',
+  'FIRE' = 'FIRE'
+}
+
+export enum CollisionCauseEnum {
+  'POLICY_HOLDER_HIT_VEHICLE' = 'POLICY_HOLDER_HIT_VEHICLE',
+  'POLICY_HOLDER_HIT_OBJECT' = 'POLICY_HOLDER_HIT_OBJECT',
+  'THIRD_PARTY_HIT_VEHICLE' = 'THIRD_PARTY_HIT_VEHICLE',
+  'OTHER' = 'OTHER'
+}
+
+export enum CollisionTypeEnum {
+  'REAR' = 'REAR',
+  'PARKED_AND_UNATTENDED' = 'PARKED_AND_UNATTENDED',
+  'SIDE_ROAD' = 'SIDE_ROAD',
+  'REVERSING' = 'REVERSING',
+  'CHANGING_LANES' = 'CHANGING_LANES',
+  'ROUNDABOUT' = 'ROUNDABOUT',
+  'OTHER' = 'OTHER'
+}
+
+export enum CollisionObjectEnum {
+  'LAMPOST' = 'LAMPOST',
+  'WALL' = 'WALL',
+  'TREE' = 'TREE',
+  'ANIMAL' = 'ANIMAL',
+  'OTHER' = 'OTHER'
+}
+
+export enum JourneyReasonEnum {
+  'COMMUTING' = 'COMMUTING',
+  'VISITING_FRIENDS_RELATIVES' = 'VISITING_FRIENDS_RELATIVES',
+  'SHOPPING' = 'SHOPPING',
+  'SOCIAL' = 'SOCIAL',
+  'SCHOOL_RUN' = 'SCHOOL_RUN',
+  'BUSINESS' = 'BUSINESS',
+  'OTHER' = 'OTHER'
+}
+
+export enum NoteTypeEnum {
+  'SUMMARY' = 'SUMMARY',
+  'STATEMENT' = 'STATEMENT',
+  'UPDATE' = 'UPDATE',
+  'FNOL_WRAPUP' = 'FNOL_WRAPUP',
+  'FINAL_WRAPUP' = 'FINAL_WRAPUP'
+}
+
+export enum PhoneTypeEnum {
+  'PRIMARY' = 'PRIMARY',
+  'SECONDARY' = 'SECONDARY',
+  'MOBILE' = 'MOBILE',
+  'HOME' = 'HOME',
+  'WORK' = 'WORK',
+  'THIRD_PARTY' = 'THIRD_PARTY'
+}
+
+export enum ContactTypeEnum {
+  'POLICY_HOLDER' = 'POLICY_HOLDER',
+  'NAMED_DRIVER' = 'NAMED_DRIVER',
+  'THIRD_PARTY' = 'THIRD_PARTY',
+  'AUTHORISED_CALLER' = 'AUTHORISED_CALLER',
+  'UNAUTHORISED_CALLER' = 'UNAUTHORISED_CALLER',
+  'CLAIMANT' = 'CLAIMANT',
+  'DRIVER' = 'DRIVER',
+  'PASSENGER' = 'PASSENGER',
+  'PEDESTRIAN' = 'PEDESTRIAN',
+  'CYCLIST' = 'CYCLIST',
+  'WITNESS' = 'WITNESS',
+  'POLICE' = 'POLICE',
+  'AMBULANCE' = 'AMBULANCE',
+  'FIRE_BRIGADE' = 'FIRE_BRIGADE',
+  'SALVAGE' = 'SALVAGE',
+  'REPAIR' = 'REPAIR',
+  'THIRD_PARTY_INSURER' = 'THIRD_PARTY_INSURER',
+  'PAYEE' = 'PAYEE'
+}
+
+export enum AtFaultEnum {
+  'YES' = 'YES',
+  'NO' = 'NO',
+  'PARTIAL' = 'PARTIAL',
+  'UNSURE' = 'UNSURE'
+}
+
+export enum CaseAssociationTypeEnum {
+  'PARENT' = 'PARENT',
+  'CHILD' = 'CHILD',
+  'RELATED' = 'RELATED',
+  'DUPLICATE' = 'DUPLICATE',
+  'SIBLING' = 'SIBLING'
+}
+
+export enum ProductEnum {
+  'CAR' = 'CAR',
+  'HOUSE' = 'HOUSE',
+  'PET' = 'PET'
+}
+
+export enum InteractionVerificationEnum {
+  'DATA_PROTECTION_CHECK' = 'DATA_PROTECTION_CHECK',
+  'PHONE_MATCH' = 'PHONE_MATCH',
+  'UNCHECKED' = 'UNCHECKED'
+}
+
+export enum InteractionMediumEnum {
+  'INBOUND_CALL' = 'INBOUND_CALL',
+  'OUTBOUND_CALL' = 'OUTBOUND_CALL',
+  'INSTANCE_MESSAGE' = 'INSTANCE_MESSAGE',
+  'SMS' = 'SMS'
+}

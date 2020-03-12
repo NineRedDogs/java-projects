@@ -1,0 +1,212 @@
+#!/usr/bin/perl
+use strict;
+
+# Command line options {{{
+use Getopt::Long;
+my $opt_help;
+my $opt_all;
+my $verbose;
+my $pretend;
+
+GetOptions(
+	'h|help|?'=>\$opt_help,
+	'v'=>\$verbose,
+	'p'=>\$pretend,
+	'a'=>\$opt_all,
+	);
+
+if (defined($opt_help))
+	{
+	print "Usage:-\n";
+	print "  -p   pretend - don't run any commands\n";
+	print "  -a   Get information on all test machines\n";
+	print "  -v   verbose\n";
+	exit 0;
+	}
+# }}}
+
+my @ips=("192.168.2.101",
+	"192.168.2.102",
+	"192.168.2.103",
+	"192.168.2.104",
+	"192.168.2.105",
+	"192.168.2.112",
+	"192.168.2.12",
+	"192.168.2.26",
+	"192.168.2.29",
+	"192.168.2.34",
+	"192.168.2.37",
+	"192.168.2.39",
+	"192.168.2.50",
+	"192.168.2.56",
+	"192.168.2.58",
+	"192.168.2.59",
+	"192.168.2.62",
+	"192.168.2.70",
+	"192.168.2.82",
+	"192.168.2.86",
+	"192.168.2.95",
+	"192.168.2.96",
+	"192.168.2.97");
+
+if ($opt_all) {
+	foreach my $ip (@ips) {
+		&all_info($ip);
+		}
+	} else {
+	&all_info(undef);
+	}
+
+sub info0() {
+my ($ip, $title, $cmd)=@_;
+
+print "$title\n";
+system($cmd);
+}
+
+sub info() {
+my ($ip, $title, $cmd)=@_;
+my $info;
+if (defined($ip)) {
+	$info=`ssh root\@$ip $cmd`;
+	} else {
+	print "$title\n";
+	$info=`$cmd`;
+	}
+print "\t$info";
+}
+
+sub all_info() {
+my ($ip)=@_;
+
+print "\n------ $ip-----\n";
+
+&info($ip, "hostname", 'hostname');
+
+&info($ip, "IP address", 'ifconfig |grep -e "^eth" -e "inet addr:192.168.2"');
+
+&info($ip, "machine", 'dmesg | grep "DMI:"');
+
+&info($ip, "OS", 'cat /etc/issue');
+
+&info($ip, "CPU", 'grep "model name" /proc/cpuinfo');
+
+&info($ip, "Disk", 'dmesg | grep "sda.*logical blocks"');
+
+&info($ip, "memory RAM", 'cat /proc/meminfo|grep MemTotal');
+print "\n------ $ip-----\n";
+}
+
+# LC1 	shuttle 4 (192.168.2.105) 	
+#     Genreal testing machine
+#     java (version "1.7.0_17")
+#     4GB Ram
+#     Currently used to run an NST MS as a PW / target for turret tes system
+# 
+# LC2 	VM Ware ESXI VM HOST 1 - Dell Vostro (192.168.2.107) 20GB RAM total 	
+#     ESXI
+#     Dialogic XMS 2.0- 192.168.2.70 ( Not running)
+#         8gb of ram
+#         version 2.0.6998
+#         jre version 1.7.0_17
+#     NST LoadBalancer Main Call System node 1, 192.168.2.38: (running)
+#         Used Long Call Turret Testing.
+#         Running java jre 1.7.0_45.
+#         8GB of memory assigned to VM via ESXI as system will use at least 6.
+# 
+# LC3 	VM Ware ESXI VM HOST 2 - Dell Vostro (192.168.2.108) 20GB RAM total 	
+#     ESXI
+#     Dialogic XMS 2.0 - 192.168.2.82 (Not running)
+#         version 2.0.6998
+#         8gb of ram
+#     NST LoadBalancer Main Call System node 2, 192.168.2.39: (running)
+#         Used Long Call Turret Testing.
+#         Running java jre 1.7.0_45.
+#         8GB of memory assigned to VM via ESXI as system will use at least 6.
+# 
+# LC4 	Dell ESXI Multi Use Dialogic VMS 1 (192.168.2.37) 8GB of Memory Total 	
+#     Huw Dialogic Media Server ( Not Running)
+#         1 CPU with 4 cores
+#         4 GB Memory
+#     Dual Node Session manager VM Node 1 & active MRB Active DB 192.168.2.56 (running)
+#         4GB Memory
+#         Running Session manager install 3.1.0.34
+# 
+# 	
+# LC5 	Dell ESXI Multi Use Dialogic VMS 2 (192.168.2.58) 8 GB of Memory total 	
+#     ESXI
+#     Dual Node Session manager & backup MRB VM Node 2 slave DB 192.168.2.97 (running)
+#         4GB Memory
+# 
+# LC6 	Vega Gateway 	Vega PW gateway 	Username:admin
+# 
+# LC7 	Cisco Call Manager 	Cisco Call Manager 	
+# 
+# LC8 	Radisys MS 	Radisys MS 	Username:admin
+# 
+# PT1 	lennovo (192.168.2.101) 	
+#     SiPP Client Machine
+#     2GB Memory
+# 
+# PT2 	Dell LB Test 1 (192.168.2.34,192.168.2.96) 	
+#     MRB / LB Active node 1
+#         8 GB Memory
+# 
+# PT3 	Dell LB Test 2 (192.168.2.62, 192.168.2.29) 	
+#     MRB / LB node 2
+#         8 GB Memory
+# 
+# PT4 	HP Pavillion (192.168.2.26 ) - 3GB of Ram Total 	
+#     General Oracle VM 192.168.2.86 (running)
+#         3GB Memory
+# 
+# PT5 	RM Workstation VM Ware ESXI VM HOST 3 - Dell Studio XPS (192.168.2.95) 10GB total 	
+# Dialogic Test Tool
+#     9.75 GB Memory
+# 
+# 
+# PT6 	Custom made 32GB high spec machine 1 (192.168.2.12) 	
+#     Dialogic XMS Number 1 - 2.2.xxxx (192.168.2xx)
+#         8GB of ram
+#     Dialogic XMS Number 2 - 2.2.xxxx (192.168.2xx)
+#         8GB of ram
+#     Dialogic XMS Number 3 - 2.2.xxxx (192.168.2xx)
+#         8GB of ram
+#     Dialogic XMS Number 4 - 2.2.xxxx (192.168.2xx)
+#         8GB of ram
+# 
+# office1 	Shuttle 1 (192.168.2.102) 	
+#     General Machine for MRB/LB testing
+#     4GB Ram
+#     java (version "1.7.0_17")
+#     SNMP trap listener (NET-SNMP Version: 5.5)
+# 
+# office2 	Shuttle 2 (192.168.2.103) 	
+#     General Machine for MRB/LB testing
+#     java (version "1.7.0_17")
+#     4GB Ram
+# 
+# 	
+# 
+# office3 	Shuttle 5 (192.168.2.112) 	
+#     Dialogic XMS 1.0 (2.0.3957 )
+#     java (version "1.7.0_17")
+#     NST MS adaptor
+# 
+# office4 	Acer (192.168.2.50) 	
+#     SIPP Machine
+#         1GB Memory
+#         Used in long running testing for NST LB and MRB
+# 
+# office5 	Shuttle 3 (192.168.2.104) 	
+#     shuttle machine for general testing
+#     java (version "1.7.0_17")
+#     4GB Ram
+# 
+# Spare1 	Custom made 32GB high spec machine 2 (192.168.2.59) 	  	 
+# 
+# Spare2 	4 GB Chris Dell 	
+#     ESXI
+#     Oracle general machine
+#         3.8GB ram
+# 

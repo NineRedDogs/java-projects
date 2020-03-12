@@ -1,0 +1,111 @@
+
+db.execute("load csv with headers from \"file:///C:/Users/agrahame/dev/git-repos/ARD-ADID/data/sampleData.csv\" as row \n" +
+"merge (policy:Policy{type:row.PolType})\n" +
+"merge (district:District{pctown:left(row.Postcode, 4)})\n" +
+"merge (address:Address{streetaddress:toLower(row.Addr1), postcode:row.Postcode})\n" +
+"   set address.addr2 = row.Addr2\n" +
+"   set address.addr3 = row.Addr3\n" +
+"   set address.alfKey = row.ALFKey\n" +
+"merge (dob:Dob{bday:row.DOB})\n" +
+"create (person:Person{name:toLower(row.ForeName + " " + row.Surname), dln:row.DrvLicNo})\n" +
+"merge (person)-[:HAS]->(policy)\n" +
+"merge (person)-[resides:RESIDES{postcode:row.Postcode}]->(address)\n" +
+"   on create set resides.created = timestamp()\n" +
+"   on match set resides.counter = coalesce(resides.counter, 0) + 1, resides.accessTime = timestamp()\n" +
+"merge (person)-[:BORN_ON]->(dob)\n" +
+"with row where row.DeviceID is not null \n" +
+"   merge (device:Device{devId:row.DeviceID})\n" +
+"   merge (person)-[:USED]->(device)\n" +
+"merge (address)-[:IS_WITHIN]->(district)\n" +
+"with person,row where row.mobile is not null \n" +
+"   merge (mobile:Phone{phoneNumber:row.mobile})\n" +
+"   create (person)-[:VIA_PHONE]->(mobile)\n" +
+"with person,row where row.RegNo is not null \n" +
+"   merge (vehicle:Vehicle{reg:row.RegNo, abi:row.ABICode})\n" +
+"   create (person)-[:VIA_PHONE]->(mobile)\n" +
+"with person,row where row.eMail is not null\n" +
+"   merge (email:Email{emailAddress:row.eMail})\n" +
+"   create (person)-[:VIA_EMAIL]->(email);\n");
+
+
+
+
+
+
+
+load csv with headers from "file:///C:/Users/agrahame/dev/git-repos/ARD-ADID/data/sampleData.csv" as row 
+merge (policy:Policy{type:row.PolType})
+merge (district:District{pctown:left(row.Postcode, 4)})
+merge (address:Address{streetaddress:toLower(row.Addr1), postcode:row.Postcode})
+   set address.addr2 = row.Addr2
+   set address.addr3 = row.Addr3
+   set address.alfKey = row.ALFKey
+merge (dob:Dob{bday:row.DOB})
+create (person:Person{name:toLower(row.ForeName + " " + row.Surname), dln:row.DrvLicNo})
+merge (person)-[:HAS]->(policy)
+merge (person)-[resides:RESIDES{postcode:row.Postcode}]->(address)
+   on create set resides.created = timestamp()
+   on match set resides.counter = coalesce(resides.counter, 0) + 1, resides.accessTime = timestamp()
+merge (person)-[:BORN_ON]->(dob)
+with row where row.DeviceID is not null 
+   merge (device:Device{devId:row.DeviceID})
+   merge (person)-[:USED]->(device)
+merge (address)-[:IS_WITHIN]->(district)
+with person,row where row.mobile is not null 
+   merge (mobile:Phone{phoneNumber:row.mobile})
+   create (person)-[:VIA_PHONE]->(mobile)
+with person,row where row.RegNo is not null 
+   merge (vehicle:Vehicle{reg:row.RegNo, abi:row.ABICode})
+   create (person)-[:VIA_PHONE]->(mobile)
+with person,row where row.eMail is not null
+   merge (email:Email{emailAddress:row.eMail})
+   create (person)-[:VIA_EMAIL]->(email);
+
+
+
+return any address with a relationship to person that is related to more than 2 persons
+
+    > match (addr:Address)-[r:RESIDES]-(person:Person) with addr, count (person) as persons where persons > 2 return addr
+
+
+match (addr:Address)-[r:RESIDES]-(person:Person) 
+with person, count (person) as persons where persons > 2 match
+
+
+
+match (a:Address)-[r:RESIDES]-(p:Person) with a, p, count (r) as persons where persons > 3 return a
+
+with person,row where row.eMail is not null
+
+
+match (p:Person)-[r:RESIDES]->(a:AddressDob) with p, count(a) as addr where addr > 1 return p
+
+
+
+
+
+
+  - return all addresses
+       match (a:Address) return a
+
+  - return all Persons
+       match (p:Person) return p
+
+  - return all Persons with a relationship with an Address
+       match (p:Person)-[]-(a:Address) return p
+
+  - return all Persons with a RESIDES relationship with an Address
+       match (p:Person)-[r:RESIDES]-(a:Address) return p
+
+   - return all Addresses with a relationship with a Person
+       match (a:Address)-[]-(p:Person) return a
+
+   - return all Addresses with a RESIDES relationship with a Person
+       match (a:Address)-[r:RESIDES]-(p:Person) return a
+
+
+   - 
+
+
+
+

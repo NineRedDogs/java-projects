@@ -1,0 +1,20 @@
+---
+micronaut:
+    application:
+        name: claims-server
+    router:
+        static-resources:
+            default:
+                enabled: true
+                mapping: /**
+                paths: classpath:public
+    server:
+        port: 8085
+        idle-timeout: 30m # 30 mins
+        cors:
+            enabled: true
+
+---
+kafka:
+    bootstrap:
+        servers: localhost:9092
