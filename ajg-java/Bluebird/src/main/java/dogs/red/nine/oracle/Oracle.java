@@ -30,6 +30,7 @@ public class Oracle {
         dataGatherer = new Gatherer();
         forecaster = new Forecaster(dataGatherer.getTableManager());
         forecastFixtures = new ArrayList<FixtureData>();
+        logger.info("\n\nsee logs/predictions.log for predictions ....\n\n\n");
     }
 
     public void forecast() {
