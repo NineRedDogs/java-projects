@@ -1,3 +1,0 @@
-public enum JourneyReasonEnum {
-'COMMUTING', 'VISITING_FRIENDS_RELATIVES', 'SHOPPING', 'SOCIAL', 'SCHOOL_RUN', 'BUSINESS', 'OTHER'
-}

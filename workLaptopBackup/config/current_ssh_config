@@ -1,8 +1,0 @@
-Host pr-ghub.admiral.uk
-    User                    git
-    ProxyCommand            nc -x http://199.19.250.205:80 %h %p
-
-Host github.com
-  IdentityFile ~/.ssh/id_rsa_ag_github
-  IdentitiesOnly yes
-

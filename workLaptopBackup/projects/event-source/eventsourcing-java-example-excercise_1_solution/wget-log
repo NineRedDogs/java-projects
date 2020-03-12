@@ -1,44 +1,0 @@
-Will not apply HSTS. The HSTS database must be a regular and non-world-writable file.
-ERROR: could not open HSTS store at '/home/agrahame/.wget-hsts'. HSTS will be disabled.
---2019-09-16 08:26:02--  https://update.code.visualstudio.com/commit:b37e54c98e1a74ba89e03073e5a3761284e3ffb0/server-linux-x64/stable
-Connecting to 199.19.250.205:80... failed: Resource temporarily unavailable.
-Retrying.
-
---2019-09-16 08:26:24--  (try: 2)  https://update.code.visualstudio.com/commit:b37e54c98e1a74ba89e03073e5a3761284e3ffb0/server-linux-x64/stable
-Connecting to 199.19.250.205:80... failed: Resource temporarily unavailable.
-Retrying.
-
---2019-09-16 08:26:47--  (try: 3)  https://update.code.visualstudio.com/commit:b37e54c98e1a74ba89e03073e5a3761284e3ffb0/server-linux-x64/stable
-Connecting to 199.19.250.205:80... failed: Resource temporarily unavailable.
-Retrying.
-
---2019-09-16 08:27:11--  (try: 4)  https://update.code.visualstudio.com/commit:b37e54c98e1a74ba89e03073e5a3761284e3ffb0/server-linux-x64/stable
-Connecting to 199.19.250.205:80... failed: Resource temporarily unavailable.
-Retrying.
-
---2019-09-16 08:27:36--  (try: 5)  https://update.code.visualstudio.com/commit:b37e54c98e1a74ba89e03073e5a3761284e3ffb0/server-linux-x64/stable
-Connecting to 199.19.250.205:80... failed: Resource temporarily unavailable.
-Retrying.
-
---2019-09-16 08:28:02--  (try: 6)  https://update.code.visualstudio.com/commit:b37e54c98e1a74ba89e03073e5a3761284e3ffb0/server-linux-x64/stable
-Connecting to 199.19.250.205:80... failed: Resource temporarily unavailable.
-Retrying.
-
---2019-09-16 08:28:29--  (try: 7)  https://update.code.visualstudio.com/commit:b37e54c98e1a74ba89e03073e5a3761284e3ffb0/server-linux-x64/stable
-Connecting to 199.19.250.205:80... failed: Host is down.
-Retrying.
-
---2019-09-16 08:28:45--  (try: 8)  https://update.code.visualstudio.com/commit:b37e54c98e1a74ba89e03073e5a3761284e3ffb0/server-linux-x64/stable
-Connecting to 199.19.250.205:80... connected.
-Proxy request sent, awaiting response... 302 Found
-Location: https://az764295.vo.msecnd.net/stable/b37e54c98e1a74ba89e03073e5a3761284e3ffb0/vscode-server-linux-x64.tar.gz [following]
---2019-09-16 08:28:46--  https://az764295.vo.msecnd.net/stable/b37e54c98e1a74ba89e03073e5a3761284e3ffb0/vscode-server-linux-x64.tar.gz
-Connecting to 199.19.250.205:80... connected.
-Proxy request sent, awaiting response... 200 OK
-Length: 29973943 (29M) [application/gzip]
-Saving to: ‘/home/agrahame/.vscode-server/bin/b37e54c98e1a74ba89e03073e5a3761284e3ffb0-1568618197.tar.gz’
-
-                                   /home/agrahame/.vscode-server/bin/   0%[                                                                                                                                                                        ]       0  --.-KB/s                                                 /home/agrahame/.vscode-server/bin/b   4%[======>                                                                                                                                                                 ]   1.27M  2.95MB/s                                                /home/agrahame/.vscode-server/bin/b3  15%[=========================>                                                                                                                                              ]   4.57M  7.24MB/s                                               /home/agrahame/.vscode-server/bin/b37  26%[===========================================>                                                                                                                            ]   7.66M  9.21MB/s                                              /home/agrahame/.vscode-server/bin/b37e  38%[===============================================================>                                                                                                        ]  10.93M  10.5MB/s                                             /home/agrahame/.vscode-server/bin/b37e5  47%[==============================================================================>                                                                                         ]  13.57M  10.9MB/s                                            /home/agrahame/.vscode-server/bin/b37e54  54%[===========================================================================================>                                                                            ]  15.68M  10.7MB/s                                           /home/agrahame/.vscode-server/bin/b37e54c  63%[==========================================================================================================>                                                             ]  18.26M  11.0MB/s                                          /home/agrahame/.vscode-server/bin/b37e54c9  68%[==================================================================================================================>                                                     ]  19.69M  9.46MB/s                                         /home/agrahame/.vscode-server/bin/b37e54c98  74%[============================================================================================================================>                                           ]  21.29M  9.33MB/s                                        /home/agrahame/.vscode-server/bin/b37e54c98e  77%[=================================================================================================================================>                                      ]  22.24M  8.91MB/s                                       /home/agrahame/.vscode-server/bin/b37e54c98e1  79%[===================================================================================================================================>                                    ]  22.58M  8.38MB/s                                      /home/agrahame/.vscode-server/bin/b37e54c98e1a  80%[======================================================================================================================================>                                 ]  23.13M  7.84MB/s                                     /home/agrahame/.vscode-server/bin/b37e54c98e1a7  82%[=========================================================================================================================================>                              ]  23.58M  7.47MB/s    eta 1s                          /home/agrahame/.vscode-server/bin/b37e54c98e1a74  85%[=============================================================================================================================================>                          ]  24.30M  7.24MB/s    eta 1s                         /home/agrahame/.vscode-server/bin/b37e54c98e1a74b  88%[===================================================================================================================================================>                    ]  25.21M  7.08MB/s    eta 1s                        /home/agrahame/.vscode-server/bin/b37e54c98e1a74ba  92%[=========================================================================================================================================================>              ]  26.32M  7.00MB/s    eta 1s                       /home/agrahame/.vscode-server/bin/b37e54c98e1a74ba8  96%[=================================================================================================================================================================>      ]  27.68M  7.07MB/s    eta 1s                      /home/agrahame/.vscode-server/bin/b37e54c98e1a74ba89  97%[===================================================================================================================================================================>    ]  27.94M  6.37MB/s    eta 0s                     /home/agrahame/.vscode-server/bin/b37e54c98e1a74ba89e  98%[====================================================================================================================================================================>   ]  28.21M  5.55MB/s    eta 0s                    /home/agrahame/.vscode-server/bin/b37e54c98e1a74ba89e0  99%[======================================================================================================================================================================> ]  28.44M  4.53MB/s    eta 0s     /home/agrahame/.vscode-server/bin/b37e54c98e1a74ba89e03073e5a3761284e 100%[=======================================================================================================================================================================>]  28.58M  4.10MB/s    in 4.8s    
-
-2019-09-16 08:28:50 (5.97 MB/s) - ‘/home/agrahame/.vscode-server/bin/b37e54c98e1a74ba89e03073e5a3761284e3ffb0-1568618197.tar.gz’ saved [29973943/29973943]
-

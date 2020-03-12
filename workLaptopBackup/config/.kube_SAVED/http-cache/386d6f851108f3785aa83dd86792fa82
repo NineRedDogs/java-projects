@@ -1,7 +1,0 @@
-HTTP/2.0 200 OK
-Content-Length: 292
-Audit-Id: c71de4f5-3134-46c6-ad18-1df9bb0a9c86
-Content-Type: application/json
-Date: Fri, 23 Aug 2019 13:24:25 GMT
-
-{"kind":"APIResourceList","apiVersion":"v1","groupVersion":"networking.k8s.io/v1","resources":[{"name":"networkpolicies","singularName":"","namespaced":true,"kind":"NetworkPolicy","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["netpol"]}]}
