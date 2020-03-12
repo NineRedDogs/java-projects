@@ -1,5 +1,0 @@
-profile: service
-defaultPackage: andy.config.injection
----
-testFramework: junit
-sourceLanguage: java

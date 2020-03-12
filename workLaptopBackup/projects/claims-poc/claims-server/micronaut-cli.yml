@@ -1,5 +1,0 @@
-profile: service
-defaultPackage: claims.server
----
-testFramework: junit
-sourceLanguage: java

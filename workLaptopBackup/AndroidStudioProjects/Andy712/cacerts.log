@@ -1,9 +1,0 @@
-/etc/default/cacerts
-/etc/ssl/certs/java/cacerts
-/mnt/c/Program Files/Java/jdk1.8.0_181/jre/lib/security/cacerts
-/mnt/c/Program Files/Java/jre1.8.0_191/lib/security/cacerts
-/mnt/c/Program Files/kafkatool2/jre/lib/security/cacerts
-/opt/android-studio/jre/jre/lib/security/cacerts
-/opt/jdk1.8.0_191/jre/lib/security/cacerts
-/usr/lib/jvm/java-11-openjdk-amd64/lib/security/cacerts
-/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/cacerts
