@@ -21,8 +21,8 @@
     <Loggers>
 
         <Root level="trace">
-            <AppenderRef ref="STDOUT" level="DEBUG"/>
-            <AppenderRef ref="PREDICTIONS" level="INFO"/>
+            <AppenderRef ref="STDOUT" level="INFO"/>
+            <AppenderRef ref="PREDICTIONS" level="DEBUG"/>
         </Root>
 
     </Loggers>

@@ -1,0 +1,72 @@
+
+
+Document Generation
+
+  - Admiral have recently migrated from Thunderhead to SmartCOMM for document generation.
+  - SmartCOMM is made up of a cloud based agent and on-prem appliance
+  - GWPC creates a data object which specifies content/transport/delivery channel/destination/output format
+  - GWPC then writes this object to a file system shared with SmartCOMM appliance.
+  - GWPC submits a job to SmartCOMM agent
+  - Cloud SmartComm job manager will assign a job to an appliance
+  - SmartCOMM appliance reads the data object and renders the document accordingly using a retrieved template (from SmartCOMM cloud hosted CMS) - there are over 300 doc templates
+  - Note: All customer data stays withiin our network
+  - SmartCOMM appliance is a black-box VM. There are many discreet instances of the appliance, it scales horizontally.
+  - This appliance can be run in the cloud, there is a fully hosted version.
+     - Assume we do it this way to keep customer data on site ???
+  - When document has been rendered, it is written to the shared filesystem.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  - The Document Delivery System (DDS) monitors the FS.
+  - DDS delivers the documents
+     - DDS sends docs to McLays for printing & mailing
+     - DDS sends emails via email service provider/marketing company (Adobe Campaign)
+        - We have an on-prem proxy to Adobe Campaign which simplifies us of Adobe API
+        - Emails to customers (e.g. policy docs) typically contain links to the portal
+     - DDS also supports SMS
+  - DDS marks the data object for deletion, Housekeeping job removes files from shared FS
+  - DDS stores docs in a Document Management System (DMS) (IBM content Manager)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  - SmartCOMM supports an interactive mode, allows agent to interactively produce a document (via GWPC)
+  - With interactive mode, various parts of the doc can be locked so the agent cannot edit.
+
+
+
+Document Storage
+
+  - O/B and I/B docs are stored in DMS - IBM Content Manager
+  - IBM CM runs on the i-series and is backed by DB2
+  - There is a multi-stage process to get docs in and out. 
+    - e.g. to add: add doc to FS, invoke a stored proc, delete file
+  - The customer portal is served docs from the DMS
+  - GW exposes a web service to talk to IBM Content Manager
+  - IBM CM is end-of-life (considered technical debt) and WILL BE REPLACED by a Content Management System (CMS), which is likely to be 
+    - OnBase (by Hyland) - is a SaaS offering
+    - Alfresco - not sure if SaaS
+
+
+Inbound Document Handling
+
+  - Mailed docs are scanned manually by Document Services
+  - Docs are manually indexed via a green screen application. Indexing associates scanned image to a policy/claim
+  - Some docs are auto indexed, e.g. proof of NCB, may only apply to emailed docs ?
+  - Scanned docs stored in IBM Content Manager
+  - Physical docs stored offsite
+  - I/B docs handling process was not updated during bolt, its due an upgrade
+  - Inbound email:
+    - Emails come via Symantec (scans for malicious content ?)
+    - Emails received by IBM domino or MS Exchange
+    - Emails to Customer Service inbox consumed by Avaya Aura Contact Center (AACC) 
+    - Global inbox for agents
+    - Agents can consume & respond to email in AACC
+
+
+Digital Platform ....
+
+  - Current Document Management System is mostly on prem
+  - The system for scanning and categorising I/B docs is manual
+  - Need to remember accessibility, e.g. Customers can request braille versions of any document
+  - Some docs need to be delivered reliably, email is only best-effort
+  - We send reminder emails to a cusotmer if they havent accessed their docs (maybe SMS in future)?
+
+
+
+

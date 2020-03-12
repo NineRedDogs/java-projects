@@ -95,7 +95,13 @@ public class Forecaster {
 
         /** This section will iterate through all the fixtures retrieved and */
         for (FixtureData fixture : fixtures) {
-            boolean shouldWeUseThisFixture = (!fixture.getDate().before(todayDate));
+            boolean shouldWeUseThisFixture = false;
+
+            if (AppConstants.ONLY_TODAYS_GAMES) {
+                shouldWeUseThisFixture = fixture.getDate().equals(todayDate);
+            } else {
+                shouldWeUseThisFixture = !fixture.getDate().before(todayDate);
+            }
 
             // only check if fixture has not yet happened
             if (AppConstants.DEV_MODE || AppConstants.DEV_MODE_USE_THIS_WEEKS_PLAYED_FIXTURES || shouldWeUseThisFixture) {

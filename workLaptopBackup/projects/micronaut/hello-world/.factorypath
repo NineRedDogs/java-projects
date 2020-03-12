@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<factorypath>
+	<factorypathentry kind="EXTJAR" id="/home/agrahame/.gradle/caches/modules-2/files-2.1/io.micronaut/micronaut-inject-java/1.0.0.RC3/7794d96dadc9480a9ecec55a817b954d73891a9b/micronaut-inject-java-1.0.0.RC3.jar" enabled="true" runInBatchMode="false"/>
+	<factorypathentry kind="EXTJAR" id="/home/agrahame/.gradle/caches/modules-2/files-2.1/io.micronaut/micronaut-validation/1.0.0.RC3/73b0b9c7784cf309befe686965ea16f61071b1ce/micronaut-validation-1.0.0.RC3.jar" enabled="true" runInBatchMode="false"/>
+	<factorypathentry kind="EXTJAR" id="/home/agrahame/.gradle/caches/modules-2/files-2.1/io.micronaut/micronaut-http/1.0.0.RC3/4e423f8af41d63c05c5a0ee08d29524137e14a68/micronaut-http-1.0.0.RC3.jar" enabled="true" runInBatchMode="false"/>
+	<factorypathentry kind="EXTJAR" id="/home/agrahame/.gradle/caches/modules-2/files-2.1/io.micronaut/micronaut-inject/1.0.0.RC3/bdb2a6337f799c55828d93c6533fd5f24f440b5f/micronaut-inject-1.0.0.RC3.jar" enabled="true" runInBatchMode="false"/>
+	<factorypathentry kind="EXTJAR" id="/home/agrahame/.gradle/caches/modules-2/files-2.1/io.micronaut/micronaut-core/1.0.0.RC3/52e532e0fec8cc6ab01ae7352280b9163114587/micronaut-core-1.0.0.RC3.jar" enabled="true" runInBatchMode="false"/>
+	<factorypathentry kind="EXTJAR" id="/home/agrahame/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar" enabled="true" runInBatchMode="false"/>
+	<factorypathentry kind="EXTJAR" id="/home/agrahame/.m2/repository/javax/validation/validation-api/2.0.1.Final/validation-api-2.0.1.Final.jar" enabled="true" runInBatchMode="false"/>
+	<factorypathentry kind="EXTJAR" id="/home/agrahame/.m2/repository/javax/inject/javax.inject/1/javax.inject-1.jar" enabled="true" runInBatchMode="false"/>
+	<factorypathentry kind="EXTJAR" id="/home/agrahame/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.23/ec62d74fe50689c28c0ff5b35d3aebcaa8b5be68/snakeyaml-1.23.jar" enabled="true" runInBatchMode="false"/>
+	<factorypathentry kind="EXTJAR" id="/home/agrahame/.m2/repository/javax/annotation/javax.annotation-api/1.3.2/javax.annotation-api-1.3.2.jar" enabled="true" runInBatchMode="false"/>
+	<factorypathentry kind="EXTJAR" id="/home/agrahame/.gradle/caches/modules-2/files-2.1/org.reactivestreams/reactive-streams/1.0.1/1b1c911686eb40179219466e6a59b634b9d7a748/reactive-streams-1.0.1.jar" enabled="true" runInBatchMode="false"/>
+	<factorypathentry kind="EXTJAR" id="/home/agrahame/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar" enabled="true" runInBatchMode="false"/>
+</factorypath>
