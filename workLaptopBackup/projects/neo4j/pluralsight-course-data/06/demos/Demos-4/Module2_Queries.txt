@@ -1,1 +1,0 @@
-CALL apoc.import.graphml('drwho.graphml', {batchSize: 10000, storeNodeIds: false, readLabels: true})

@@ -1,1 +1,0 @@
-configure kong oidc plugin - so that upstream_access_token_header	uses another header - -e.g. x-userinfo instead of default : authorization:bearer

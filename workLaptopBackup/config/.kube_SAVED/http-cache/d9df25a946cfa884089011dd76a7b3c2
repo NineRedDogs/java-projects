@@ -1,6 +1,0 @@
-HTTP/2.0 200 OK
-Content-Length: 348
-Content-Type: application/json
-Date: Tue, 16 Oct 2018 14:36:44 GMT
-
-{"kind":"APIResourceList","apiVersion":"v1","groupVersion":"compose.docker.com/v1beta1","resources":[{"name":"stacks","singularName":"","namespaced":true,"kind":"Stack","verbs":["create","delete","deletecollection","get","list","patch","update","watch"]},{"name":"stacks/owner","singularName":"","namespaced":true,"kind":"Owner","verbs":["get"]}]}
