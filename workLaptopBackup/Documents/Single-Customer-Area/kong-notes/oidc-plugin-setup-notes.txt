@@ -1,0 +1,148 @@
+Access the Enterprise Dashboard
+Once Kong Enterprise is running, you should be able to access the Kong Admin UI. Use the BASH script below to obtain the URL’s.
+ $ hostname="$(kubectl get service kong-admin -n kong -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+$ sslhostname="$(kubectl get service kong-admin-ssl -n kong -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+echo "Access the Admin UI at http://$hostname:8002 or https://$sslhostname:8445."
+
+
+now browse to http://localhost:8002 should take you to the kong enterprise dashboard
+
+
+
+
+
+
+
+Enable the OIDC plugin
+
+
+
+See https://docs.konghq.com/enterprise/0.36-x/plugins/oidc-okta/  for useful help
+
+
+
+Follow these instructions to enable the oidc plugin:
+
+
+
+browse to http://localhost:8002 should take you to the kong enterprise dashboard
+
+Dev Portals
+
+Dev Portal Overview
+
+API Gateway
+
+Plugins
+
+Add New Plugin
+
+OIDC
+
+
+
+Enable, then set 
+
+
+
+Global: for all services
+
+config.issuer to :
+
+https://dev-424995.okta.com/oauth2/default/.well-known/openid-configuration
+
+client_id :  <get this from your dev okta domain - apps>
+client_secret: <get this from your dev okta domain - apps>
+
+Scopes: openid,email,profile
+
+redirect_uri: http://localhost:8000/cb
+
+
+
+
+
+
+
+
+
+Then click create at bottom of page
+
+Should now create the plugin 
+
+
+
+Can view plugins : 
+
+http://localhost:8002/default/plugins/
+
+
+
+Set up Service & Route for kong
+
+
+
+log on to kong enterprise dev portal
+
+navigate to api-gateway - services
+
+
+
+1-create a service
+
+
+
+create new service
+
+name: test-service
+
+click 'add-using-url'
+
+   url : http://mockbin.org
+
+click create
+
+presented witha view of the new service,
+
+note there's also a tab for routes, click that ....
+
+
+
+
+
+2-create a route
+
+after creating a service, within the service now get a tab with route
+
+in there, should see a 'new route' button, click that
+
+name: test-route
+
+protocols: click http
+
+host(s) : localhost
+
+path : /cb    <----- this route, i.e. host/path corresponds to the redirect url set up for the api server in kong
+
+
+
+
+
+
+
+
+
+
+
+
+
+Created a service/route to test by following : 
+
+
+
+https://docs.konghq.com/enterprise/0.36-x/getting-started/add-service/
+
+
+
+
+

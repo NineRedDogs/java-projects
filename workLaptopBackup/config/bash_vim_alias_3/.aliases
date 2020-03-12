@@ -1,0 +1,50 @@
+# .aliases
+#
+alias a=alias
+a ll="ls -la"
+a dbg="/root/nst-debug-files/dbg.sh"
+a un="/root/scripts/uninstallProduct.sh"
+a ipt="/root/scripts/show_all_rules.sh"
+
+#----------------------------
+#Just Jetty restart
+#
+a xjetty="echo; echo \"------------------\"; echo \"recycling JETTY ...\"; echo; echo; service jetty stop; echo; echo; find /opt/ -name \"*.log*\" | grep jetty-distribution-8.1.10.v20130312 | xargs rm -fv; echo; service jetty start; echo; echo; echo \"... all done\"; echo \"------------------------ \"; echo \" \" "
+#
+#
+#----------------------------
+#Just VIP Manager restart
+#
+a xvipmgr="echo; echo \"------------------\"; echo \"recycling VIP-Manager ...\"; echo; echo; service nst-vip-manager stop; echo; echo; find /opt/ -name \"nst-vip-manager.log*\" | xargs rm -fv; echo; service nst-vip-manager start; echo; echo; echo \"... all done\"; echo \"------------------------ \"; echo \" \" "
+#
+#
+#----------------------------
+#Just MRB restart
+#
+a xmrb="echo; echo \"------------------\"; echo \"recycling MRB ...\"; echo; echo; service mrb stop; echo; echo; find /opt/mrb -maxdepth 1 -name \"nst-mrb.log*\" | xargs rm -fv; echo; service mrb start; echo; echo; echo \"... all done\"; echo \"------------------------ \"; echo \" \" "
+#
+#
+#----------------------------
+#Just LB restart
+#
+a xlb="echo; echo \"------------------\"; echo \"recycling LB ...\"; echo; echo; service nst-loadbalancer stop; echo; echo; find /opt/nst-loadbalancer -name \"nst-bootstrap.log*\" | xargs rm -fv; find /opt/nst-loadbalancer/p[0-9]*/ -name \"*.log*\" | xargs rm -fv; echo; service nst-loadbalancer start; echo; echo; echo \"... all done\"; echo \"------------------------ \"; echo \" \" "
+#
+#
+#----------------------------
+#All MRB restart
+#
+a xmrba="echo; echo \"------------------\"; echo \"recycling MRB/VIP-Manager and JETTY ...\"; echo; echo; service jetty stop; service nst-vip-manager stop; service mrb stop; echo; echo; find /opt/mrb/ -name \"*.log*\" | xargs rm -fv; echo; service jetty start; service nst-vip-manager start; service mrb start; echo; echo; echo \"... all done\"; echo \"------------------------ \"; echo \" \" "
+#
+#----------------------------
+#All LB restart
+#
+a xlba="echo; echo \"------------------\"; echo \"recycling LB/VIP-Manager and JETTY ...\"; echo; echo; service jetty stop; service nst-vip-manager stop; service nst-loadbalancer stop; echo; echo; find /opt/nst-loadbalancer/ -name \"*.log*\" | xargs rm -fv; echo; service jetty start; service nst-vip-manager start; service nst-loadbalancer start; echo; echo; echo \"... all done\"; echo \"------------------------ \"; echo \" \" "
+#
+#
+##
+##
+#
+#
+alias j7="source /root/scripts/set-up-java-alternative-apps.sh 7"
+alias j8="source /root/scripts/set-up-java-alternative-apps.sh 8"
+

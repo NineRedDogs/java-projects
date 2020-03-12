@@ -1,0 +1,64 @@
+CREATE (n:Actor{name: 'Peter Capaldi'}) RETURN n
+
+MATCH (matt:Actor{name: 'Matt Smith'}), chris:Actor{name: 'Christopher Eccleston'} 
+CREATE (matt) [:REGENERATED_TO] (chris)
+
+CREATE p =(:Actor{name: 'Peter Capaldi'})-[:APPEARED_IN] ->(:Episode{name:'The Time of The Doctor'})
+RETURN p
+
+MATCH (matt:Actor{name: 'Matt Smith'})
+DELETE matt
+
+MATCH (matt:Actor{name: 'Matt Smith'})-[r]-() 
+DELETE matt, r
+
+MATCH (matt:Actor{name: 'Matt Smith'})
+SET matt.salary = 100000, matt.active = true
+
+MATCH (matt:Actor{name: 'Matt Smith'})
+SET matt.salary = NULL
+
+MATCH (matt:Actor{name: 'Matt Smith'}), chris:Actor{name: 'Christopher Eccleston'} 
+SET matt = chris
+
+MATCH (matt:Actor{name: 'Matt Smith'})
+SET matt:Doctor
+
+MATCH (matt:Actor{name: 'Matt Smith'})
+SET matt:Doctor
+
+MATCH (matt:Actor{name: 'Matt Smith'})
+REMOVE matt:Doctor
+
+MATCH (matt:Actor{name: 'Matt Smith'})
+REMOVE matt.salary
+
+MERGE (peter:Actor{name: 'Peter Capaldi'}) RETURN peter
+
+MERGE (peter:Actor{name: 'Peter Capaldi', salary: 100000}) RETURN peter
+
+MATCH (peter:Actor{name: 'Peter Capaldi'}), (doctor:Character{name: 'Doctor'})MERGE (peter –[r:PLAYED]->doctor) RETURN r
+
+MATCH p=(actors:Actor)–[r:PLAYED]->others) WHERE actors.salary > 100000 FOREACH (n IN nodes(p)| set n.done = true)
+
+MATCH (matt:Actor{name: 'Matt Smith'}) RETURN matt
+
+CREATE INDEX ON :Actor(name)
+
+DROP INDEX ON :Actor(name)
+
+CREATE CONSTRAINT ON (a:Actor) ASSERT a.name IS UNIQUE
+
+DROP CONSTRAINT ON (a:Actor) ASSERT a.name IS UNIQUE
+
+LOAD CSV WITH HEADERS FROM 'http://docs.neo4j.org/chunked/2.1.6/csv/import/persons.csv' AS csvLine
+CREATE (p:Person {id: toInt(csvLine.id), name: csvLine.name})
+
+LOAD CSV WITH HEADERS FROM 'http://docs.neo4j.org/chunked/2.1.6/csv/import/movies.csv' AS csvLine 
+MERGE (country: Country {name: csvLine.country}) 
+CREATE (movie:Movie {id: toInt(csvLine.id), title: csvLine.title}) 
+CREATE (movie)-[MADE_IN]->(country)
+
+LOAD CSV WITH HEADERS FROM 'http://docs.neo4j.org/chunked/2.1.6/csv/import/roles.csv' AS csvLine
+MATCH (actor:Person {id: toInt(csvLine.personId}), (movie:Movie {id: toInt(csvLine.movieId})
+CREATE (actor)-[:PLAYED {role: csvLine.role}]->(movie)

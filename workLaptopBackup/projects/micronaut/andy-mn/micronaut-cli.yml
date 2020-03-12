@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: andy.mn
+---
+testFramework: junit
+sourceLanguage: java

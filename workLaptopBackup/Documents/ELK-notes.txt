@@ -1,0 +1,130 @@
+Logstash-
+ - takes data from multiple sources - transforms and sends on
+ - 3 stages:
+     - INPUT (plugins)
+          kafka queues, log files, etc
+
+     - FILTER 
+          parse data, XML, CSV, JSON
+          data enrichment
+
+     - OUTPUT (to stashes)
+          send data on 
+
+
+
+Xpack
+   add additional features to elastic search & kibana
+   e.g. 
+      - Authentication - RBAC, AD
+         -    define users/roles
+      - Monitoring
+         - Performance, cpu/memory/disk usage etc
+         - Alerting (if hit thresholds)
+      - Reporting
+         - Export data
+      - ML
+         - Abnormailty detection, 
+         - Forecasting
+      - Graph
+         - Identify relationships - e.g. show related product/suggest songs
+         - visualise graph in kibana
+      - Elasticsearch SQL
+         - queryDSL (JSON format)
+
+
+ Beats
+    - data shippers
+    - lightweight agents installed on servers
+    - send data to logstash (or elasticSearch)
+    - e.g
+       - Filebeat - collecting logfiles and send log entries off to LS/ES
+           comes with modules for common logfiles e.g. nginx/apache-web-server/mysql
+       - metricbeat - collects system & service metrics (memory/cpu usage)
+           comes with modules for common services e.g. nginx/mySql
+       - packetbeat - network data, http reqs, DB transactions
+       - winlogbeat - windows events logs
+       - auditbeat - linux audit data
+       - heartbeat - server uptime.
+
+
+
+Data Ingestion            Search/Analyse/Store data         Visualize data
+
+Logstash +---------------+        Elastic
+                         |----->            +----------------->  Kibana
+Beats    +---------------+        Search
+
+                                 (ES-API)
+                                    ^
+                                    |
+Direct   ---------------------------+
+
+
+
+
+
+---------------------
+
+docker commands
+
+docker container ls -a
+ docker logs claims-metricbeat
+ docker start claims-metricbeat
+ docker logs claims-metricbeat --follow
+
+docker: 
+
+Error response from daemon: 
+
+OCI runtime create failed: container_linux.go:345: 
+
+starting container process caused "process_linux.go:430: 
+
+container init caused \"rootfs_linux.go:58: 
+
+mounting \\\"/home/agrahame/dev/sandbox/ELK/filebeat.docker.yml\\\" 
+
+to rootfs \\\"/var/lib/docker/overlay2/a7b2caf79c947b62f2d84434b3e0e9c5e6d896b994469da35969415d071c6290/merged\\\" 
+
+at \\\"/var/lib/docker/overlay2/a7b2caf79c947b62f2d84434b3e0e9c5e6d896b994469da35969415d071c6290/merged/usr/share/filebeat/filebeat.yml\\\" 
+
+caused \\\"not a directory\\\"\"": 
+
+unknown: 
+
+Are you trying to mount a directory onto a file (or vice-versa)? 
+
+Check if the specified host path exists and is the expected type.
+
+
+ERRO[0000] error waiting for container: context canceled 
+
+========================================
+
+<configuration>
+    <appender name="json" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+            <jsonFormatter
+                class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                <prettyPrint>true</prettyPrint>
+            </jsonFormatter>
+            <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
+        </layout>
+    </appender>
+             
+    <logger name="jsonLogger" level="TRACE">
+        <appender-ref ref="json" />
+    </logger>
+
+    <root level="debug">
+        <appender-ref ref="json"/>
+    </root>
+</configuration>
+
+=================================
+
+docker volume create --name ClaimsLogVolume
+
+docker run -d --name claims-orch --network claims-backend -p 8080:8080 -v ClaimsLogVolume:/logvol1 claims_backend/microservice-fnol:0.1
+

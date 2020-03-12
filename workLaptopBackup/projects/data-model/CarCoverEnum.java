@@ -1,0 +1,3 @@
+public enum CarCoverEnum {
+'COMPREHENSIVE', 'THIRD_PARTY', 'THIRD_PARTY_FIRE_AND_THEFT'
+}
