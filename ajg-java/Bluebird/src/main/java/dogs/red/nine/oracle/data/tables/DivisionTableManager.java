@@ -1,6 +1,6 @@
 package dogs.red.nine.oracle.data.tables;
 
-import dogs.red.nine.oracle.AppConstants;
+import dogs.red.nine.oracle.Config;
 import dogs.red.nine.oracle.data.Division;
 import dogs.red.nine.oracle.data.MatchData;
 import org.apache.logging.log4j.LogManager;
@@ -12,12 +12,17 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class DivisionTableManager {
 
     private static final Logger logger = LogManager.getLogger("DivisionTableManager");
+    private final Config config;
     private final SortedMap<Date, Table> fullTables = new ConcurrentSkipListMap<Date, Table>();
     private final SortedMap<Date, Table> fullHomeTables = new ConcurrentSkipListMap<Date, Table>();
     private final SortedMap<Date, Table> fullAwayTables = new ConcurrentSkipListMap<Date, Table>();
     private final SortedMap<Date, Table> formTables = new ConcurrentSkipListMap<Date, Table>();
     private final SortedMap<Date, Table> formHomeTables = new ConcurrentSkipListMap<Date, Table>();
     private final SortedMap<Date, Table> formAwayTables = new ConcurrentSkipListMap<Date, Table>();
+
+    public DivisionTableManager(Config cfg) {
+        this.config = cfg;
+    }
 
     public void generateTables(Division division, List<MatchData> matchData, SortedSet<String> teams) {
         generateFullSeasonTables(division, matchData, teams);
@@ -59,17 +64,17 @@ public class DivisionTableManager {
     }
 
     private void genFullSeasonTable(Division division, SortedSet<String> teams, List<MatchData> tableMatches, Date currDate) {
-        FullSeasonTable fullSeasonTable = new FullSeasonTable(division, teams);
+        FullSeasonTable fullSeasonTable = new FullSeasonTable(division, config, teams);
         fullSeasonTable.generateTable(tableMatches);
         fullTables.put(currDate, fullSeasonTable);
         //fullSeasonTable.displayTable(currDate.toString());
 
-        FullSeasonHomeTable fullSeasonHomeTable = new FullSeasonHomeTable(division, teams, fullSeasonTable);
+        FullSeasonHomeTable fullSeasonHomeTable = new FullSeasonHomeTable(division, config, teams, fullSeasonTable);
         fullSeasonHomeTable.generateTable(tableMatches);
         fullHomeTables.put(currDate, fullSeasonHomeTable);
         //fullSeasonHomeTable.displayTable(currDate.toString());
 
-        FullSeasonAwayTable fullSeasonAwayTable = new FullSeasonAwayTable(division, teams, fullSeasonTable);
+        FullSeasonAwayTable fullSeasonAwayTable = new FullSeasonAwayTable(division, config, teams, fullSeasonTable);
         fullSeasonAwayTable.generateTable(tableMatches);
         fullAwayTables.put(currDate, fullSeasonAwayTable);
         //fullSeasonAwayTable.displayTable(currDate.toString());
@@ -101,17 +106,17 @@ public class DivisionTableManager {
     }
 
     private void genFormTable(Division division, SortedSet<String> teams, List<MatchData> tableMatches, Date currDate) {
-        CurrentFormTable currentFormTable = new CurrentFormTable(division, teams);
+        CurrentFormTable currentFormTable = new CurrentFormTable(division, config, teams);
         currentFormTable.generateTable(tableMatches);
         formTables.put(currDate, currentFormTable);
         //currentFormTable.displayTable(currDate.toString());
 
-        CurrentFormHomeTable currentFormHomeTable = new CurrentFormHomeTable(division, teams, currentFormTable);
+        CurrentFormHomeTable currentFormHomeTable = new CurrentFormHomeTable(division, config, teams, currentFormTable);
         currentFormHomeTable.generateTable(tableMatches);
         formHomeTables.put(currDate, currentFormHomeTable);
         //currentFormHomeTable.displayTable(currDate.toString());
 
-        CurrentFormAwayTable currentFormAwayTable = new CurrentFormAwayTable(division, teams, currentFormTable);
+        CurrentFormAwayTable currentFormAwayTable = new CurrentFormAwayTable(division, config, teams, currentFormTable);
         currentFormAwayTable.generateTable(tableMatches);
         formAwayTables.put(currDate, currentFormAwayTable);
         //currentFormAwayTable.displayTable(currDate.toString());

@@ -1,5 +1,6 @@
 package dogs.red.nine.oracle.data.tables;
 
+import dogs.red.nine.oracle.Config;
 import dogs.red.nine.oracle.data.Division;
 import dogs.red.nine.oracle.data.MatchData;
 import org.apache.logging.log4j.LogManager;
@@ -14,9 +15,11 @@ public class TableManager {
     private final Map<Division, SortedSet<String>> listOfTeams = new HashMap<Division, SortedSet<String>>();
 
     private final List<Division> supportedDivisions;
+    private final Config config;
 
-    public TableManager(List<Division> supportedDivisions) {
+    public TableManager(List<Division> supportedDivisions, Config cfg) {
         this.supportedDivisions = supportedDivisions;
+        this.config = cfg;
     }
 
     private Division whatDivision(final String teamName) {
@@ -46,6 +49,10 @@ public class TableManager {
         return supportedDivisions;
     }
 
+    public Config getConfig() {
+        return config;
+    }
+
     private void displayTeamLists() {
         for (Division division : getLeaguesToProcess()) {
             logger.debug("--------------------------------------------");
@@ -61,7 +68,7 @@ public class TableManager {
     public void generateTables(Map<Division, List<MatchData>> allMatches) {
         generateTeamLists(allMatches);
         for (Division division : getLeaguesToProcess()) {
-            final DivisionTableManager tabGen = new DivisionTableManager();
+            final DivisionTableManager tabGen = new DivisionTableManager(getConfig());
 
             tabGen.generateTables(division, allMatches.get(division), listOfTeams.get(division));
             allTables.put(division, tabGen);
