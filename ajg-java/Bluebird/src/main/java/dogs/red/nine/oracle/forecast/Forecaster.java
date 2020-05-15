@@ -97,7 +97,7 @@ public class Forecaster {
         for (FixtureData fixture : fixtures) {
             boolean shouldWeUseThisFixture = false;
 
-            if (AppConstants.ONLY_TODAYS_GAMES) {
+            if (tableManager.getConfig().useJustTodaysGames()) {
                 shouldWeUseThisFixture = fixture.getDate().equals(todayDate);
             } else {
                 shouldWeUseThisFixture = !fixture.getDate().before(todayDate);
