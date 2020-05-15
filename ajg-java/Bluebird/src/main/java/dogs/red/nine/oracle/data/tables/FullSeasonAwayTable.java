@@ -1,5 +1,6 @@
 package dogs.red.nine.oracle.data.tables;
 
+import dogs.red.nine.oracle.Config;
 import dogs.red.nine.oracle.data.Division;
 import dogs.red.nine.oracle.data.MatchData;
 import org.apache.logging.log4j.LogManager;
@@ -11,8 +12,8 @@ import java.util.SortedSet;
 public class FullSeasonAwayTable extends HomeOrAwayTable {
     private static final Logger logger = LogManager.getLogger("FullSeasonAwayTable");
 
-    protected FullSeasonAwayTable(Division division, SortedSet<String> teams, FullSeasonTable fullSeasonTable) {
-        super("Full Away Table", division, teams, fullSeasonTable);
+    protected FullSeasonAwayTable(Division division, Config cfg, SortedSet<String> teams, FullSeasonTable fullSeasonTable) {
+        super("Full Away Table", division, cfg, teams, fullSeasonTable);
         for (String team : teams) {
             addEntry(team, new FullSeasonAwayTableEntry(team));
         }
