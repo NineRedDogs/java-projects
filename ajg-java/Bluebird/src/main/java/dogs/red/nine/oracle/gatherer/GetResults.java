@@ -22,12 +22,16 @@ public class GetResults {
 	private static final String DATA_FILE_COLUMN_KEY_LINE = "Div,";
 
 	private final List<Division> supportedDivisions;
+	private final String seasonToUse;
 
 	/**
 	 * @param supportedDivisions
+	 * @param season
 	 */
-	public GetResults(List<Division> supportedDivisions) {
+	public GetResults(List<Division> supportedDivisions, String season) {
+
 		this.supportedDivisions = supportedDivisions;
+		this.seasonToUse = season;
 	}
 
 	private List<Division> getSupportedDivisions() {
@@ -62,7 +66,7 @@ public class GetResults {
 
 	private List<MatchData> readDivisionResults(final Division division) throws IOException {
 		final List<MatchData> divisionalResults = new ArrayList<MatchData>();
-		final String divisionResultsUrl = ResultDataUrlUtils.generateResultUrl(division);
+		final String divisionResultsUrl = ResultDataUrlUtils.generateResultUrl(division, seasonToUse);
 		final File dataFile = getResultsDataFileFromRemote(divisionResultsUrl);
 		String[] keyData = null;
 		String lineReadFromDataFile;
