@@ -1,12 +1,14 @@
 package dogs.red.nine.oracle.forecast;
 
 import dogs.red.nine.oracle.AppConstants;
+import dogs.red.nine.oracle.data.Division;
 import dogs.red.nine.oracle.data.FixtureData;
 import dogs.red.nine.oracle.data.tables.TableManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +27,7 @@ public class Forecaster {
 
     public void forecast(List<FixtureData> fixtures) {
 
+        Win w = new Win();
         generateForecastData(fixtures);
         //displayForecastData();
 
@@ -36,9 +39,18 @@ public class Forecaster {
         hw.process(forecastFixtures);
         hw.displayTips("Home Win tips");
 
+        // All wins (part 1) - add HOME win tips
+        w.addHomeWinTips(hw);
+
         AwayWin aw = new AwayWin();
         aw.process(forecastFixtures);
         aw.displayTips("Away Win tips");
+
+        // All wins (part 2) - add AWAY win tips
+        w.addAwayWinTips(aw);
+
+        // All wins (part 3) - DISPLAY collated tips
+        w.displayTips("To Win tips");
 
         HomeHighScore hhi = new HomeHighScore();
         hhi.process(forecastFixtures);
@@ -91,7 +103,7 @@ public class Forecaster {
 
     private void generateForecastData(List<FixtureData> fixtures) {
         // get todays date
-        final Date todayDate = getTodaysDate();
+        final LocalDate todayDate = LocalDate.now();
 
         /** This section will iterate through all the fixtures retrieved and */
         for (FixtureData fixture : fixtures) {
@@ -100,7 +112,7 @@ public class Forecaster {
             if (tableManager.getConfig().useJustTodaysGames()) {
                 shouldWeUseThisFixture = fixture.getDate().equals(todayDate);
             } else {
-                shouldWeUseThisFixture = !fixture.getDate().before(todayDate);
+                shouldWeUseThisFixture = !fixture.getDate().isBefore(todayDate);
             }
 
             // only check if fixture has not yet happened
@@ -113,32 +125,32 @@ public class Forecaster {
     }
 
     private FixtureForecastData getFixtureData(FixtureData fixture) {
-        TeamForecastData htData = getTeamForecastData(fixture.getHomeTeam(), true);
-        TeamForecastData atData = getTeamForecastData(fixture.getAwayTeam(), false);
+        TeamForecastData htData = getTeamForecastData(fixture.getHomeTeam(), true, fixture.getDivision());
+        TeamForecastData atData = getTeamForecastData(fixture.getAwayTeam(), false, fixture.getDivision());
         FixtureForecastData fData = new FixtureForecastData(htData, atData);
 
         return fData;
     }
 
-    private TeamForecastData getTeamForecastData(String teamName, boolean isHomeTeam) {
+    private TeamForecastData getTeamForecastData(String teamName, boolean isHomeTeam, Division division) {
         TeamForecastData teamForecastData = new TeamForecastData();
         if (isHomeTeam) {
             // 1a. add home form
-            teamForecastData.addTeamForecastData(TeamForecastData.FORM_VENUE, tableManager.getHomeFormData(teamName));
+            teamForecastData.addTeamForecastData(TeamForecastData.FORM_VENUE, tableManager.getHomeFormData(teamName, division));
         } else {
             // 1b. add away form
-            teamForecastData.addTeamForecastData(TeamForecastData.FORM_VENUE, tableManager.getAwayFormData(teamName));
+            teamForecastData.addTeamForecastData(TeamForecastData.FORM_VENUE, tableManager.getAwayFormData(teamName, division));
         }
 
         // 2. add general current form
-        teamForecastData.addTeamForecastData(TeamForecastData.FORM_GENERAL, tableManager.getFormData(teamName));
+        teamForecastData.addTeamForecastData(TeamForecastData.FORM_GENERAL, tableManager.getFormData(teamName, division));
 
         if (isHomeTeam) {
             // 3a. add season home form
-            teamForecastData.addTeamForecastData(TeamForecastData.SEASON_VENUE, tableManager.getHomeSeasonData(teamName));
+            teamForecastData.addTeamForecastData(TeamForecastData.SEASON_VENUE, tableManager.getHomeSeasonData(teamName, division));
         } else {
             // 3b. add season away form
-            teamForecastData.addTeamForecastData(TeamForecastData.SEASON_VENUE, tableManager.getAwaySeasonData(teamName));
+            teamForecastData.addTeamForecastData(TeamForecastData.SEASON_VENUE, tableManager.getAwaySeasonData(teamName, division));
         }
         return teamForecastData;
     }

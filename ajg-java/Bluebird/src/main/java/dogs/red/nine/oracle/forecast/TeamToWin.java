@@ -1,7 +1,6 @@
 package dogs.red.nine.oracle.forecast;
 
 import dogs.red.nine.oracle.AppConstants;
-import dogs.red.nine.oracle.data.FixtureData;
 import dogs.red.nine.oracle.data.tables.TableEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,6 +34,11 @@ public abstract class TeamToWin extends ForecastType {
 
         //logger.debug(team1.fullString());
         //logger.debug(team2.fullString());
+
+        // only perform calcs if we have two teams worth of data
+        if ((team1 == null) || (team2 == null)) {
+            return toWinForecast;
+        }
 
         // calc team1 likelyhood score value - (GF/P + GA/P(opp)) / 2
         float t1ScoreRaw = (((float) team1.getGoalsFor() / team1.getGamesPlayed() +
