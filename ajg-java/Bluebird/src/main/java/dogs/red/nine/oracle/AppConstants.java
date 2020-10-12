@@ -13,22 +13,31 @@ import java.util.stream.Stream;
 
 public class AppConstants {
 
+    public static final int NUM_ALL_WIN_TIPS = 20;
     public static final int NUM_TIPS = 10;
     public static final boolean JUST_USE_VENUE_FORM = false;
     public static final float HOT_TIP_THRESHOLD_MATCH_BELOW_2P5 = 500.0f;
     public static final float HOT_TIP_THRESHOLD_MATCH_ABOVE_2P5 = 100.0f;
-    public static final float HOT_TIP_THRESHOLD_HOME_WIN = 800.0f;
+    public static final float HOT_TIP_THRESHOLD_HOME_WIN = 400.0f;
     public static final float HOT_TIP_THRESHOLD_HOME_LOW_SCORE = 50.0f;
     public static final float HOT_TIP_THRESHOLD_HOME_HIGH_SCORE = 100.0f;
     public static final float HOT_TIP_THRESHOLD_BTTS = 100.0f;
-    public static final float HOT_TIP_THRESHOLD_AWAY_WIN = 400.0f;
+    public static final float HOT_TIP_THRESHOLD_AWAY_WIN = 300.0f;
     public static final float HOT_TIP_THRESHOLD_AWAY_LOW_SCORE = 50.0f;
     public static final float HOT_TIP_THRESHOLD_AWAY_HIGH_SCORE = 100.0f;
+    public static final float HOT_TIP_THRESHOLD_ANY_WIN = HOT_TIP_THRESHOLD_HOME_WIN;
+
 
     private static final String DATA_DIR_NAME = "data";
+    private static final String LOGS_DIR_NAME = "logs";
+
+    public static final String DATE_FORMAT = "dd/MM/yyyy";
+    public static final String DATE_FORMAT_PRETTY = "EEE d MMM";
+
 
     public static final File CWD = new File(System.getProperty("user.dir"));
     public static final File DATA_DIR = new File(CWD, DATA_DIR_NAME);
+    public static final File PREDICTION_LOGS_DIR = new File(CWD, LOGS_DIR_NAME);
 
 
     // set this to use a local sample fixture file, instead of trying to retrieve from remote site
@@ -39,18 +48,6 @@ public class AppConstants {
     // this flag means we'll go off and get the fixture data from remote website - instead of using the local hard-coded fixture file used when DEV_MODE flag is set
     // note: if this is true, then set DEV_MODE to false, otherwise local fixtures sample file will be used ...
     public static final boolean DEV_MODE_USE_THIS_WEEKS_PLAYED_FIXTURES = false;
-
-
-    /** Set this to only list predictions for todays games */
-    //public static final boolean ONLY_TODAYS_GAMES = true;
-    //public static final boolean ONLY_TODAYS_GAMES = false;
-
-    /** Set to true if use ALL divisions*/
-    public static final boolean USE_ALL_LEAGUES = false;
-
-    /** Set to true if use UK divisions, false to use EURO leagues */
-    public static final boolean USE_UK_LEAGUES = true;
-    //public static final boolean USE_UK_LEAGUES = false;
 
     /**
      * English League
@@ -86,20 +83,45 @@ public class AppConstants {
     /**
      * European Leagues
      */
-    public static final List<Division> GER = Arrays.asList(Division.Germany_Bundesliga_1);
-    public static final List<Division> SPA = Arrays.asList(Division.Spain_La_Liga);
-    public static final List<Division> ITA = Arrays.asList(Division.Italy_Serie_A);
-    public static final List<Division> FRA = Arrays.asList(Division.France_Ligue_1);
+    public static final List<Division> GER1 = Arrays.asList(Division.Germany_Bundesliga_1);
+    public static final List<Division> GER2 = Arrays.asList(Division.Germany_Bundesliga_2);
+    public static final List<Division> SPA1 = Arrays.asList(Division.Spain_La_Liga);
+    public static final List<Division> SPA2 = Arrays.asList(Division.Spain_League_2);
+    public static final List<Division> ITA1 = Arrays.asList(Division.Italy_Serie_A);
+    public static final List<Division> ITA2 = Arrays.asList(Division.Italy_Serie_B);
+    public static final List<Division> FRA1 = Arrays.asList(Division.France_Ligue_1);
+    public static final List<Division> FRA2 = Arrays.asList(Division.France_Ligue_2);
     public static final List<Division> HOL = Arrays.asList(Division.Holland_Eridivisie);
-    public static final List<Division> BEL = Arrays.asList(Division.Germany_Bundesliga_1);
-    public static final List<Division> POR = Arrays.asList(Division.Germany_Bundesliga_1);
+    public static final List<Division> BEL = Arrays.asList(Division.Belgium_Juliper_1);
+    public static final List<Division> POR = Arrays.asList(Division.Portugal_Primera);
+    public static final List<Division> GRE = Arrays.asList(Division.Greece_Division_1);
+    public static final List<Division> TUR = Arrays.asList(Division.Turkey_Division_1);
 
-
-    public static final List<Division> EURO_DIVISIONS = Stream.of(GER, SPA, ITA, FRA, HOL, BEL, POR)
+    public static final List<Division> GER = Stream.of(GER1, GER2)
             .flatMap(x -> x.stream())
             .collect(Collectors.toList());
 
-    public static final List<Division> EURO_ELITE = Stream.of(EPL, GER, SPA, ITA, FRA)
+    public static final List<Division> FRA = Stream.of(FRA1, FRA2)
+            .flatMap(x -> x.stream())
+            .collect(Collectors.toList());
+
+    public static final List<Division> SPA = Stream.of(SPA1, SPA2)
+            .flatMap(x -> x.stream())
+            .collect(Collectors.toList());
+
+    public static final List<Division> ITA = Stream.of(ITA1, ITA2)
+            .flatMap(x -> x.stream())
+            .collect(Collectors.toList());
+
+    public static final List<Division> EURO_DIVISIONS = Stream.of(GER, SPA, ITA, FRA, HOL, BEL, POR, GRE, TUR)
+            .flatMap(x -> x.stream())
+            .collect(Collectors.toList());
+
+    public static final List<Division> ELITE = Stream.of(EPL, GER1, SPA1, ITA1, FRA1)
+            .flatMap(x -> x.stream())
+            .collect(Collectors.toList());
+
+    public static final List<Division> EURO_ELITE = Stream.of(GER1, SPA1, ITA1, FRA1)
             .flatMap(x -> x.stream())
             .collect(Collectors.toList());
 
@@ -107,9 +129,7 @@ public class AppConstants {
             .flatMap(x -> x.stream())
             .collect(Collectors.toList());
 
-    public static final boolean SHOW_DETAILED_STATS = false;
-
-    //public static final String SEASON_TO_USE = System.getProperty("bluebird.season", "1920");
+    //public static final boolean SHOW_DETAILED_STATS = false;
 
     public final static SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 

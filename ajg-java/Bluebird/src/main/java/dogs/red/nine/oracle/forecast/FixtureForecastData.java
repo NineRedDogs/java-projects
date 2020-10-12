@@ -1,8 +1,6 @@
 package dogs.red.nine.oracle.forecast;
 
 import dogs.red.nine.oracle.data.tables.TableEntry;
-import dogs.red.nine.oracle.forecast.TeamForecastData;
-import dogs.red.nine.oracle.general.DisplayExtras;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,6 +16,12 @@ public class FixtureForecastData {
         this.htData = htData;
         this.atData = atData;
         this.forecastScore = 0.0f;
+    }
+
+    public FixtureForecastData(FixtureForecastData forecastData) {
+        this.htData = new TeamForecastData(forecastData.htData);
+        this.atData = new TeamForecastData(forecastData.atData);
+        this.forecastScore = forecastData.forecastScore;
     }
 
     public TeamForecastData getHtData() {

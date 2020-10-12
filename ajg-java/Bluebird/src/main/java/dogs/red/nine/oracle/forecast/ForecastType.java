@@ -2,10 +2,14 @@ package dogs.red.nine.oracle.forecast;
 
 import dogs.red.nine.oracle.AppConstants;
 import dogs.red.nine.oracle.data.FixtureData;
+import dogs.red.nine.oracle.forecast.comparator.SortByHighForecastScore;
+import dogs.red.nine.oracle.forecast.comparator.SortByLowForecastScore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public abstract class ForecastType {
     private static final Logger logger = LogManager.getLogger("ForecastType");
@@ -68,7 +72,6 @@ public abstract class ForecastType {
         return new SortByLowForecastScore();
     }
 
-
     public List<FixtureData> getTips() {
         final int maxTips = (forecastTips.size() > AppConstants.NUM_TIPS) ? AppConstants.NUM_TIPS : forecastTips.size();
         return forecastTips.subList(0, maxTips);
@@ -88,35 +91,6 @@ public abstract class ForecastType {
     protected abstract boolean isHotTip(FixtureData tip);
 
 
-    class SortByHighForecastScore implements Comparator<FixtureData>
-    {
-        // Used for sorting in ascending order of
-        // roll number
-        public int compare(FixtureData a, FixtureData b)
-        {
-            if (a.getForecastData().getForecastScore() < b.getForecastData().getForecastScore()) {
-                return 1;
-            } else if (a.getForecastData().getForecastScore() == b.getForecastData().getForecastScore()) {
-                return 0;
-            } else {
-                return -1;
-            }
-        }
-    }
 
-    class SortByLowForecastScore implements Comparator<FixtureData>
-    {
-        // Used for sorting in ascending order of
-        // roll number
-        public int compare(FixtureData a, FixtureData b)
-        {
-            if (a.getForecastData().getForecastScore() > b.getForecastData().getForecastScore()) {
-                return 1;
-            } else if (a.getForecastData().getForecastScore() == b.getForecastData().getForecastScore()) {
-                return 0;
-            } else {
-                return -1;
-            }
-        }
-    }
+
 }

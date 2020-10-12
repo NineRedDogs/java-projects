@@ -33,20 +33,22 @@ public class Gatherer {
 	public Gatherer(Config cfg) throws IOException {
 		super();
 		this.config = cfg;
-		this.leaguesToProcess = setLeagues(cfg.getLeaguesToUse());
+		List<Division> initialListOfLeagues = setLeagues(cfg.getLeaguesToUse());
+
+		/** go get the results for the chosen divisions */
+		GetResults gResults = new GetResults(initialListOfLeagues, config.getSeason());
+		allMatches = gResults.getResultsFromDataUrls();
+		this.leaguesToProcess = gResults.getActiveLeagues();
 
 		/** go get the fixtures for the chosen divisions */
 		GetFixtures gFixtures = new GetFixtures(getLeaguesToProcess());
 		fixtures = gFixtures.getFixtures();
 
-		/** go get the results for the chosen divisions */
-		GetResults gResults = new GetResults(getLeaguesToProcess(), config.getSeason());
-		allMatches = gResults.getResultsFromDataUrls();
-
 		// use results to generates the tables for each match day through the season
 		tabMgr = new TableManager(getLeaguesToProcess(), config);
 		tabMgr.generateTables(allMatches);
 	}
+
 
 	private List<Division> setLeagues(String configLeaguesToUse) {
 
@@ -54,13 +56,38 @@ public class Gatherer {
 
 		switch(configLeaguesToUse) {
 
+			case "UK": {
+				leagues = AppConstants.UK_DIVISIONS;
+				break;
+			}
+
+			case "EU": {
+				leagues = AppConstants.EURO_DIVISIONS;
+				break;
+			}
+
 			case "ELITE": {
+				leagues = AppConstants.ELITE;
+				break;
+			}
+
+			case "EU_ELITE": {
 				leagues = AppConstants.EURO_ELITE;
 				break;
 			}
 
 			case "EPL": {
 				leagues = AppConstants.EPL;
+				break;
+			}
+
+			case "ENG": {
+				leagues = AppConstants.ENG_DIVISIONS;
+				break;
+			}
+
+			case "SCO": {
+				leagues = AppConstants.SCOT_DIVISIONS;
 				break;
 			}
 

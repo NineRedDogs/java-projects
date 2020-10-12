@@ -42,6 +42,11 @@ public abstract class MatchGoals2point5 extends ForecastType {
 //        logger.debug(team1.fullString());
 //        logger.debug(team2.fullString());
 
+        // only perform calcs if we have two teams worth of data
+        if ((team1 == null) || (team2 == null)) {
+            return matchScoreForecast;
+        }
+
         // calc team1 likelihood score value - (GF/P + GA/P(opp)) / 2
         float t1ScoreRaw = (((float) team1.getGoalsFor() / team1.getGamesPlayed() +
                           (float) team2.getGoalsAgainst() / team2.getGamesPlayed()) / 2);
