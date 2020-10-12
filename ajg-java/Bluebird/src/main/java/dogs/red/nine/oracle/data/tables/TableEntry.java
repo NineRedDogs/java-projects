@@ -1,11 +1,8 @@
 package dogs.red.nine.oracle.data.tables;
 
 import dogs.red.nine.oracle.data.MatchData;
-import dogs.red.nine.oracle.general.DisplayExtras;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.text.DecimalFormat;
 
 public abstract class TableEntry implements Comparable<TableEntry> {
 
@@ -28,6 +25,30 @@ public abstract class TableEntry implements Comparable<TableEntry> {
     private int cleanSheetsUs;
     private int bttsGames;
     private float meritScore;
+
+
+    public TableEntry(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public TableEntry(TableEntry tData) {
+        this.teamName = tData.teamName;
+        this.gamesPlayed = tData.gamesPlayed;
+        this.gamesWon = tData.gamesWon;
+        this.gamesDrawn = tData.gamesDrawn;
+        this.gamesLost = tData.gamesLost;
+        this.goalsFor = tData.goalsFor;
+        this.goalsAgainst = tData.goalsAgainst;
+        this.points = tData.points;
+        this.highScoreOppoGames = tData.highScoreOppoGames;
+        this.gamesScoredOppo = tData.gamesScoredOppo;
+        this.cleanSheetsOppo = tData.cleanSheetsOppo;
+        this.highScoreUsGames = tData.highScoreUsGames;
+        this.gamesScoredUs = tData.gamesScoredUs;
+        this.cleanSheetsUs = tData.cleanSheetsUs;
+        this.bttsGames = tData.bttsGames;
+        this.meritScore = tData.meritScore;
+    }
 
     private static final Logger logger = LogManager.getLogger("TableEntry");
 
@@ -196,11 +217,8 @@ public abstract class TableEntry implements Comparable<TableEntry> {
     public int getAvgeScoreFor() { return (doDiv(goalsFor, gamesPlayed)); }
     public int getAvgeScoreAgainst() { return (doDiv(goalsAgainst, gamesPlayed)); }
 
-    public TableEntry(String teamName) {
-        this.teamName = teamName;
-    }
 
-    private int doDiv(int a, int b) {
+        private int doDiv(int a, int b) {
         float x = (float) ((double)a / b);
         int r = Math.round(x);
         return r;

@@ -1,11 +1,15 @@
 package dogs.red.nine.oracle.data;
 
-import java.text.DateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 public class MatchData extends FixtureData implements Comparable<MatchData> {
-	
+
+	private static final Logger logger = LogManager.getLogger("MatchData");
+
 	private static final String DATA_SEPARATOR_CHAR = ",";
 	/**
 	 * Possible data entries are as follows : 
@@ -78,9 +82,8 @@ public class MatchData extends FixtureData implements Comparable<MatchData> {
 				setDivision(Division.fromString(matchResultElems[colNum]));
 				break;
 				
-			case "Date" : 
-				DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
-    			setDate(dateFormat.parse(matchResultElems[colNum]));
+			case "Date" :
+				setDate(LocalDate.parse(matchResultElems[colNum], dateFormatter));
 				break;
 
 			case "FTR" : 
@@ -164,7 +167,7 @@ public class MatchData extends FixtureData implements Comparable<MatchData> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(new SimpleDateFormat("EEE MMM d yyyy").format(getDate()) + " ");
+		sb.append(getDate().format(prettyDateFormatter) + " ");
 		sb.append(getDivision() + ": ");
 		sb.append(getHomeTeam() + " " + homeTeamScore + ":");
 		sb.append(awayTeamScore + " " + getAwayTeam());
@@ -179,9 +182,9 @@ public class MatchData extends FixtureData implements Comparable<MatchData> {
 		// less than other, > 0 if this is supposed to be greater than 
 		// other and 0 if they are supposed to be equal
 		
-		if (getDate().before(otherMatch.getDate())) {
+		if (getDate().isBefore(otherMatch.getDate())) {
 			return -1;
-		} else if (getDate().after(otherMatch.getDate())) {
+		} else if (getDate().isAfter(otherMatch.getDate())) {
 			return 1;
 		} else {
 			// must be the same 

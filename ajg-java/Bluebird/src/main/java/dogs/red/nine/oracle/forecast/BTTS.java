@@ -37,13 +37,20 @@ public class BTTS extends ForecastType {
 
     private int getBtts(TableEntry homeTeam, TableEntry awayTeam) {
         int bttsForecast = 0;
+
+        // only perform calcs if we have two teams worth of data
+        if ((homeTeam == null) || (awayTeam == null)) {
+            return bttsForecast;
+        }
+
         // even if ht is worse than away team, give a bump to allow worse teams to score in btts calcs
         final float HT_Q_DIFF_OFFSET = 1.75f;
         // even if at is worse than home team, give a bump to allow worse teams to score in btts calcs
         final float AT_Q_DIFF_OFFSET = 1.00f;
 
-//        logger.debug(homeTeam.fullString());
-//        logger.debug(awayTeam.fullString());
+        //logger.debug(homeTeam.fullString());
+        //logger.debug(awayTeam.fullString());
+
 
         // calc HT likelyhood score value - (GF/P + GA/P(opp)) / 2
         float htScoreRaw = (((float) homeTeam.getGoalsFor() / homeTeam.getGamesPlayed() +

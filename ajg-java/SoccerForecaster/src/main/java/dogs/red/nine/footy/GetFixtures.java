@@ -34,17 +34,18 @@ public class GetFixtures {
 
 	private final List<Division> supportedDivisions;
 
-	public GetFixtures(List<Division> supportedDivisions) {
+	public GetFixtures(final List<Division> supportedDivisions) {
 		this.supportedDivisions = supportedDivisions;
 	}
 
-	public List<FixtureData>  getFixtures() throws IOException {
-		List<FixtureData> allFixtures = new ArrayList<FixtureData>();
+	public List<FixtureData> getFixtures() throws IOException {
+		final List<FixtureData> allFixtures = new ArrayList<FixtureData>();
 
 		URL url = null;
 
 		if (Forecaster.DEV_MODE) {
-			// in dev mode the fixtures will not be available - unless developing after friday 17:00 :)
+			// in dev mode the fixtures will not be available - unless developing after
+			// friday 17:00 :)
 			// so read in a sample fixtures file
 			url = Paths.get(Forecaster.SAMPLE_FIXTURE_DEV_MODE_FILE).toUri().toURL();
 
@@ -52,48 +53,49 @@ public class GetFixtures {
 			// Real fixtures to read in , lets get some forecasts !!!!!!
 			try {
 				url = new URL(FOOTBALL_FIXTURES_URL);
-			} catch (MalformedURLException e) {
+			} catch (final MalformedURLException e) {
 				e.printStackTrace();
 			}
 		}
 
-		String[] keyData=null;
+		String[] keyData = null;
 		String lineReadFromFixturesFile;
 
 		BufferedReader in;
 		try {
-			URLConnection con = url.openConnection();
-			con.setReadTimeout( 1000 ); //1 second
+			final URLConnection con = url.openConnection();
+			con.setReadTimeout(1000); // 1 second
 			in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			while ((lineReadFromFixturesFile = in.readLine()) != null) {
 				if (lineReadFromFixturesFile.startsWith(DATA_FILE_COLUMN_KEY_LINE)) {
-					String keyLine = lineReadFromFixturesFile;
-					keyData = keyLine.split("," , -1);
+					final String keyLine = lineReadFromFixturesFile;
+					keyData = keyLine.split(",", -1);
 					System.out.println("Num columns : " + keyData.length);
 					System.out.println(" --- ");
-					//Div,Date,Time,HomeTeam,AwayTeam,FTHG,FTAG,FTR,HTHG,HTAG,HTR,B365H,B365D,B365A,BWH,BWD,BWA,IWH,IWD,IWA,PSH,PSD,PSA,WHH,WHD,WHA,VCH,VCD,VCA,MaxH,MaxD,MaxA,AvgH,AvgD,AvgA,B365>2.5,B365<2.5,P>2.5,P<2.5,Max>2.5,Max<2.5,Avg>2.5,Avg<2.5,AHh,B365AHH,B365AHA,PAHH,PAHA,MaxAHH,MaxAHA,AvgAHH,AvgAHA,B365CH,B365CD,B365CA,BWCH,BWCD,BWCA,IWCH,IWCD,IWCA,PSCH,PSCD,PSCA,WHCH,WHCD,WHCA,VCCH,VCCD,VCCA,MaxCH,MaxCD,MaxCA,AvgCH,AvgCD,AvgCA,B365C>2.5,B365C<2.5,PC>2.5,PC<2.5,MaxC>2.5,MaxC<2.5,AvgC>2.5,AvgC<2.5,AHCh,B365CAHH,B365CAHA,PCAHH,PCAHA,MaxCAHH,MaxCAHA,AvgCAHH,AvgCAHA
+					// Div,Date,Time,HomeTeam,AwayTeam,FTHG,FTAG,FTR,HTHG,HTAG,HTR,B365H,B365D,B365A,BWH,BWD,BWA,IWH,IWD,IWA,PSH,PSD,PSA,WHH,WHD,WHA,VCH,VCD,VCA,MaxH,MaxD,MaxA,AvgH,AvgD,AvgA,B365>2.5,B365<2.5,P>2.5,P<2.5,Max>2.5,Max<2.5,Avg>2.5,Avg<2.5,AHh,B365AHH,B365AHA,PAHH,PAHA,MaxAHH,MaxAHA,AvgAHH,AvgAHA,B365CH,B365CD,B365CA,BWCH,BWCD,BWCA,IWCH,IWCD,IWCA,PSCH,PSCD,PSCA,WHCH,WHCD,WHCA,VCCH,VCCD,VCCA,MaxCH,MaxCD,MaxCA,AvgCH,AvgCD,AvgCA,B365C>2.5,B365C<2.5,PC>2.5,PC<2.5,MaxC>2.5,MaxC<2.5,AvgC>2.5,AvgC<2.5,AHCh,B365CAHH,B365CAHA,PCAHH,PCAHA,MaxCAHH,MaxCAHA,AvgCAHH,AvgCAHA
 				} else {
 
-					//System.out.println("fixture : " + lineReadFromFixturesFile);
+					// System.out.println("fixture : " + lineReadFromFixturesFile);
 					FixtureData fixture;
 					try {
 						fixture = new FixtureData(lineReadFromFixturesFile, keyData);
-						//System.out.println("Parsed fixture data : " + fixture.fixturePrint());
+						// System.out.println("Parsed fixture data : " + fixture.fixturePrint());
 						if (supportedDivisions.contains(fixture.getDivision())) {
-							//System.out.println("Adding fixture from supported division : " + fixture.getDivision());
-							//System.out.println(fixture.fixturePrint());
+							// System.out.println("Adding fixture from supported division : " +
+							// fixture.getDivision());
+							// System.out.println(fixture.fixturePrint());
 							allFixtures.add(fixture);
 						}
-					} catch (ParseException e) {
-						//System.out.println("Parse problem with result : " + lineReadFromDataFile);
-						//e.printStackTrace();
+					} catch (final ParseException e) {
+						// System.out.println("Parse problem with result : " + lineReadFromDataFile);
+						// e.printStackTrace();
 					}
 				}
 
 			}
 			in.close();
 
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 		return allFixtures;

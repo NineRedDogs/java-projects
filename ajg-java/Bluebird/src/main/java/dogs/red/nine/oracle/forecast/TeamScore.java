@@ -33,6 +33,11 @@ public abstract class TeamScore extends ForecastType {
         //logger.debug(team1.fullString());
         //logger.debug(team2.fullString());
 
+        // only perform calcs if we have two teams worth of data
+        if ((team1 == null) || (team2 == null)) {
+            return hiScoreForecast;
+        }
+
         // calc team1 likelyhood score value - (GF/P + GA/P(opp)) / 2
         float t1ScoreRaw = (((float) team1.getGoalsFor() / team1.getGamesPlayed() +
                           (float) team2.getGoalsAgainst() / team2.getGamesPlayed()) / 2);
