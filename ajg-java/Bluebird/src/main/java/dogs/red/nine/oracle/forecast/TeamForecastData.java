@@ -13,6 +13,14 @@ public class TeamForecastData {
 
     private final Map<Integer, TableEntry> teamData = new HashMap<Integer, TableEntry>();
 
+    public TeamForecastData() { }
+
+    public TeamForecastData(TeamForecastData tData) {
+        for (Map.Entry<Integer,TableEntry> entry : tData.teamData.entrySet()) {
+            teamData.put(entry.getKey(), entry.getValue());
+        }
+    }
+
     public void addTeamForecastData(int slot, TableEntry teamForecastData) {
         this.teamData.put(slot, teamForecastData);
     }

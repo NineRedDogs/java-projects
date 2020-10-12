@@ -23,6 +23,8 @@ public class TableManager {
     }
 
     private Division whatDivision(final String teamName) {
+        //displayTeamLists();
+
         for (Division div : getLeaguesToProcess()) {
             if (listOfTeams.get(div).contains(teamName)) {
                 return div;
@@ -78,23 +80,24 @@ public class TableManager {
     }
 
 
-    public TableEntry getHomeFormData(String teamName) {
-        return allTables.get(whatDivision(teamName)).getHomeFormData(teamName);
+    public TableEntry getHomeFormData(String teamName, Division division) {
+        return allTables.get(division).getHomeFormData(teamName);
+        //return allTables.get(whatDivision(teamName)).getHomeFormData(teamName);
     }
 
-    public TableEntry getAwayFormData(String teamName) {
-        return allTables.get(whatDivision(teamName)).getAwayFormData(teamName);
+    public TableEntry getAwayFormData(String teamName, Division division) {
+        return allTables.get(division).getAwayFormData(teamName);
     }
 
-    public TableEntry getFormData(String teamName) {
-        return allTables.get(whatDivision(teamName)).getFormData(teamName);
+    public TableEntry getFormData(String teamName, Division division) {
+        return allTables.get(division).getFormData(teamName);
     }
 
-    public TableEntry getHomeSeasonData(String teamName) {
-        return allTables.get(whatDivision(teamName)).getHomeSeasonData(teamName);
+    public TableEntry getHomeSeasonData(String teamName, Division division) {
+        return allTables.get(division).getHomeSeasonData(teamName);
     }
 
-    public TableEntry getAwaySeasonData(String teamName) {
-        return allTables.get(whatDivision(teamName)).getAwaySeasonData(teamName);
+    public TableEntry getAwaySeasonData(String teamName, Division division) {
+        return allTables.get(division).getAwaySeasonData(teamName);
     }
 }
