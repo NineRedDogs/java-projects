@@ -1,5 +1,12 @@
 package dogs.red.nine.oracle.gatherer;
 
+import dogs.red.nine.oracle.AppConstants;
+import dogs.red.nine.oracle.data.Division;
+import dogs.red.nine.oracle.data.FixtureData;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -10,13 +17,7 @@ import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
-import dogs.red.nine.oracle.AppConstants;
-import dogs.red.nine.oracle.data.Division;
-import dogs.red.nine.oracle.data.FixtureData;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.Objects;
 
 public class GetFixtures {
 	private static final Logger logger = LogManager.getLogger("GetFixtures");
@@ -44,7 +45,7 @@ public class GetFixtures {
 	}
 
 	public List<FixtureData>  getFixtures() throws IOException {
-		List<FixtureData> allFixtures = new ArrayList<FixtureData>();
+		List<FixtureData> allFixtures = new ArrayList<>();
 
 		URL url = null;
 
@@ -71,8 +72,8 @@ public class GetFixtures {
 
 		BufferedReader in;
 		try {
-			logger.debug("Using fixtures from : " + url.getPath());
-			URLConnection con = url.openConnection();
+			//logger.debug("Using fixtures from : " + url.getPath());
+			URLConnection con = Objects.requireNonNull(url).openConnection();
 			con.setReadTimeout( 1000 ); //1 second
 			in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			while ((lineReadFromFixturesFile = in.readLine()) != null) {
@@ -90,8 +91,8 @@ public class GetFixtures {
 						fixture = new FixtureData(lineReadFromFixturesFile, keyData);
 						//System.out.println("Parsed fixture data : " + fixture.fixturePrint());
 						if (supportedDivisions.contains(fixture.getDivision())) {
-							//System.out.println("Adding fixture from supported division : " + fixture.getDivision());
-							//System.out.println(fixture.fixturePrint());
+							//logger.debug("Adding fixture from supported division : " + fixture.getDivision());
+							//logger.debug(fixture.fixturePrint());
 							allFixtures.add(fixture);
 						}
 					} catch (ParseException e) {

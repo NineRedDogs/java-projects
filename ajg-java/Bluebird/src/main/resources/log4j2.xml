@@ -2,10 +2,8 @@
 <Configuration>
 
     <Appenders>
-
         <RollingFile name="PREDICTIONS"
-                     fileName="logs/predictions.log"
-                     filePattern="logs/predictions---%d{yyyy-MM-dd}-%i.log"
+                     filePattern="logs/%d{yyyy-MM-dd}/Tips--%d{d-MMM-y__HH:mm}.log"
                      append="false">
             <PatternLayout pattern="%m%n"/>
             <TimeBasedTriggeringPolicy/>
@@ -15,7 +13,6 @@
             <!-- <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/> -->
             <PatternLayout pattern="%m%n"/>
         </Console>
-
     </Appenders>
 
     <Loggers>
