@@ -1,0 +1,3 @@
+:ID,productReference:string,productName:string,dateInception:date,dateExpiry:date,dateOrigin:date,dateCancellation:date
+M123,M123,Motor,2018-01-01,2018-01-01,2018-01-01,2018-01-01
+H900,H900,HH,2018-01-01,2018-01-01,2018-01-01,2018-01-01
