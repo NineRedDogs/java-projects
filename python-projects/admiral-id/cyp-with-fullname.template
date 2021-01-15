@@ -1,0 +1,24 @@
+USING PERIODIC COMMIT _BATCH_SIZE_
+LOAD CSV WITH HEADERS FROM "file://_CSV_FILE_" AS row
+CREATE (person:Person{rowID:row.RowID})
+    set person.productName = row.PolType 
+    set person.productReference = row.PolicyNo 
+    set person.fullname = toLower(row.ForeName + " " + row.Surname)
+    set person.forename = row.ForeName 
+    set person.surname = row.Surname 
+    set person.address1 = row.Addr1 
+    set person.address2 = row.Addr2 
+    set person.address3 = row.Addr3 
+    set person.postcode = toLower(replace(row.Postcode, " ", ""))
+    set person.dateOfBirth = date(row.DOB)
+    set person.mobile = row.mobile 
+    set person.email = toLower(row.eMail)
+    set person.regNum = row.RegNo 
+    set person.dln = toLower(row.DrvLicNo)
+    set person.deviceID = row.DeviceID 
+    set person.abiCode = row.ABICode 
+    set person.alfKey = row.ALFKey 
+    set person.dateInception = date(row.Date_Inc)
+    set person.dateExpiry = date(row.Date_Exp)
+    set person.dateOrigin = date(row.OrinDate)
+    set person.dateCancellation = date(row.CanDate);

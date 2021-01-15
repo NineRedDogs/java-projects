@@ -1,0 +1,4 @@
+docker logs -f kong-ee
+docker logs -f kong-spring-app
+date; ./start-docker-env.sh ; date
+
