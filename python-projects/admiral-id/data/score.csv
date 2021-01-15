@@ -1,0 +1,4 @@
+RowID,PolType,PolicyNo,ForeName,Surname,Addr1,Addr2,Addr3,Postcode,DOB,mobile,eMail,RegNo,DrvLicNo,DeviceID,ABICode,ALFKey,Date_Inc,Date_Exp,OrinDate,CanDate
+1,Motor,M123,John,Smith,101 Sesame Street,Penarth,Cardiff,CF123ZZ,01/01/99,07912345678,john@smith.com,CF55SSS,SMITH010203,d123456,abi123456,,01/01/18,01/01/18,01/01/18,01/01/18
+2,Motor,M123,John,Smith,101 Sesame Street,Penarth,Cardiff,CF123ZZ,01/01/98,07912345678,john2@smith.com,CF55SSS,SMITH010203,d123456,abi123456,,01/01/18,01/01/18,01/01/18,01/01/18
+3,HH,H900,John,Smith,101 Sesame Street,Penarth,Cardiff,CF123ZZ,01/01/99,07912345678,john@smith.com,,,d123456,,alf456,01/01/18,01/01/18,01/01/18,01/01/18
