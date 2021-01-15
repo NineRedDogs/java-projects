@@ -1,0 +1,5 @@
+Admiral ID - neo4j
+
+command to build jar, copy to neo4j run area & clean logs
+
+   >>   mvn -Dmaven.test.skip=true package; echo; echo; echo; cp target/neoplugins-1.0.0-SNAPSHOT.jar /mnt/c/Users/agrahame/.Neo4jDesktop/neo4jDatabases/database-44234134-0bb8-472d-a497-4df821413257/installation-3.5.4/plugins/; echo; echo; sudo rm -fv /mnt/c/Users/agrahame/.Neo4jDesktop/neo4jDatabases/database-44234134-0bb8-472d-a497-4df821413257/installation-3.5.4/logs/neo4j.log; echo; echo
