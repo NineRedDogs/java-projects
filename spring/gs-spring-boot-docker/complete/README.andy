@@ -1,0 +1,4 @@
+
+./mvnw install dockerfile:build
+
+docker run --name dockSpringy -p 7878:8080 -t springio/gs-spring-boot-docker
