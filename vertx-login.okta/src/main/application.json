@@ -1,0 +1,7 @@
+{
+   "clientId": "0oaemcygmz0XcbIgH0h7",
+   "clientSecret": "RNFLje_jjDsMRNtJMLDrro9vBiasJXcV2vPIJYgQ",
+   "issuer": "https://dev-698012.oktapreview.com/oauth2/default",
+   "callbackUrl": "http://localhost:8080/authorization-code/callback",
+   "port": 8080
+}
